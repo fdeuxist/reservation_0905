@@ -1,0 +1,277 @@
+
+--=================================================================================================================
+--=================================================================================================================
+--전체 내용 sql developer에 복붙
+--=================================================================================================================
+--=================================================================================================================
+/*
+윈도우키+R
+cmd 우클릭 관리자권한 실행
+sqlplus /nolog
+conn sys as sysdba;
+create user c##reser identified by vation;
+grant connect, resource, dba to c##reser;
+conn c##reser/vation;
+show user;
+exit
+exit
+
+sql developer 실행
+접속 밑에 녹색 십자가 아이콘 클릭
+Name : reservation
+사용자 이름 : c##reser
+비밀번호 : vation
+비밀번호 오른쪽에 저장 체크박스 체크
+테스트 눌러서 상태에 성공 뜨는거 확인하고 저장
+reservation에 접속 하고 이하 실행
+*/
+
+--=================================================================================================================
+--=================================================================================================================
+--=======위 내용 먼저 작업 후 이하 진행======================================================================================
+--=================================================================================================================
+--=================================================================================================================
+drop table users;
+create table users(
+    email varchar2(255),		-- pk, email(id)
+    password varchar2(255),		--
+    name varchar2(255),			--
+    phone varchar2(20),			--
+    enable integer default 1 not null 	-- 
+    );
+
+drop table authorities;
+create table authorities(
+    email varchar2(255) not null,				--fk
+    authority varchar2(20) default 'ROLE_MEMBER' not null
+);
+
+drop table vendor;
+create table vendor (
+    email varchar2(255) not null,   --fk, email(id)
+    business_regi_num varchar2(20), --사업자등록번호
+    business_name varchar2(255),    --사업명(간판)
+    zipcode varchar2(10),           --우편번호
+    basic_address varchar2(255),    --기본주소
+    detail_address varchar2(255),   --상세주소
+    business_type varchar2(255)     --업종코드
+    );
+
+commit;
+
+--=================================================================================================================
+--=================================================================================================================
+--=======위 내용 먼저 작업 후 이하 진행======================================================================================
+--=================================================================================================================
+--=================================================================================================================
+--여기까지 하고 sts로 구동 후 http://localhost:자기포트/ex/user/insert 에서 
+--아래 기본 4가지 계정 가입 (비밀번호 1111 통일)
+-- (이메일/비밀번호/이름/전화번호)
+-- admin/1111/1/1
+-- member/1111/1/1
+-- vendor/1111/1/1
+-- manager/1111/1/1
+-- 위 4가지 계정 가입 후 이하 sql developer 에서 실행
+
+update authorities set authority='ROLE_ADMIN' where email='admin';
+update authorities set authority='ROLE_VENDOR' where email='vendor';
+update authorities set authority='ROLE_MANAGER' where email='manager';
+insert into vendor values('vendor', 'gsgs252511', 'GS25 부평대림점', '21404', '인천 부평구 경원대로 1360', '대림빌딩 1층', '편의점');
+update users set name='윤영자' , phone='01063188216' where email='admin';
+update users set name='이회원' , phone='01063188216' where email='member';
+update users set name='김벤또' , phone='01063188216' where email='vendor';
+update users set name='송실장' , phone='01063188216' where email='manager';
+commit;
+--=================================================================================================================
+
+
+
+-- java : camelCase
+-- db : snake_case
+
+
+
+
+--=================================================================================================================
+--===0812 추가======================================================================================================
+--=================================================================================================================
+
+drop table vendor_reservation;		//
+create table vendor_reservation (
+    email varchar2(255) not null,   --사업자이메일 ┐
+    business_regi_num varchar2(20), --사업자번호　 ┴ 복합키 
+    open_date date,                 --예약등록 년월일 (예약을 받겠다는)
+    times varchar2(50),             --예약등록 시간48개단위
+    status_flag varchar2(4)         --해당년월일 예약 비활성화(수정중,예약불가)/활성화(수정완료,예약가능)등 상태. 수정중이라면 일반유저가 예약을 못함
+--    constraint vendor_reservation_unique
+--        unique (email, business_regi_num, open_date)
+    );
+
+
+
+//vendor_reservation  Mapper 등록해야할 sql
+--id="insert"   (사업자가 등록)
+--insert into vendor_reservation values(#{email}, #{business_regi_num}, #[open_date}, #{times}, #{status_flag})
+
+--id="selectAllVendorsReservation" (사업자가 전체조회. 자기가 등록한 스케줄 조절하려고 할때)
+--select * from vendor_reservation where email=#{email} and business_regi_num=#[business_regi_num} order by open_date 
+
+--id="selectAllEnableVendorsReservation" (비회원,일반회원이 전체조회. 예약날짜 고르려고 할때.주단위 월단위등 쿼리 추가 필요함)    ↙useremail아님
+--select * from vendor_reservation where email=#{email} and business_regi_num=#{business_regi_num} and status_flag not in '0' order by open_date 
+
+--id="selectOneVendorsReservation" (비회원,일반회원이 해당일 조회.  해당일을 예악하려고 해당일의 예약가능시간대를 조회하려고 할 때)    ↙useremail아님
+--select * from vendor_reservation where email=#{email} and business_regi_num=#{business_regi_num} and open_date=#{open_date} and status_flag not in '0'
+
+--id="closeDay"  (해당일 주문 막기. 사업자가 해당일의 status를 0으로 수정하기 위해 자기정보(이메일,업자번호)+날짜로 조회 )
+--update vendor_reservation set status_flag='0' where email=#{email} and business_regi_num=#{business_regi_num} and open_date=#{open_date}
+
+--id="openDay"  (해당일 주문 열기  위와 같음. 추 후 쿼리에 직접적으로 0,1이 들어간 부분을 파라미터처리해서 위아래 쿼리를 하나로 묶을 여지가 있음 )
+--update vendor_reservation set status_flag='1' where email=#{email} and business_regi_num=#{business_regi_num} and open_date=#{open_date}
+
+--id="openDateTimesUpdate"  (해당일 주문시간대 수정)
+--update vendor_reservation set times=#{times} where email=#{email} and business_regi_num=#{business_regi_num} and open_date=#{open_date}
+
+
+
+
+--=================================================================================================================
+
+drop table user_reservation;
+create table user_reservation (
+    reservation_number varchar2(20) not null,   --예약(주문)번호 pk (년월일시분초ms)
+    user_email varchar2(255) not null,          --유저이메일 fk (예악자)    (users)
+    vendor_email varchar2(255) not null,        --사업자이메일 ┐                (vendor)
+    business_regi_num varchar2(20),             --사업자번호　 ┴ 복합키 fk       (vendor)
+    reservation_date date,                      --이용 예정 년월일
+    times varchar2(50),                         --이용 예정 시간 48개단위
+    service_name varchar2(255),                 --예약 당시 이용 예정 서비스 이름(service_items)
+    service_price number,                       --예약 당시 이용 예정 서비스 가격(service_items)
+    zipcode varchar2(10),                       --예약 당시 이용 예정 장소 우편번호(vendor)
+    basic_address varchar2(255),                --예약 당시 이용 예정 장소 기본주소(vendor)
+    detail_address varchar2(255),               --예약 당시 이용 예정 장소 상세주소(vendor)
+    status varchar2(50)                         --주문 상태. 1입금대기/2입금완료/3이용완료/
+                                                --       4이용자취소(회원요청,사업자승인필요)/
+                                                --       5사업자취소(사업자요청,회원승인불필요)/6환불대기/7환불완료 등 상태
+    );
+
+
+
+//user_reservation Mapper 등록해야할 sql
+
+--id="newOrder"  신규주문발생sql
+/*
+insert into user_reservation values ( 
+    #{reservation_number}, #{user_email},
+    #{vendor_email}, #{business_regi_num}, #{reservation_date}, 
+    #{times}, #{service_name}, #{service_price}, #{zipcode}, #{basic_address}, #{detail_address}, '1')
+*/
+--id="tryCancelOrder"   이용자 주문취소요청 sql
+--update user_reservation set status=#{status} where reservation_number=#{reservation_number}
+
+--id="selectAllMyOrders"  내 모든 주문 보기 (추후 과거/미래 년단위/6개월단위/월단위 등 변경 여지 있음)
+--select * from user_reservation where user_email=#{user_email}
+
+--id="selectOneMyOrder"  내 주문 하나 보기
+--select * from user_reservation where user_email=#{user_email} and reservation_number = #{reservation_number}
+
+--id="changeOrdersStatus"   주문 상태 변경
+--update user_reservation set status=#{status} where reservation_number=#{reservation_number}
+
+
+--=================================================================================================================
+drop sequence item_id;
+CREATE SEQUENCE item_id;
+drop table service_items;
+create table service_items (
+    item_id number not null,         --pk 
+    email varchar2(255) not null,   --사업자이메일 ┐
+    business_regi_num varchar2(20) not null, --사업자번호　 ┴ 복합키
+    service_name varchar2(255),             --상품명
+    service_description varchar2(255),      --설명
+    required_time number,                   --제공(필요)시간 (몇칸짜리인지)
+    service_price number,                   --가격
+    item_status varchar2(10) default '1' not null                --item 상태, (사용가능 여부 등)  (1:사용, 0:미사용 등)
+    );
+
+
+
+//service_items  Mapper 등록해야할 sql
+
+--id="insertMyItem"     (사업자가 자기가 서비스(시술 등)할 아이템(메뉴하나) 등록함)
+--insert into service_items (item_id.nextval, #{email}, #{business_regi_num}, #{service_name}, #{service_description}, #{required_time}, #{service_price}, '1' );
+
+--id="selectAllMyItems"
+/*
+select * from service_items where email=#{email} and business_regi_num=#{business_regi_num}
+order by item_status desc , item_id
+*/
+--id="selectOneMyItem"
+/*
+select * from service_items where email=#{email} and business_regi_num=#{business_regi_num} and item_id=#{item_id}
+order by item_status desc , item_id
+*/
+
+--id="updateMyItem"
+/*
+update service_items set 
+    service_name=#{service_name}, service_description=#{service_description}, 
+    required_time=#{required_time}, service_price=#{service_price} 
+    where item_id=#{item_id}
+*/
+--id="deleteMyItem"
+--update service_items set item_status='0' where email=#{email} and business_regi_num=#{business_regi_num} and item_id=#{item_id}
+
+    
+    
+    
+    
+--=================================================================================================================
+    
+drop table business_place_info;
+create table business_place_info (
+    email varchar2(255) not null,   --사업자이메일 ┐
+    business_regi_num varchar2(20), --사업자번호　 ┴ 복합키
+    place_info varchar2(4000),      --업소 소개
+    img_path0  varchar2(255),       --이미지 저장 경로
+    img_path1  varchar2(255),       --이거 뭔가 좀 아닌거같음 10개씩 주렁주렁 달고있는거
+    img_path2  varchar2(255),       --근데 imgpath만 테이블 따로 뺀다해도
+    img_path3  varchar2(255),       --어차피 거기에 외래키로 이메일+사업자번호 있어야하니
+    img_path4  varchar2(255),       --일단 이렇게 가보는걸로
+    img_path5  varchar2(255),       
+    img_path6  varchar2(255),
+    img_path7  varchar2(255),
+    img_path8  varchar2(255),
+    img_path9  varchar2(255)
+    );
+
+--business_place_info   Mapper 등록해야할 sql
+--id="insertMyBusinessPlaceInfo" 
+/*
+insert into business_place_info values(
+    #{email},#{business_regi_num},#{place_info},
+    #{img_path0},#{img_path1},#{img_path2},#{img_path3},#{img_path4},
+    #{img_path5},#{img_path6},#{img_path7},#{img_path8},#{img_path9})
+*/
+
+--=================================================================================================================
+--=================================================================================================================
+--=================================================================================================================
+--=================================================================================================================
+--=================================================================================================================
+--=================================================================================================================
+--=================================================================================================================
+--=================================================================================================================
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+-- 무엇이든 작업하면 작업자 이름,날짜 적기!!!!!!!!!!!!!
+--=================================================================================================================
+--=================================================================================================================
+--=================================================================================================================

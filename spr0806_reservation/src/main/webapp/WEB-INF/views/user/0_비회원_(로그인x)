@@ -1,0 +1,27 @@
+접근 가능 권한 : 
+ROLE_ANONYMOUS,	//비회원 
+ROLE_MEMBER, 	//일반회원
+ROLE_VENDOR, 	//사업자회원
+ROLE_MANAGER, 	//매니저
+ROLE_ADMIN		//관리자
+
+모든 유저 접근 가능
+
+로그인 안한 이용자
+
+회원가입, 로그인, 계정/비밀번호 찾기,
+샵 검색, 샵 정보 조회, 예약하기 등
+
+
+
+
+
+
+
+
+
+
+
+${sessionScope.loginName}
+${sessionScope.loginEmail}
+${sessionScope.loginAuthority} 

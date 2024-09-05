@@ -1,0 +1,28 @@
+접근 가능 권한 : 
+ROLE_VENDOR, 	//사업자회원
+ROLE_MANAGER, 	//매니저
+ROLE_ADMIN		//관리자
+
+
+
+사업자회원으로 전환시 작성했던 사업자관련정보 수정 및 일반회원으로 전환(사업자회원탈퇴)
+
+
+
+
+
+
+
+
+
+
+
+ROLE_MEMBER에서 사업자 회원 전환시, 
+해당 유저의 email을 기준으로 
+authority가 ROLE_MEMBER에서 ROLE_VENDOR로 'update'됨
+ROLE_MEMBER에 추가로 ROLE_VENDOR가 insert 되는 방식이 아님
+
+
+
+
+

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.UserReservationDao">
+
+<insert id="newOrder">
+insert into user_reservation values ( 
+	#{reservation_number}, #{user_email}, #{user_name}, #{user_phone},
+    #{vendor_email}, #{business_regi_num}, #{vendor_name}, #{vendor_phone},
+    #{business_name}, #{zipcode}, #{basic_address}, #{detail_address},
+    #{reservation_date}, #{reservation_use_date}, #{times}, #{times_hhmm}, 
+    #{total_service_name}, #{total_service_price}, #{total_required_time},
+    #{user_request_memo}, '1')
+    
+</insert>
+
+
+<update id="tryCancelOrder">
+update user_reservation set status='4' where reservation_number=#{reservation_number}
+</update>
+
+<select id="selectAllMyOrders" resultType="UserReservationDto">
+select * from user_reservation where user_email=#{user_email}
+</select>
+
+<select id="selectOneMyOrder" resultType="UserReservationDto">
+select * from user_reservation where reservation_number = #{reservation_number}
+</select>
+
+<update id="changeOrdersStatus">
+update user_reservation set status=#{status} where reservation_number=#{reservation_number}
+</update>
+
+
+
+
+
+<!--
+dto 수정 이전 sql 
+<insert id="newOrder">
+insert into user_reservation values ( 
+    #{reservation_number}, #{user_email},
+    #{vendor_email}, #{business_regi_num}, #{reservation_date}, 
+    #{times}, #{service_name}, #{service_price}, #{zipcode}, 
+    #{basic_address}, #{detail_address}, '1')
+</insert>
+
+ -->
+</mapper>

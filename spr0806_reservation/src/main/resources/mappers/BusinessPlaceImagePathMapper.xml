@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.BusinessPlaceImagePathDao">
+
+<insert id="insertMyBusinessPlaceImagePath">
+    insert into business_place_image_path (
+    	email, business_regi_num, place_img_path
+    ) values (
+        #{email}, #{business_regi_num}, #{place_img_path}
+    )
+</insert>
+<!-- #{img_path0, jdbcType=VARCHAR}  jdbcType=VARCHAR  NULL 허용 한다는 뜻   -->
+
+<select id="selectAllMyBusinessPlaceImgPaths" resultType="com.reservation.dto.BusinessPlaceImagePathDto">
+select email, business_regi_num, place_img_path
+    from business_place_image_path 
+    where email=#{email} and business_regi_num=#{business_regi_num}
+</select>
+
+
+
+</mapper>

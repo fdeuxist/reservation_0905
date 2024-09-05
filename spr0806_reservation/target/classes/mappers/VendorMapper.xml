@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.VendorDao">
+
+<insert id="insert">
+insert into vendor (
+	email,
+	business_regi_num,
+	business_name,
+	zipcode,
+	basic_address,
+	detail_address,
+	business_type)
+values (
+	#{email}, 
+	#{business_regi_num}, 
+	#{business_name}, 
+	#{zipcode}, 
+	#{basic_address}, 
+	#{detail_address}, 
+	#{business_type}
+)
+</insert>
+
+<select id="selectAll" resultType="VendorDTO">
+select * from vendor
+</select>
+
+<select id="selectOneVendorEmailBusinessRegiNum" resultType="VendorDTO">
+select * from vendor where email=#{email} and business_regi_num=#{business_regi_num}
+</select>
+
+
+<select id="selectEmail" resultType="VendorDTO">
+select * from vendor where email=#{email}
+</select>
+
+<select id="selectBusiness_regi_num" resultType="VendorDTO">
+select * from vendor where business_regi_num=#{business_regi_num}
+</select>
+
+<update id="update">
+update vendor set 
+business_regi_num=#{business_regi_num}, business_name=#{business_name}, zipcode=#{zipcode}, basic_address=#{basic_address}, detail_address=#{detail_address}, business_type=#{business_type} where email=#{email}
+</update>
+
+<delete id="delete">
+delete vendor where email=#{email}
+</delete>
+
+
+<select id="selectAllVendorByBusinessType" resultType="VendorDTO">
+select * from vendor where business_type = #{business_type}
+</select>
+
+<select  id="selectAllVendorByBasicAddress" resultType="VendorDTO">
+select * from vendor where basic_address like '%' || #{basic_address} || '%'
+</select>
+
+
+
+
+
+</mapper>

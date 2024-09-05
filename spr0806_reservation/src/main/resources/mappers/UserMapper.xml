@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.UserDao">
+
+<insert id="insert">
+insert into users (email,password,name,phone,enable)
+values (#{email}, #{password}, #{name}, #{phone}, #{enable})
+</insert>
+
+<select id="selectAll" resultType="UserDTO">
+select * from users
+</select>
+
+<select id="selectEmail" resultType="UserDTO">
+select * from users where email=#{email}
+</select>
+
+<select id="selectPhone" resultType="UserDTO">
+select * from users where phone=#{phone}
+</select>
+ 
+<update id="update">
+update users set 
+password=#{password}, name=#{name}, phone=#{phone}, enable=#{enable} where email=#{email}
+</update>
+
+<update id="updateEnable">
+update users set enable=#{enable} where email=#{email}
+</update>
+
+<delete id="delete">
+delete users where email=#{email}
+</delete>
+</mapper>

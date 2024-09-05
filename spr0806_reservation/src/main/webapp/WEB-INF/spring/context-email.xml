@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <!-- 이메일 관련 https://newehblog.tistory.com/12 -->
+    <!-- 앱비밀번호 https://greensul.tistory.com/31 -->
+    
+    <beans:bean id="javaMailSender"
+        class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <beans:property name="host" value="smtp.gmail.com" />
+        <beans:property name="port" value="587" />
+        <beans:property name="username" value="everysreservation@gmail.com" />
+        <beans:property name="password" value="dsij tsds kgpn mdto" />
+        <beans:property name="javaMailProperties">
+            <beans:props>
+                <beans:prop key="mail.smtp.ssl.trust">smtp.gmail.com</beans:prop>
+				<beans:prop key="mail.smtp.ssl.protocols">TLSv1.2</beans:prop>
+                <beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+                <beans:prop key="mail.smtp.auth">true</beans:prop>
+            	<beans:prop key="mail.smtp.starttls.required">true</beans:prop>
+                <!-- Optional additional properties -->
+                <!-- <beans:prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</beans:prop>
+                <beans:prop key="mail.smtp.socketFactory.fallback">false</beans:prop> -->
+                <!-- Enable debug logging -->
+            	<beans:prop key="mail.debug">false</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="mailService"
+        class="com.reservation.service.MailServiceImpl">
+        <beans:property name="javaMailSender" ref="javaMailSender" />
+    </beans:bean>
+</beans:beans>

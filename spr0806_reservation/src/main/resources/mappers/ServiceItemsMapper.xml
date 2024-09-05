@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.ServiceItemsDao">
+
+<insert id="insertMyItem"> 
+insert into service_items 
+    (item_id, 
+    email, business_regi_num, 
+    service_name, service_description, 
+    required_time, service_price, 
+    item_status) 
+    values 
+    (item_id.nextval, 
+    #{email}, #{business_regi_num}, 
+    #{service_name}, #{service_description}, 
+    #{required_time}, #{service_price}, 
+    #{item_status})
+</insert>
+
+<!-- 멤버가 특정 샵 검색해서 샵 정보 봤을때 샵 정보에 띄울 해당 벤더의 예약가능한 메뉴리스트 item_status not in '0' 아니면 item_status = '1'  -->
+<select id="selectAllYourItems" resultType="com.reservation.dto.ServiceItemsDto">
+select * from service_items 
+	where email = #{email} 
+	and business_regi_num = #{business_regi_num}
+	and item_status = '1' 
+	order by item_id
+</select>
+
+<!-- 벤더가 자기 모든 등록아이템 조회할때 -->
+<select id="selectAllMyItems" resultType="com.reservation.dto.ServiceItemsDto">
+select * from service_items 
+where email=#{email} and business_regi_num=#{business_regi_num}
+order by item_status desc , item_id
+</select>
+
+<!-- 아이템 하나 조회할때 -->
+<select id="selectOneItem" resultType="com.reservation.dto.ServiceItemsDto">
+select * from service_items 
+where item_id=#{item_id}
+</select>
+
+<update id="updateMyItem">
+update service_items set 
+    service_name=#{service_name}, service_description=#{service_description}, 
+    required_time=#{required_time}, service_price=#{service_price} 
+    where item_id=#{item_id}
+</update>
+
+<delete id="deleteMyItem">
+update service_items set item_status='0' where email=#{email} and business_regi_num=#{business_regi_num}
+</delete>
+
+<!-- 만든이:김하겸 , 관련 이미지,파일업로드 매퍼 구문 -->
+<insert id="insertItemImg"
+		parameterType="com.reservation.dto.ImageDto">
+		INSERT INTO images (fileName, fileType, filePath, fileSize, upload_time,
+		image_data)
+		VALUES (#{fileName}, #{fileType}, #{filePath}, #{fileSize}, #{upload_time},
+		#{image_data})
+	</insert>
+</mapper>

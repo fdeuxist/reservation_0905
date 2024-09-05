@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.BoardDao">
+<insert id= "create">
+insert into board(bGroupKind,bId, bName, bTitle, bContent,bGroup) values(#{bGroupKind},bId.nextval,
+#{bName},#{bTitle},#{bContent},bId.nextval)
+</insert>
+<select id="read" resultType="com.reservation.dto.BoardDto">
+select * from board where bId =#{bId}
+</select>
+<update id="update">
+update board set bGroupKind=#{bGroupKind},bTitle=#{bTitle},bContent=#{bContent} where bId=#{bId}
+</update>
+<update id="bHitUpdate">
+update board set bHit=bHit+1 where bId=#{bId}
+</update>
+<update id="bLike">update board set bLike=bLike+1 where bId=#{bId}</update>
+<update id="bDislike">update board set bDislike=bDislike+1 where bId=#{bId}</update>
+<delete id="delete">delete from board where bId=#{bId}</delete>
+<select id="listAll" resultType="com.reservation.dto.BoardDto">
+<![CDATA[select * from board where bId>0 order by bGroup desc, bStep asc]]>
+</select>
+<select id="listMenu" resultType="com.reservation.dto.BoardDto">
+<![CDATA[select * from board where bId>0 and bGroupKind=#{bGroupKind} order by bGroup desc, bStep asc]]>
+</select>
+<select id="menuKind" resultType="String">
+<![CDATA[select distinct bGroupKind from board]]>
+</select>
+
+<insert id="reply">
+    INSERT INTO board (
+        bGroupKind, bId, bName, bTitle, bContent, bGroup,bStep,bIndent
+    ) VALUES (
+        #{bGroupKind}, bId.nextval, #{bName}, #{bTitle}, #{bContent}, #{bGroup} ,#{bStep}+1,#{bIndent}+1
+    )
+    
+</insert>
+<update id="replyUpdate">
+update board set bStep = bStep+1 where bGroup = #{bGroup} and bStep > #{bStep}
+</update>
+
+
+<sql id='search'>
+		<if test="searchType!=null">
+			<if test="searchType=='----'.toString()">
+				and(
+				bGroupKind like '%' ||#{keyword}||'%' or bId like
+				'%'||#{keyword}||'%' or
+				bContent like '%'||#{keyword}||'%' or bName
+				like '%'||#{keyword}||'%'
+				)
+			</if>
+			<if test="searchType=='카테고리'.toString()">
+				and bGroupKind like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType=='작성자'.toString()">
+				and bName like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType=='bGroup'.toString()">
+				and bGroup like '%'||#{keyword}||'%'
+			</if>
+		</if>
+	</sql>
+	<sql id='category'>
+		<if test="categoryType!=null">
+			and bGroupKind = #{bGroupKind}
+		</if>
+	</sql>
+	<select id="listSearch" resultType="com.reservation.dto.BoardDto">
+		<![CDATA[select * from board where 1=1]]>
+		<include refid="category"/>
+		<include refid="search"/>
+		<![CDATA[order by bGroup desc,bStep asc offset (#{page}-1)*#{perPageNum} rows fetch next
+		#{perPageNum} rows only]]>
+	</select>
+	<select id="listSearchCount" resultType="int">
+		<![CDATA[select count(bId) from board where 1=1]]>
+		<include refid="search"/>
+		<include refid="category"/>
+		<![CDATA[and bId>0]]>
+	</select>
+</mapper>

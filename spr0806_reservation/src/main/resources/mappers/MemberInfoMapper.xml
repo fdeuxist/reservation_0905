@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.MemberInfoDao">
+
+<select id="selectAll" resultType="MemberInfoDto">
+select u.email, u.name, u.phone, u.enable, 
+    a.authority, 
+    v.business_regi_num, v.business_name, v.zipcode, v.basic_address, v.detail_address, v.business_type 
+from users u 
+left join authorities a on u.email = a.email
+left join vendor v on u.email = v.email
+order by email, authority
+</select>
+
+<select id="selectEmail" resultType="MemberInfoDto">
+select u.email, u.name, u.phone, u.enable, 
+    a.authority, 
+    v.business_regi_num, v.business_name, v.zipcode, v.basic_address, v.detail_address, v.business_type 
+from users u 
+left join authorities a on u.email = a.email
+left join vendor v on u.email = v.email
+where u.email=#{email}
+</select>
+
+<select id="selectAllEmailList" resultType="MemberInfoDto">
+select u.email, u.name, u.phone, u.enable, 
+    a.authority, 
+    v.business_regi_num, v.business_name, v.zipcode, v.basic_address, v.detail_address, v.business_type 
+from users u 
+left join authorities a on u.email = a.email
+left join vendor v on u.email = v.email
+where u.email like '%' || #{email} || '%'
+</select>
+
+
+<select id="selectAllNameList" resultType="MemberInfoDto">
+select u.email, u.name, u.phone, u.enable, 
+    a.authority, 
+    v.business_regi_num, v.business_name, v.zipcode, v.basic_address, v.detail_address, v.business_type 
+from users u 
+left join authorities a on u.email = a.email
+left join vendor v on u.email = v.email
+where u.name like '%' || #{name} || '%'
+</select>
+
+<!--
+update는  authorities 맵퍼에 있음
+update authorities set email=#{email}, authority=#{authority} where email=#{email}
+-->
+
+
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 사업자 한명의 스케줄이 등록되는 테이블
+not in 0 , =1 정리필요 -->
+<mapper namespace="com.reservation.dao.VendorReservationDao">
+
+<insert id="insert"> 
+insert into vendor_reservation values(#{email}, #{business_regi_num}, #{open_date}, #{times}, #{status_flag})
+</insert>
+
+<select id="selectAllEnableVendorsReservation" resultType="VendorReservationDto">
+select * from vendor_reservation 
+   where email=#{email} 
+      and business_regi_num=#{business_regi_num} 
+      and status_flag not in '0' 
+   order by open_date 
+</select>
+
+<!-- 어떤 사업자의 영업중인 특정 일을 조회 (해당 일의 예약 가능한 시간대를 조회하기 위한 목적) -->
+<select id="selectOneVendorsReservation" parameterType="VendorReservationDto" resultType="VendorReservationDto">
+    SELECT * FROM vendor_reservation 
+    WHERE email = #{email} 
+      AND business_regi_num = #{business_regi_num} 
+      AND open_date = #{open_date} 
+      AND status_flag NOT IN ('0')
+</select>
+
+<!-- 멤버가 특정 벤더 특정달 조회 (멤버가 특정 벤더 조회. 신규 예약의 의도로) -->
+<select id="selectAllOneVendorsYourOneMonthReservations" resultType="VendorReservationDto">
+select * from vendor_reservation
+where email = #{email} 
+	and business_regi_num = #{business_regi_num} 
+    and status_flag = '1'
+    and to_char(open_date, 'YYYY-MM') = #{open_date}
+	order by open_date
+</select>
+
+
+<!-- 특정 벤더 특정달 조회 (벤더가 자기 자신 조회. 등록,수정의 의도로) -->
+<select id="selectAllOneVendorsMyOneMonthReservations" resultType="VendorReservationDto">
+select * from vendor_reservation
+where email = #{email} 
+	and business_regi_num = #{business_regi_num} 
+    and to_char(open_date, 'YYYY-MM') = #{open_date}
+	order by open_date
+</select>
+
+ <!-- (특정벤더 특정일 조회 달력에서)    ↙useremail아님 -->
+<select id="selectOneOneVendorsMyOneDayReservation" resultType="VendorReservationDto">
+select * from vendor_reservation 
+where email = #{email} 
+	and business_regi_num = #{business_regi_num} 
+	and to_char(open_date, 'YYYY-MM-DD') = #{open_date}
+	order by open_date
+</select>
+
+
+<!--=====↓↓↓↓↓↓↓↓↓↓↓↓↓======0813오규원===========-->
+
+<select id="selectAllVendorsReservation" resultType="VendorReservationDto">
+   select * from vendor_reservation 
+   where email=#{email} 
+   and business_regi_num=#{business_regi_num} 
+   order by open_date
+</select>
+
+<update id="closeDay">
+   update vendor_reservation set status_flag='0' 
+   where email=#{email} 
+   and business_regi_num=#{business_regi_num} 
+   and open_date=#{open_date}
+</update> 
+
+<update id="openDay">
+   update vendor_reservation set status_flag='1' 
+   where email=#{email} 
+   and business_regi_num=#{business_regi_num} 
+   and open_date=#{open_date}
+</update> 
+
+<update id="openDateTimesUpdate">
+   update vendor_reservation set times=#{times} 
+   where email=#{email} 
+   and business_regi_num=#{business_regi_num} 
+   and open_date=#{open_date}
+</update> 
+
+<!--=====↑↑↑↑↑↑↑↑↑↑↑↑↑======0813오규원===========-->
+
+</mapper>

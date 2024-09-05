@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org//dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reservation.dao.ReplyDao">
+	
+	<!-- 새 댓글 작성 -->
+	<insert id="boardReplyCreate">
+		insert into reply(rId,bId,rContent,rName,rGroup)
+		values (rId.nextval,#{bId},#{rContent},#{rName},rId.currval)
+	</insert>
+	
+	<!-- 대댓글 작성 -->
+	<insert id="reReplyCreate">
+		insert into reply(rId,bId,rContent,rName,rGroup,rStep,rIndent)
+		values (rId.nextval,#{bId},#{rContent},#{rName},(select rGroup from reply
+		where rId=#{rId}),#{rStep},#{rIndent})
+	</insert>
+	
+	<!-- 댓글 달기 전 부모의 step보다 높은 글들의 step 하나씩 증가시킴 (중간에 댓글을 삽입하기 위함) -->
+	<update id="boardReplyStep">
+		update reply set rStep=rStep+1 where rGroup=#{rGroup} and rStep>#{rStep}
+	</update>
+	
+	<!-- 댓글수정 -->
+	<update id="boardReplyUpdate">
+		update reply set rContent=#{rContent}, rUpdateTime=SYSDATE where rId=#{rId}
+	</update>
+	
+	<!-- 댓글삭제 -->
+	<delete id="boardDelete">
+		update reply set rDelete='Y' where rId=#{rId}
+	</delete>
+	
+	<!-- 부모 댓글 정보 가져오기 -->
+	<select id="readParent" resultType="ReplyDto">
+		select * from reply where rId=#{rId}
+	</select>
+	
+	<!-- 해당 글의 댓글 페이징 처리 -->
+	<select id="replyList" resultType="ReplyDto">
+		<![CDATA[select * from reply where bId=#{bId} and rDelete='N' order by rGroup asc,rStep asc offset
+		(#{pm.page}-1)*#{pm.perPageNum} rows fetch next #{pm.perPageNum} rows only]]>
+	</select>
+	
+	<!-- 해당 글의 댓글 count -->
+	<select id="replyCount" resultType="int">
+		<![CDATA[select count (rId) from reply where bId=#{bId} and rDelete='N']]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.VendorUserDao">
+
+
+
+<select id="selectOneVendorEmailBusinessRegiNum" resultType="VendorUserDto">
+select 
+	u.email, u.password, u.name, u.phone, u.enable, 
+	v.business_regi_num, v.business_name, 
+	v.zipcode, v.basic_address, v.detail_address, v.business_type 
+from users u join vendor v 
+on u.email = v.email 
+where v.email = #{email}
+	and v.business_regi_num = #{business_regi_num}
+</select>
+
+
+</mapper>
+
+
+
+
+<!-- MemberController 
+/member/businessplaceinfo
+m/businessplaceinfo.jsp 
+벤더 정보 세션에 저장할때 씀 주문성립시에 세션에서 가져다 씀 -->
+

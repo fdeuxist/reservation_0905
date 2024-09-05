@@ -1,0 +1,23 @@
+.container {
+	width: 300px;
+	margin: 0 auto;
+}
+
+#time-buttons {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 5px;
+	margin-top: 20px;
+}
+
+.time-slot {
+	padding: 10px;
+	text-align: center;
+	border: 1px solid #ccc;
+	cursor: pointer;
+}
+
+.time-slot.selected {
+	background-color: #4caf50;
+	color: white;
+}
