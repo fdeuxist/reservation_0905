@@ -17,6 +17,7 @@ vendorInfo.detail_address : ${vendorInfo.detail_address } <br>
 vendorInfo.business_type : ${vendorInfo.business_type } <br>
 
 장소 정보<br>
+<img src="${pageContext.request.contextPath}/${mainImg}" alt="메인 이미지" style="max-width: 200px; max-height: 200px;"/>
 
 <c:if test="${not empty placeInfo}">
 	<table border="1">
@@ -84,7 +85,7 @@ ${sessionScope.loginAuthority}<br>
     const vendorInfo = {
         address: '${vendorInfo.basic_address}', // 업체의 기본 주소
         businessName: '${vendorInfo.business_name}', // 업체명
-        imgPath0: '${placeInfo.img_path0}' // 이미지 경로
+        imgPath0: '${mainImg}' // 이미지 경로
     };
 
     console.log('Vendor Info:', vendorInfo); // 객체가 제대로 정의되었는지 확인

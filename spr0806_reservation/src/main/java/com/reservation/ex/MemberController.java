@@ -228,9 +228,10 @@ public class MemberController {
 
         ArrayList<BusinessPlaceImagePathDto> placeImagePathDtos = bPIPService.selectAllMyBusinessPlaceImgPaths(email, business_regi_num);
         for(BusinessPlaceImagePathDto dto : placeImagePathDtos) {
-      
+        	
         System.out.println(dto.getPlace_img_path());
         }
+        model.addAttribute("mainImg",placeImagePathDtos.get(0).getPlace_img_path());
         model.addAttribute("placeImagePathDtos", placeImagePathDtos);
         
         //벤더 정보 세션에 저장 주문성립시에 가져다 씀
