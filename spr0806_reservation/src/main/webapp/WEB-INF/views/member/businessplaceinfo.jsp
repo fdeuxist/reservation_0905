@@ -75,6 +75,7 @@ ${sessionScope.loginName}<br>
 ${sessionScope.loginEmail}<br>
 ${sessionScope.loginAuthority}<br>
 </main>
+<%--
 <!-- =========================================== 만든이: 김하겸 기능:클릭한 업체의 주소를 기반으로 해당 업체정보를 맵에 찍기 ================================================================ -->
 <!-- <script type="text/javascript" -->
 <!-- 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script> -->
@@ -91,6 +92,7 @@ ${sessionScope.loginAuthority}<br>
 <!-- <!-- vendorMap.js은 맵서비스와 관련된 기능들을 전역함수화한 js파일  -->     mapMain은 맵을 실질적으로 화면에 그리는 코드를 전역함수화한것 -->
 <!-- <script src ="../resources/js/mapUtils.js"></script> -->
 <!-- <script -->
+ --%>
 <!-- 	src="../resources/js/vendorMap.js"></script> </main> -->
 <script src="../resources/js/mbusinessplaceinfo.js"></script>
 <%@include file="../include/footer.jsp"%>
