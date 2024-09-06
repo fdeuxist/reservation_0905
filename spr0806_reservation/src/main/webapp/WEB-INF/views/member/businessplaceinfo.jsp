@@ -78,7 +78,7 @@ ${sessionScope.loginAuthority}<br>
 <!-- =========================================== 만든이: 김하겸 기능:클릭한 업체의 주소를 기반으로 해당 업체정보를 맵에 찍기 ================================================================ -->
 <%-- 
  <script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c441b3b3b2ef1a8131497b58ac1bae64&libraries=services,clusterer,drawing"></script>
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script>
 <script>
         const vendorInfo = {
             address: '${vendorInfo.basic_address}', // 업체의 기본 주소
