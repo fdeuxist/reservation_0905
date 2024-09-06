@@ -40,13 +40,13 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 	@Override
 	public int countMainImage(String email, String business_regi_num) throws Exception {
 		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
-		return countMainImage(email, business_regi_num);
+		return dao.countMainImage(email, business_regi_num);
 	}
 	// 0906 남아 있는 첫 번째 이미지를 대표 이미지로 설정 
 	@Override
 	public void setFirstImageAsMain(String email, String business_regi_num) throws Exception {
 		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
-		setFirstImageAsMain(email, business_regi_num);
+		dao.setFirstImageAsMain(email, business_regi_num);
 	}
 	
 	
