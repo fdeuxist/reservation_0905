@@ -37,7 +37,7 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 				<th>Image ${status.index + 1}</th>
 				<td>
 					<img src="${pageContext.request.contextPath}/${dto.place_img_path}" alt="Image ${status.index + 1}" style="max-width: 200px; max-height: 200px;"/>
-					style="max-width: 200px; max-height: 200px;" />
+				
 				</td>
 			</tr>
 		</c:forEach>
