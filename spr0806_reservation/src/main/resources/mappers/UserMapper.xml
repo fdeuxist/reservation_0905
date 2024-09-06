@@ -30,6 +30,10 @@ password=#{password}, name=#{name}, phone=#{phone}, enable=#{enable} where email
 <update id="updateEnable">
 update users set enable=#{enable} where email=#{email}
 </update>
+<update id="mUpdate">
+update users set 
+name=#{name}, phone=#{phone} where email=#{email}
+</update>
 
 <delete id="delete">
 delete users where email=#{email}

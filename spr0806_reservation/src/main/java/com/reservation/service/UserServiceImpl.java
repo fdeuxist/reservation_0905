@@ -66,6 +66,13 @@ public class UserServiceImpl implements IUserService {
 		return dao.selectPhone(phone);
 	}
 
+	@Override
+	public void mUpdate(UserDto dto) throws Exception {
+		UserDao dao=sqlSession.getMapper(UserDao.class);
+		 dao.mUpdate(dto);
+		
+	}
+
 
 
 }

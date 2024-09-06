@@ -21,5 +21,6 @@ public interface UserDao {
 	public void updateEnable(@Param("enable")Integer enable, @Param("email")String email) throws Exception;
 	
 	public void delete(String email) throws Exception;
+	public void mUpdate(UserDto dto) throws Exception;
 	
 }

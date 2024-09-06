@@ -15,6 +15,7 @@ public interface IUserService {
 	public UserDto selectPhone(String phone) throws Exception;
 	
 	public void update(UserDto dto) throws Exception;
+	public void mUpdate(UserDto dto) throws Exception;
 
 	public void updateEnable(Integer enable, String email) throws Exception;
 	
