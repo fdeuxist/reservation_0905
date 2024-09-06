@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -43,6 +44,9 @@ import com.reservation.service.IVendorUserService;
 @Controller
 public class MemberController {
 
+	@Autowired
+	private ServletContext servletContext;
+	
 	@Autowired
     PasswordEncoder passwordEncoder;
 	
@@ -223,6 +227,10 @@ public class MemberController {
         model.addAttribute("placeInfo", placeInfo);
 
         ArrayList<BusinessPlaceImagePathDto> placeImagePathDtos = bPIPService.selectAllMyBusinessPlaceImgPaths(email, business_regi_num);
+        for(BusinessPlaceImagePathDto dto : placeImagePathDtos) {
+      
+        System.out.println(dto.getPlace_img_path());
+        }
         model.addAttribute("placeImagePathDtos", placeImagePathDtos);
         
         //벤더 정보 세션에 저장 주문성립시에 가져다 씀
