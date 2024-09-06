@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
 import com.reservation.dto.ServiceItemsDto;
 import com.reservation.dto.VendorReservationDto;
+import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IBusinessPlaceInfoService;
 import com.reservation.service.IServiceItemsService;
 import com.reservation.service.IUserService;
@@ -47,7 +49,9 @@ public class VendorController {
 
 	@Autowired
 	private IBusinessPlaceInfoService bpService;
-
+	
+	@Autowired
+	private IBusinessPlaceImagePathService bpiService;
 	@Autowired
 	private IServiceItemsService sIService;
 
@@ -147,7 +151,6 @@ public class VendorController {
 			UUID uuid = UUID.randomUUID();
 			String uniqueName = uuid.toString().split("-")[0];
 			String newFileName = uniqueName + fileExtension;
-
 			Map<String, String> map = new HashMap<>();
 			map.put("originFile", originFile);
 			map.put("newFileName", newFileName);
@@ -158,6 +161,10 @@ public class VendorController {
 			for (int i = 0; i < multiFileList.size(); i++) {
 				File uploadFile = new File(uploadDir + File.separator + fileList.get(i).get("newFileName"));
 				multiFileList.get(i).transferTo(uploadFile);
+				String imgPath = "/resources/imgs/" + fileList.get(i).get("newFileName");
+				BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email,business_regi_num,imgPath);
+				bpiService.insertMyBusinessPlaceImagePath(imgDto);
+				
 			}
 			System.out.println("이미지 업로드 성공");
 		} catch (IllegalStateException e) {
