@@ -1,0 +1,214 @@
+/* 전체 바디 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff8e1; /* 연한 노랑색 배경 */
+}
+
+/* 헤더 스타일 */
+header {
+    background-color: #ff9800; /* 주황색 */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+#search-form {
+    margin-top: 10px;
+}
+
+#search-form input[type="text"] {
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+}
+
+#search-form button {
+    padding: 5px 10px;
+    background-color: #ff5722; /* 어두운 주황색 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#user-menu {
+    margin-top: 10px;
+}
+
+#user-menu a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+/* 네비게이션 바 스타일 */
+nav {
+    background-color: #ff9800; /* 주황색 */
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* 메인 콘텐츠 영역 스타일 */
+main {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#questions-list {
+    flex: 3;
+    margin-right: 20px;
+}
+
+#questions-list h2 {
+    color: #ff9800; /* 주황색 */
+}
+
+#questions-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+#questions-list ul li {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+#questions-list ul li a {
+    color: #ff5722; /* 어두운 주황색 */
+    text-decoration: none;
+    font-size: 18px;
+}
+
+#questions-list ul li a:hover {
+    text-decoration: underline;
+}
+
+#ask-question {
+    flex: 1;
+    background-color: #fffde7; /* 연한 노랑색 배경 */
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#ask-question h2 {
+    color: #ff9800; /* 주황색 */
+}
+
+#ask-question form {
+    display: flex;
+    flex-direction: column;
+}
+
+#ask-question form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#ask-question form input[type="text"],
+#ask-question form textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+#ask-question form button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ff5722; /* 어두운 주황색 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#ask-question form button:hover {
+    background-color: #e64a19; /* 더 어두운 주황색 */
+}
+
+/* 사이드바 스타일 */
+aside {
+    flex: 1;
+    max-width: 300px;
+}
+
+aside section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fffde7; /* 연한 노랑색 배경 */
+    border-radius: 8px;
+}
+
+aside h2 {
+    color: #ff9800; /* 주황색 */
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside ul li {
+    margin-bottom: 10px;
+}
+
+aside ul li a {
+    color: #ff5722; /* 어두운 주황색 */
+    text-decoration: none;
+}
+
+aside ul li a:hover {
+    text-decoration: underline;
+}
+
+/* 풋터 스타일 */
+footer {
+    background-color: #ff9800; /* 주황색 */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
