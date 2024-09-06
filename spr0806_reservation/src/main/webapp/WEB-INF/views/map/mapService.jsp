@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/ex/resources/css/mapServiceStyle.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c441b3b3b2ef1a8131497b58ac1bae64&libraries=services,clusterer,drawing"></script>
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script>
 <script src="../resources/js/mapUtils.js"></script>
 <script src="../resources/js/mapMain.js"></script>
 </head>
