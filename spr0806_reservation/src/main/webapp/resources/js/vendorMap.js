@@ -8,6 +8,6 @@ kakao.maps.load(function() {
 
     // Add marker with info window for vendorInfo address on page load
     if (vendorInfo.address && geocoder) {
-        addMarkerFromAddress(map, geocoder, vendorInfo.address, vendorInfo.businessName, vendorInfo.imgPath0, markers);
+        addMarkerFromAddress(map, geocoder, vendorInfo.address, vendorInfo.businessName, vendorInfo.mainImg, markers);
     }
 });
