@@ -137,7 +137,8 @@ drop table business_place_image_path;
 create table business_place_image_path (
     email varchar2(255) not null,   --사업자이메일 ┐
     business_regi_num varchar2(20), --사업자번호　 ┴ 복합키
-    place_img_path  varchar2(255)
+    place_img_path  varchar2(255),
+    is_main char(1) default 'N'         -- 대표 이미지 여부 (Y/N)
     );
     
 --=================================================================================================================
@@ -194,9 +195,8 @@ insert into service_items values(item_id.nextval, 'vendor5', '55555', '5노출금지
 insert into service_items values(item_id.nextval, 'vendor5', '55555', '5병원메뉴제목2', '5병원메뉴설명2', 1, 20000, '1' );
 insert into service_items values(item_id.nextval, 'vendor5', '55555', '5병원메뉴제목3', '5병원메뉴설명3', 2, 30000, '1' );
 insert into service_items values(item_id.nextval, 'vendor5', '55555', '5병원메뉴제목4', '5병원메뉴설명4', 3, 40000, '1' );
-insert into business_place_image_path values('vendor5','55555','imgpath111');
-insert into business_place_image_path values('vendor5','55555','imgpath222');
-insert into business_place_image_path values('vendor5','55555','imgpath333');
+insert into business_place_image_path values('vendor5','55555','imgpath111','N');
+insert into business_place_image_path values('vendor5','55555','imgpath222','N');
 select * from business_place_image_path;
 select * from business_place_info;
 select * from service_items;
