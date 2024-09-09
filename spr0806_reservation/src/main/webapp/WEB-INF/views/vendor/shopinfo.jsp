@@ -104,7 +104,7 @@
         </div>
         <div class="form-group">
             <label for="multi_files">부수 이미지들:</label>
-            <input type="file" id="multi_files" name="multiFiles" multiple/>
+            <input type="file" id="multi_files" name="multiFile" multiple/>
         </div>
         <div class="form-group">
             <input type="submit" value="저장"/>
