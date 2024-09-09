@@ -17,9 +17,9 @@ vendorInfo.detail_address : ${vendorInfo.detail_address } <br>
 vendorInfo.business_type : ${vendorInfo.business_type } <br>
 
 장소 정보<br>
-<img src="${pageContext.request.contextPath}/${mainImg}" alt="메인 이미지" style="max-width: 200px; max-height: 200px;"/>
-
-<c:if test="${not empty placeInfo}">
+<img src="${pageContext.request.contextPath}/${mainImg}" alt="메인 이미지"
+	style="max-width: 200px; max-height: 200px;" /> <c:if
+	test="${not empty placeInfo}">
 	<table border="1">
 		<tr>
 			<th>Email</th>
@@ -33,20 +33,29 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 			<th>Place Info</th>
 			<td>${placeInfo.place_info}</td>
 		</tr>
-		<c:forEach var="dto" items="${placeImagePathDtos}" varStatus="status">
+		<!-- 이미지 리스트가 비어있지 않은 경우 -->
+		<c:if test="${not empty placeImagePathDtos}">
+			<c:forEach var="dto" items="${placeImagePathDtos}" varStatus="status">
+				<tr>
+					<th>Image ${status.index + 1}</th>
+					<td><img
+						src="${pageContext.request.contextPath}/${dto.place_img_path}"
+						alt="Image ${status.index + 1}"
+						style="max-width: 200px; max-height: 200px;" /></td>
+				</tr>
+			</c:forEach>
+			<!-- 이미지 리스트가 비어있는 경우 -->
+		</c:if>
+		<c:if test="${empty placeImagePathDtos}">
 			<tr>
-				<th>Image ${status.index + 1}</th>
-				<td>
-					<img src="${pageContext.request.contextPath}/${dto.place_img_path}" alt="Image ${status.index + 1}" style="max-width: 200px; max-height: 200px;"/>
-				
-				</td>
+				<td colspan="2">이미지가 없습니다</td>
 			</tr>
-		</c:forEach>
+		</c:if>
 	</table>
-	<!--  안씀 
+</c:if> <!--  안씀 
         <a href="<c:url value='/member/scheduleselect?email=${placeInfo.email}&business_regi_num=${placeInfo.business_regi_num}'/>">예약하기</a>
          -->
-</c:if>
+
 <div class="serviceItem-container">
 	<c:forEach var="serviceItem" items="${serviceItems }"
 		varStatus="status">
@@ -80,19 +89,17 @@ ${sessionScope.loginName}<br>
 ${sessionScope.loginEmail}<br>
 ${sessionScope.loginAuthority}<br>
 </main>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script>
 <script>
-    const vendorInfo = {
-        address: '${vendorInfo.basic_address}', // 업체의 기본 주소
-        businessName: '${vendorInfo.business_name}', // 업체명
-        imgPath0: '${mainImg}' // 이미지 경로
-    };
-
-    console.log('Vendor Info:', vendorInfo); // 객체가 제대로 정의되었는지 확인
+	const vendorInfo = {
+		address : '${vendorInfo.basic_address}', // 업체의 기본 주소
+		businessName : '${vendorInfo.business_name}', // 업체명
+		mainImg : '${pageContext.request.contextPath}' + '/' + '${mainImg}' // 이미지 경로
+	};
+	console.log('Vendor Info:', vendorInfo); // 객체가 제대로 정의되었는지 확인 -->
 </script>
 <div id="map" style="width: 100%; height: 500px;"></div>
-<!-- vendorMap.js은 맵서비스와 관련된 기능들을 전역함수화한 js파일  -->
-<!-- mapMain은 맵을 실질적으로 화면에 그리는 코드를 전역함수화한것 -->
 <script src="../resources/js/mapUtils.js"></script>
 <script src="../resources/js/vendorMap.js"></script>
 <script src="../resources/js/mbusinessplaceinfo.js"></script>
