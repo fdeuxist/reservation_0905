@@ -16,11 +16,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 0906 특정벤더의 특정파일을 메인이미지로 변경 -->
 <update id="setMainImage">
-    update business_place_image_path
-    set is_main = 'Y'
-    where email = #{email}
-    and business_regi_num = #{business_regi_num}
-    and place_img_path = #{place_img_path};
+  UPDATE business_place_image_path
+    SET is_main = 'Y'
+    WHERE email = #{email}
+    AND business_regi_num = #{business_regi_num}
+    AND place_img_path = #{place_img_path};
 </update>
 
 <!-- 0906 특정 벤더 특정 이미지 삭제 -->
@@ -32,6 +32,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 0906 특정 벤더에게 대표 이미지가 있는지 확인 result type int -->
 <select id="countMainImage" resultType="int">
     select count(*)
+    from business_place_image_path
+    where email = #{email}
+    and business_regi_num = #{business_regi_num}
+    and is_main = 'Y';
+</select>
+
+<select id="selectMainImage" resultType="com.reservation.dto.BusinessPlaceImagePathDto">
+    select * 
     from business_place_image_path
     where email = #{email}
     and business_regi_num = #{business_regi_num}

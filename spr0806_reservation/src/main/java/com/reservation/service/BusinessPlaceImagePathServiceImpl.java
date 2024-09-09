@@ -49,6 +49,14 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 		dao.setFirstImageAsMain(email, business_regi_num);
 	}
 	
+	@Override
+	public BusinessPlaceImagePathDto selectMainImage(String email, String business_regi_num) throws Exception {
+		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
+		return dao.selectMainImage(email, business_regi_num);
+		
+	}
+
+	
 	
 	
 	
@@ -67,6 +75,7 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
 		dao.insertMyBusinessPlaceImagePath(dto);
 	}
+
 
 
 	

@@ -136,49 +136,79 @@ public class VendorController {
 
 	@RequestMapping(value = "/vendor/shopinfo", method = RequestMethod.POST)
 	public String shopinfoDB(BusinessPlaceInfoDto dto, HttpSession session,
-			@RequestParam("multiFile") List<MultipartFile> multiFileList) throws Exception {
-		System.out.println("VendorController - /vendor/shopinfo(post)");
-		String email = (String) session.getAttribute("loginEmail");
-		String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
-		dto.setEmail(email);
-		dto.setBusiness_regi_num(business_regi_num);
-		List<Map<String, String>> fileList = new ArrayList<>();
-		String uploadDir = servletContext.getRealPath("/resources/imgs");
-		System.out.println(uploadDir);
-		for (int i = 0; i < multiFileList.size(); i++) {
-			String originFile = multiFileList.get(i).getOriginalFilename();
-			String fileExtension = originFile.substring(originFile.lastIndexOf("."));
-			UUID uuid = UUID.randomUUID();
-			String uniqueName = uuid.toString().split("-")[0];
-			String newFileName = uniqueName + fileExtension;
-			Map<String, String> map = new HashMap<>();
-			map.put("originFile", originFile);
-			map.put("newFileName", newFileName);
-			fileList.add(map);
-		}
+	        @RequestParam("multiFile") List<MultipartFile> multiFileList,
+	        @RequestParam("mainImage") MultipartFile mainImage) throws Exception {
+	    System.out.println("VendorController - /vendor/shopinfo(post)");
+	    String email = (String) session.getAttribute("loginEmail");
+	    String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
+	    dto.setEmail(email);
+	    dto.setBusiness_regi_num(business_regi_num);
+	    List<Map<String, String>> fileList = new ArrayList<>();
+	    String uploadDir = servletContext.getRealPath("/resources/imgs");
+	    System.out.println(uploadDir);
+	    
+	    // Ensure directory exists
+	    File directory = new File(uploadDir);
+	    if (!directory.exists()) {
+	        directory.mkdirs(); // Create directory if it does not exist
+	    }
 
-		try {
-			for (int i = 0; i < multiFileList.size(); i++) {
-				File uploadFile = new File(uploadDir + File.separator + fileList.get(i).get("newFileName"));
-				multiFileList.get(i).transferTo(uploadFile);
-				String imgPath = "/resources/imgs/" + fileList.get(i).get("newFileName");
-				BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email,business_regi_num,imgPath);
-				bpiService.insertMyBusinessPlaceImagePath(imgDto);
-				
-			}
-			System.out.println("이미지 업로드 성공");
-		} catch (IllegalStateException e) {
-			System.out.println("업로드 실패");
-			for (int i = 0; i < multiFileList.size(); i++) {
-				new File(uploadDir + File.separator + fileList.get(i).get("newFileName")).delete();
-			}
-			e.printStackTrace();
-		}
-		System.out.println(dto);
-		bpService.updateMyBusinessPlaceInfo(dto);
-		// bpService.insertMyBusinessPlaceInfo(dto); //insert 말고 무조건 update로
-		return "redirect:/vendor/shopinfo"; // 성공 후 이동할 페이지
+	    String mainOriginImg = mainImage.getOriginalFilename();
+	    String originFileExtension = mainOriginImg.substring(mainOriginImg.lastIndexOf("."));
+	    UUID originUUID = UUID.randomUUID();
+	    String uniqueOriginName = originUUID.toString().split("-")[0];
+	    String newOriginName = uniqueOriginName + originFileExtension;
+
+	    for (int i = 0; i < multiFileList.size(); i++) {
+	        String originFile = multiFileList.get(i).getOriginalFilename();
+	        String fileExtension = originFile.substring(originFile.lastIndexOf("."));
+	        UUID uuid = UUID.randomUUID();
+	        String uniqueName = uuid.toString().split("-")[0];
+	        String newFileName = uniqueName + fileExtension;
+	        Map<String, String> map = new HashMap<>();
+	        map.put("originFile", originFile);
+	        map.put("newFileName", newFileName);
+	        fileList.add(map);
+	    }
+
+	    try {
+	        for (int i = 0; i < multiFileList.size(); i++) {
+	            File uploadFile = new File(uploadDir + File.separator + fileList.get(i).get("newFileName"));
+	            System.out.println("Uploading file to: " + uploadFile.getAbsolutePath());
+	            multiFileList.get(i).transferTo(uploadFile);
+	            String imgPath = "/resources/imgs/" + fileList.get(i).get("newFileName");
+	            BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, imgPath, "N");
+	            bpiService.insertMyBusinessPlaceImagePath(imgDto);
+	        }
+
+	        File uploadMain = new File(uploadDir + File.separator + newOriginName);
+	        System.out.println("Main image path: " + uploadMain.getAbsolutePath());
+	        mainImage.transferTo(uploadMain); // Ensure the main image is also saved
+	        String mainImgPath = "/resources/imgs/" + newOriginName;
+	        BusinessPlaceImagePathDto mainDto = new BusinessPlaceImagePathDto(email, business_regi_num, mainImgPath, "Y");
+	        bpiService.insertMyBusinessPlaceImagePath(mainDto);
+	        System.out.println("Setting main image with email: " + mainDto.getEmail() +
+	                           ", business_regi_num: " + mainDto.getBusiness_regi_num() +
+	                           ", place_img_path: " + mainDto.getPlace_img_path());
+	        bpiService.setMainImage(mainDto.getEmail(), mainDto.getBusiness_regi_num(), mainDto.getPlace_img_path());
+
+	        System.out.println("이미지 업로드 성공");
+	    } catch (IllegalStateException e) {
+	        System.out.println("업로드 실패");
+	        for (int i = 0; i < multiFileList.size(); i++) {
+	            new File(uploadDir + File.separator + fileList.get(i).get("newFileName")).delete();
+	        }
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        System.out.println("File upload failed due to IO exception");
+	        e.printStackTrace();
+	    }
+
+	    System.out.println(dto);
+	    bpService.updateMyBusinessPlaceInfo(dto);
+	    return "redirect:/vendor/shopinfo";
 	}
+	
 
 	// vendor 로그인을 하면 vendor 시작페이지로 가면서
 	// 세션에 이름과 사업자번호를 등록해두게 된다
