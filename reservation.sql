@@ -82,10 +82,10 @@ create table user_reservation (
     zipcode varchar2(10),                       --예약 당시 이용 예정 장소 우편번호(vendor)
     basic_address varchar2(255),                --예약 당시 이용 예정 장소 기본주소(vendor)
     detail_address varchar2(255),               --예약 당시 이용 예정 장소 상세주소(vendor)
-    reservation_date date,                      --예약 발생 년월일
-    reservation_use_date date,                  --이용 예정 년월일
-    times varchar2(50),                         --이용 예정 시간 48개단위
-    times_hhmm varchar2(20),                    --이용 예정 시간 HH:mm   --0829추가
+    reservation_date date,                      --예약 발생 년월일 (reservation_number 의 YYYYMMDD부분을 YYYY-MM-DD 형식으로로 저장)
+    reservation_use_date date,                  --이용 예정 년월일 (예약이기때문에 reservation_date 보다 며칠정도 이후인 임의의 날, reservation_date보다 앞선날일 수 없음)
+    times varchar2(50),                         --이용 예정 시간 48개단위 (1과47개의0이면 00:00, 47개의 0과 48번째의1이면 23:30, 1마다 30분차이)
+    times_hhmm varchar2(20),                    --이용 예정 시간 HH:mm (00:00 00:30 01:00 01:30 02:00 02:30 이런식으로 30분단위 위의 times와 연계)  --0829추가
     total_service_name varchar2(4000),          --예약 당시 이용 예정 서비스 이름들(service_items)
     total_service_price number,                 --예약 당시 이용 예정 서비스 가격 총 합 (service_items)
     total_required_time number,                 --예약 당시 이용 예정 제공(필요)시간 총 합 (service_items)
