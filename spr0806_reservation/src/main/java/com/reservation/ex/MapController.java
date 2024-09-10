@@ -68,28 +68,22 @@ public class MapController {
 	    for (VendorDto vendor : vendorList) {
 	        // Ensure this method returns a valid BusinessPlaceImagePathDto object
 	        BusinessPlaceImagePathDto mainImg = biService.selectMainImage(vendor.getEmail(), vendor.getBusiness_regi_num());
-	        if (mainImg == null) {
-	            System.out.println("BusinessPlaceImagePathDto is null for vendor: " + vendor.getBusiness_name());
-	        }
 	        mainImageList.add(mainImg);
+	        System.out.println(mainImg);
 	    }
 
 	    List<Map<String, String>> result = new ArrayList<>();
+	    String defaultImageUrl = "../resources/imgs/noimage.jpg"; // Define the default image path
 
 	    for (int i = 0; i < vendorList.size(); i++) {
 	        VendorDto vendor = vendorList.get(i);
 	        BusinessPlaceImagePathDto image = mainImageList.get(i);
 
-	        // Null check for image and vendor
-	        if (image == null) {
-	            System.out.println("BusinessPlaceImagePathDto is null for vendor: " + vendor.getBusiness_name());
-	        }
-
 	        Map<String, String> markerData = new HashMap<>();
 	        markerData.put("business_name", vendor.getBusiness_name());
 	        markerData.put("basic_address", vendor.getBasic_address());
-	        markerData.put("place_img_path", image != null ? image.getPlace_img_path() : "No image available");
-
+	        markerData.put("place_img_path", (image != null && image.getPlace_img_path() != null) ? image.getPlace_img_path() : defaultImageUrl);
+	        
 	        result.add(markerData);
 	    }
 

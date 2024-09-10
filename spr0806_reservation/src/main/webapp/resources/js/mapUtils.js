@@ -1,4 +1,3 @@
-// Initialize the map
 function initializeMap(containerId, centerCoords, zoomLevel) {
     const mapContainer = document.getElementById(containerId);
     const mapOption = {
@@ -8,7 +7,6 @@ function initializeMap(containerId, centerCoords, zoomLevel) {
     return new kakao.maps.Map(mapContainer, mapOption);
 }
 
-// Create a Geocoder instance
 function createGeocoder() {
     if (kakao && kakao.maps && kakao.maps.services) {
         return new kakao.maps.services.Geocoder();
@@ -18,7 +16,6 @@ function createGeocoder() {
     }
 }
 
-// Create a marker on the map
 function createMarker(map, position) {
     return new kakao.maps.Marker({
         position: new kakao.maps.LatLng(position.lat, position.lng),
@@ -26,7 +23,6 @@ function createMarker(map, position) {
     });
 }
 
-// Create an InfoWindow with the provided content
 function createInfoWindow(content) {
     return new kakao.maps.InfoWindow({
         content: content,
@@ -34,7 +30,6 @@ function createInfoWindow(content) {
     });
 }
 
-// Add a marker from an address
 function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
     if (geocoder) {
         geocoder.addressSearch(address, function(result, status) {
@@ -43,17 +38,14 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
                 const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
                 markers.push(marker);
 
-                const safeName = encodeHTML(name);
-                const safeImageUrl = encodeHTML(imageUrl);
-
                 const infowindowContent = `
                     <div style="padding:5px; font-size:12px;">
                         <div style="margin-bottom:5px;">
-                            <strong>${safeName}</strong>
+                            <strong>${encodeHTML(name)}</strong>
                         </div>
                         <hr style="border:1px solid #ddd; margin:5px 0;">
                         <div>
-                            <img src="${safeImageUrl}" style="width:100px; height:auto; display:block;">
+                            <img src="${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
                         </div>
                     </div>
                 `;
@@ -77,7 +69,6 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
     }
 }
 
-// Clear all markers from the map
 function clearMarkers(markers) {
     markers.forEach(function(marker) {
         marker.setMap(null);
@@ -85,7 +76,6 @@ function clearMarkers(markers) {
     markers.length = 0; // Clear the array
 }
 
-// Encode HTML to prevent XSS
 function encodeHTML(str) {
     return (str || '').replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -94,7 +84,6 @@ function encodeHTML(str) {
         .replace(/'/g, "&#039;");
 }
 
-// AJAX search functionality
 function searchMarkers(query, successCallback, errorCallback) {
     $.ajax({
         url: '/ex/searchMarkers',
@@ -102,6 +91,9 @@ function searchMarkers(query, successCallback, errorCallback) {
         data: { query: query },
         dataType: 'json',
         success: successCallback,
-        error: errorCallback
+        error: function(xhr, status, error) {
+            console.error('Error fetching markers:', status, error);
+            if (errorCallback) errorCallback(xhr, status, error);
+        }
     });
 }
