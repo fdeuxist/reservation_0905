@@ -23,15 +23,15 @@ document.addEventListener('DOMContentLoaded', function() {
                             // Ensure the image URL is valid and if not, use a default image
                             const imageUrl = markerData.place_img_path !== 'No image available'
                                 ? markerData.place_img_path
-                                : '../resources/imgs/noimage.jpg'; // Default image URL
+                                : '/resources/imgs/noimage.jpg'; // Default image URL
 
                             addMarkerFromAddress(map, geocoder, markerData.basic_address, markerData.business_name, imageUrl, markers);
 
                             searchResults.innerHTML += `
                                 <li class="search-result-item">
                                     <strong>${encodeHTML(markerData.business_name)}</strong><br>
-                                    ${encodeHTML(markerData.basic_address)}<br>
-                                    <img src="${encodeHTML(imageUrl)}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
+                                    ${encodeHTML(markerData.basic_address)}<br> 
+                                    <img src="..${encodeHTML(imageUrl)}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
                                     <button class="find-button" data-address="${encodeHTML(markerData.basic_address)}" data-name="${encodeHTML(markerData.business_name)}" data-image-url="${encodeHTML(imageUrl)}">위치보기</button>
                                 </li>
                             `;
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <hr style="border:1px solid #ddd; margin:5px 0;">
                                 <div>
-                                    <img src="/ex${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                                    <img src="..${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
                                 </div>
                             </div>
                         `;
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <hr style="border:1px solid #ddd; margin:5px 0;">
                                 <div>
-                                    <img src="${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                                    <img src="..${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
                                 </div>
                             </div>
                         `;
