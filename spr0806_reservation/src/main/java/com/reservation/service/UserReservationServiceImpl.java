@@ -1,6 +1,8 @@
 package com.reservation.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,52 @@ public class UserReservationServiceImpl implements IUserReservationService {
 
 	
 
+
+	
+	
+	//대시보드 관련 기능 만든이:오규원 추가일자:0905
+
+	@Override
+	public int countEmail() throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countEmail();
+	}
+
+	@Override
+	public int countVendorName(String vendor_name) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countVendorName(vendor_name);
+	}
+
+	@Override
+	public int countBasicAddress(String basic_address) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countBasicAddress(basic_address);
+	}
+
+	@Override
+	public int countDetailAddress(String detail_address) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countDetailAddress(detail_address);
+	}
+
+	@Override
+	public int countServiceName(String service_name) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countServiceName(service_name);
+	}
+
+	@Override
+	public List<Map<String,Object>> countTimeshhmm() throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countTimeshhmm();
+	}
+
+	@Override
+	public List<Map<String,Object>> sumServicePrice() throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.sumServicePrice();
+	}
 
 
 }
