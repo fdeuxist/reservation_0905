@@ -57,28 +57,43 @@ public class MapController {
 	// db에 업체관련 정보에 대한 접속 필요
 	@GetMapping("/searchMarkers")
 	@ResponseBody
-	public VendorAndImageListDto getMarkers(@RequestParam(value = "query", required = false) String query) throws Exception {
+	public List<Map<String, String>> getMarkers(@RequestParam(value = "query", required = false) String query) throws Exception {
 	    if (query != null) {
-	        query = query.trim(); // 앞뒤 공백 제거
+	        query = query.trim(); // Remove leading and trailing spaces
 	    }
 
-	    ArrayList<VendorDto> vendorList = service.selectPlace(query);
-	    ArrayList<BusinessPlaceImagePathDto> mainImageList = new ArrayList<>();
-
-	    System.out.println("검색어 전달받음: " + query);
+	    List<VendorDto> vendorList = service.selectPlace(query);
+	    List<BusinessPlaceImagePathDto> mainImageList = new ArrayList<>();
 
 	    for (VendorDto vendor : vendorList) {
-	        System.out.println(vendor.getBusiness_regi_num());
-	        System.out.println(vendor.getBusiness_name());
-	        System.out.println(vendor.getBasic_address());
+	        // Ensure this method returns a valid BusinessPlaceImagePathDto object
 	        BusinessPlaceImagePathDto mainImg = biService.selectMainImage(vendor.getEmail(), vendor.getBusiness_regi_num());
+	        if (mainImg == null) {
+	            System.out.println("BusinessPlaceImagePathDto is null for vendor: " + vendor.getBusiness_name());
+	        }
 	        mainImageList.add(mainImg);
 	    }
 
-	    System.out.println("Type of markerList: " + mainImageList.getClass().getName());
+	    List<Map<String, String>> result = new ArrayList<>();
 
-	    // VendorAndImageListDto 객체 생성 및 반환
-	    return new VendorAndImageListDto(vendorList, mainImageList);
+	    for (int i = 0; i < vendorList.size(); i++) {
+	        VendorDto vendor = vendorList.get(i);
+	        BusinessPlaceImagePathDto image = mainImageList.get(i);
+
+	        // Null check for image and vendor
+	        if (image == null) {
+	            System.out.println("BusinessPlaceImagePathDto is null for vendor: " + vendor.getBusiness_name());
+	        }
+
+	        Map<String, String> markerData = new HashMap<>();
+	        markerData.put("business_name", vendor.getBusiness_name());
+	        markerData.put("basic_address", vendor.getBasic_address());
+	        markerData.put("place_img_path", image != null ? image.getPlace_img_path() : "No image available");
+
+	        result.add(markerData);
+	    }
+
+	    return result;
 	}
 
 	

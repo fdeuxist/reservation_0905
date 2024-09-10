@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         searchResults.innerHTML = ''; // Clear previous results
 
                         data.forEach(function(markerData) {
-                            addMarkerFromAddress(map, geocoder, markerData.basic_address, markerData.business_name, markerData.place_image_url, markers);
+                            addMarkerFromAddress(map, geocoder, markerData.basic_address, markerData.business_name, markerData.place_img_path, markers);
 
                             searchResults.innerHTML += `
                                 <li class="search-result-item">

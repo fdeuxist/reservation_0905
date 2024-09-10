@@ -234,7 +234,6 @@ public class MemberController {
                 System.out.println(dto.getPlace_img_path());
             }
             
-            // 첫 번째 이미지 경로를 메인 이미지로 설정
             model.addAttribute("mainImg", mainImg.getPlace_img_path());
             // 리스트를 모델에 추가
             model.addAttribute("placeImagePathDtos", placeImagePathDtos);
