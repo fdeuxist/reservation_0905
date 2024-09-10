@@ -95,7 +95,7 @@ ${sessionScope.loginAuthority}<br>
 	const vendorInfo = {
 		address : '${vendorInfo.basic_address}', // 업체의 기본 주소
 		businessName : '${vendorInfo.business_name}', // 업체명
-		mainImg : '${pageContext.request.contextPath}' + '/' + '${mainImg}' // 이미지 경로
+		mainImg : '${pageContext.request.contextPath}' + '${mainImg}' // 이미지 경로
 	};
 	console.log('Vendor Info:', vendorInfo); // 객체가 제대로 정의되었는지 확인 -->
 </script>

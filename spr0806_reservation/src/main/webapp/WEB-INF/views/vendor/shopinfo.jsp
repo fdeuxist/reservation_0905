@@ -68,7 +68,7 @@
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         margin-top: 20px;
-        text-align: center;
+                text-align: center;
     }
 
     .info-box h3 {
@@ -99,8 +99,12 @@
             <form:textarea path="place_info" id="place_info" rows="5" cols="40"></form:textarea>
         </div>
         <div class="form-group">
-            <label for="image_files">이미지 파일들:</label>
-            <input type="file" id="multiFile" name="multiFile" multiple/>
+            <label for="main_image">대표 이미지:</label>
+            <input type="file" id="main_image" name="mainImage"/>
+        </div>
+        <div class="form-group">
+            <label for="multi_files">부수 이미지들:</label>
+            <input type="file" id="multi_files" name="multiFile" multiple/>
         </div>
         <div class="form-group">
             <input type="submit" value="저장"/>
@@ -117,3 +121,4 @@
 </main>
 
 <%@include file="../include/footer.jsp"%>
+        

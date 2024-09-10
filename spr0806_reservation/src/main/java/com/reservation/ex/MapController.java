@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.PlaceDetailDto;
+import com.reservation.dto.VendorAndImageListDto;
 import com.reservation.dto.VendorDto;
+import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IMapService;
 
 // 만든이 김하겸
@@ -32,7 +35,9 @@ public class MapController {
 
 	@Autowired
 	private IMapService service;
-
+	
+	@Autowired
+	private IBusinessPlaceImagePathService biService;
 	@RequestMapping(value = "/map/mapService", method = RequestMethod.GET)
 	public void mapService() {
 
@@ -52,25 +57,39 @@ public class MapController {
 	// db에 업체관련 정보에 대한 접속 필요
 	@GetMapping("/searchMarkers")
 	@ResponseBody
-	public ArrayList<VendorDto> getMarkers(@RequestParam(value = "query", required = false) String query)
-			throws Exception {
-		if (query != null) {
-			query = query.trim(); // 앞뒤 공백 제거
-		}
-		ArrayList<VendorDto> markerList = service.selectPlace(query);
-		System.out.println("검색어 전달받음: " + query);
+	public List<Map<String, String>> getMarkers(@RequestParam(value = "query", required = false) String query) throws Exception {
+	    if (query != null) {
+	        query = query.trim(); // Remove leading and trailing spaces
+	    }
 
-		for (VendorDto marker : markerList) {
-			System.out.println(marker.getBusiness_regi_num());
-			System.out.println(marker.getBusiness_name());
-			System.out.println(marker.getBasic_address());
-		}
+	    List<VendorDto> vendorList = service.selectPlace(query);
+	    List<BusinessPlaceImagePathDto> mainImageList = new ArrayList<>();
 
-		System.out.println("Type of markerList: " + markerList.getClass().getName());
-		System.out.println("Marker List from service: " + markerList);
+	    for (VendorDto vendor : vendorList) {
+	        // Ensure this method returns a valid BusinessPlaceImagePathDto object
+	        BusinessPlaceImagePathDto mainImg = biService.selectMainImage(vendor.getEmail(), vendor.getBusiness_regi_num());
+	        mainImageList.add(mainImg);
+	        System.out.println(mainImg);
+	    }
 
-		return markerList;
+	    List<Map<String, String>> result = new ArrayList<>();
+	    String defaultImageUrl = "../resources/imgs/noimage.jpg"; // Define the default image path
+
+	    for (int i = 0; i < vendorList.size(); i++) {
+	        VendorDto vendor = vendorList.get(i);
+	        BusinessPlaceImagePathDto image = mainImageList.get(i);
+
+	        Map<String, String> markerData = new HashMap<>();
+	        markerData.put("business_name", vendor.getBusiness_name());
+	        markerData.put("basic_address", vendor.getBasic_address());
+	        markerData.put("place_img_path", (image != null && image.getPlace_img_path() != null) ? image.getPlace_img_path() : defaultImageUrl);
+	        
+	        result.add(markerData);
+	    }
+
+	    return result;
 	}
+
 	
 	
 

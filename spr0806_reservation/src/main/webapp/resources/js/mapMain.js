@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 카카오 API가 로드된 후에 initializeMap을 호출합니다.
     if (typeof kakao === 'undefined') {
         console.error('Kakao Maps API is not loaded.');
         return;
@@ -10,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const geocoder = createGeocoder();
         const markers = [];
 
-        // Function to perform search
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim();
 
@@ -22,14 +20,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         searchResults.innerHTML = ''; // Clear previous results
 
                         data.forEach(function(markerData) {
-                            addMarkerFromAddress(map, geocoder, markerData.basic_address, markerData.business_name, markerData.place_image_url, markers);
+                            // Ensure the image URL is valid and if not, use a default image
+                            const imageUrl = markerData.place_img_path !== 'No image available'
+                                ? markerData.place_img_path
+                                : '/resources/imgs/noimage.jpg'; // Default image URL
+
+                            addMarkerFromAddress(map, geocoder, markerData.basic_address, markerData.business_name, imageUrl, markers);
 
                             searchResults.innerHTML += `
                                 <li class="search-result-item">
                                     <strong>${encodeHTML(markerData.business_name)}</strong><br>
-                                    ${encodeHTML(markerData.basic_address)}<br>
-                                    <img src="${markerData.place_image_url}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
-                                    <button class="find-button" data-address="${encodeHTML(markerData.basic_address)}" data-name="${encodeHTML(markerData.business_name)}" data-image-url="${encodeHTML(markerData.place_image_url)}">위치보기</button>
+                                    ${encodeHTML(markerData.basic_address)}<br> 
+                                    <img src="..${encodeHTML(imageUrl)}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
+                                    <button class="find-button" data-address="${encodeHTML(markerData.basic_address)}" data-name="${encodeHTML(markerData.business_name)}" data-image-url="${encodeHTML(imageUrl)}">위치보기</button>
                                 </li>
                             `;
                         });
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             button.style.display = 'block';
                         });
                     } else {
-                        console.error('해당 검색어에 대한 업체가 존재하지않습니다');
+                        console.error('해당 검색어에 대한 업체가 존재하지 않습니다.');
                     }
                 }, function(xhr, status, error) {
                     console.error('Error fetching markers:', status, error);
@@ -47,20 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Search button click handler
         document.getElementById('searchButton').addEventListener('click', function() {
             performSearch();
         });
 
-        // Search input keypress event for Enter key
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                e.preventDefault(); // Prevent form submission if inside a form
+                e.preventDefault();
                 performSearch();
             }
         });
 
-        // Find button click handler
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('find-button')) {
                 const address = event.target.dataset.address;
@@ -72,8 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
                         map.setCenter(coords);
-
-                        // Clear existing markers and add new marker
                         clearMarkers(markers);
                         const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
                         markers.push(marker);
@@ -85,12 +83,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <hr style="border:1px solid #ddd; margin:5px 0;">
                                 <div>
-                                    <img src="${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                                    <img src="..${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
                                 </div>
                             </div>
                         `;
                         const infowindow = createInfoWindow(infowindowContent);
-
                         infowindow.open(map, marker);
                     } else {
                         console.error('주소 변환 실패:', address);
@@ -99,51 +96,47 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Add marker with info window on mouse hover
         function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
-            geocoder.addressSearch(address, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            if (geocoder) {
+                geocoder.addressSearch(address, function(result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                        const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
+                        markers.push(marker);
 
-                    const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
-                    markers.push(marker);
-
-                    const safeName = encodeHTML(name);
-                    const safeImageUrl = encodeHTML(imageUrl);
-
-                    const infowindowContent = `
-                        <div style="padding:5px; font-size:12px;">
-                            <div style="margin-bottom:5px;">
-                                <strong>${safeName}</strong>
+                        const infowindowContent = `
+                            <div style="padding:5px; font-size:12px;">
+                                <div style="margin-bottom:5px;">
+                                    <strong>${encodeHTML(name)}</strong>
+                                </div>
+                                <hr style="border:1px solid #ddd; margin:5px 0;">
+                                <div>
+                                    <img src="..${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                                </div>
                             </div>
-                            <hr style="border:1px solid #ddd; margin:5px 0;">
-                            <div>
-                                <img src="${safeImageUrl}" style="width:100px; height:auto; display:block;">
-                            </div>
-                        </div>
-                    `;
-                    const infowindow = createInfoWindow(infowindowContent);
+                        `;
+                        const infowindow = createInfoWindow(infowindowContent);
 
-                    // Show infowindow on mouseover and hide it on mouseout
-                    kakao.maps.event.addListener(marker, 'mouseover', function() {
-                        infowindow.open(map, marker);
-                    });
+                        kakao.maps.event.addListener(marker, 'mouseover', function() {
+                            infowindow.open(map, marker);
+                        });
 
-                    kakao.maps.event.addListener(marker, 'mouseout', function() {
-                        infowindow.close();
-                    });
+                        kakao.maps.event.addListener(marker, 'mouseout', function() {
+                            infowindow.close();
+                        });
 
-                    map.setCenter(coords);
-                } else {
-                    console.error('주소 변환 실패:', address);
-                }
-            });
+                        map.setCenter(coords);
+                    } else {
+                        console.error('주소 변환 실패:', address);
+                    }
+                });
+            } else {
+                console.error('Geocoder instance is not available');
+            }
         }
 
-        // Right-click event to add marker
         kakao.maps.event.addListener(map, 'rightclick', function(mouseEvent) {
             const latlng = mouseEvent.latLng;
-
             const marker = createMarker(map, { lat: latlng.getLat(), lng: latlng.getLng() });
             markers.push(marker);
 
@@ -154,5 +147,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-

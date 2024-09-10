@@ -227,15 +227,14 @@ public class MemberController {
         model.addAttribute("placeInfo", placeInfo);
 
         ArrayList<BusinessPlaceImagePathDto> placeImagePathDtos = bPIPService.selectAllMyBusinessPlaceImgPaths(email, business_regi_num);
-      
+        BusinessPlaceImagePathDto mainImg = bPIPService.selectMainImage(email, business_regi_num);
         if (placeImagePathDtos != null && !placeImagePathDtos.isEmpty()) {
             // 리스트가 비어있지 않은 경우
             for (BusinessPlaceImagePathDto dto : placeImagePathDtos) {
                 System.out.println(dto.getPlace_img_path());
             }
             
-            // 첫 번째 이미지 경로를 메인 이미지로 설정
-            model.addAttribute("mainImg", placeImagePathDtos.get(0).getPlace_img_path());
+            model.addAttribute("mainImg", mainImg.getPlace_img_path());
             // 리스트를 모델에 추가
             model.addAttribute("placeImagePathDtos", placeImagePathDtos);
         } else {
