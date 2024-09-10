@@ -28,7 +28,7 @@
 						<li class="search-result-item"><strong>${result.business_name}</strong><br>
 							${result.basic_address}<br> <!-- 버튼은 검색 후 결과가 있을 때만 표시됩니다 -->
 							<img
-							src="/ex${result.place_image_url}"
+							src="..${result.place_image_url}"
 							alt="${result.business_name}"
 							style="width: 100px; height: auto; margin-top: 5px;"> <!-- 위치보기 버튼 추가 -->
 							<button class="find-button"
