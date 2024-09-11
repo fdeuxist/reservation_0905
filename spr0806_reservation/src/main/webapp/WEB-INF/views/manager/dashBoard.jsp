@@ -10,7 +10,8 @@
     google.charts.load('current', {'packages':['bar']});
     google.charts.setOnLoadCallback(drawStuff);
     google.charts.setOnLoadCallback(drawStuff2);
-
+    google.charts.setOnLoadCallback(crowdedTime);
+	//업체별 매출액
     function drawStuff() {
     	  var data = new google.visualization.DataTable();
           data.addColumn('string', 'Shop Name');
@@ -66,7 +67,7 @@
         data.addColumn('string', 'Time Name');
         data.addColumn('number', 'Total Time');
   	
-  	//시간대 차트
+  	//예약시간 밀집도
   	var times = [
       	<% 
           List<Map<String, Object>> times = (List<Map<String, Object>>) request.getAttribute("times");
@@ -112,13 +113,65 @@
       chart2.draw(data, google.charts.Bar.convertOptions(options));
   	console.log(times);
   }
+    function corwdedTime() {
+    	  var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Time Name');
+          data.addColumn('number', 'Total Time');
+    	
+    	//주요 접속시간대
+    	var crowdedTimes = [
+        	<% 
+            List<Map<String, Object>> usingTimes = (List<Map<String, Object>>) request.getAttribute("usingTimes");
+        	System.out.println(usingTimes);
+        	if (usingTimes != null) {
+                for (Map<String, Object> usingTime : usingTimes) {
+                	System.out.println(usingTime);
+                    String timeZone = (String) usingTime.get("TIMES_HHMM");
+                    Number timesAmount =(Number) usingTime.get("TIMES_TOTAL");
+            		//System.out.println("["+vendorName+","+totalServicePrice+"]");
+            %>
+            ['<%= timeZone %>', <%= timesAmount %>],
+            <% 
+                }
+            } else { 
+            %>
+            ['No Data', 0]  // Default value if no data is available
+            <% 
+            } 
+            %>
+            // Add any additional static data if needed
+        ];
+  		console.log(crowdedTimes)
+        data.addRows(crowdedTimes);
+
+        var options = {
+            width: 300,
+            legend: { position: 'none' },
+            chart: {
+                title: 'The Rush Hour Of Traffic',
+                subtitle: ''
+            },
+            axes: {
+                x: {
+                    0: { side: 'bottom', label: 'Time zone' } // X-axis label
+                }
+            },
+            bar: { groupWidth: "50%" }
+        };
+
+        var chart3 = new google.charts.Bar(document.getElementById('top_z_div'));
+        // Convert the Classic options to Material options.
+        chart3.draw(data, google.charts.Bar.convertOptions(options));
+    	console.log(crowdedTimes);
+    }
 </script>
 <style>
-	#top_x_div{margin:60px}
-	#top_y_div{margin:60px,
-			
+	#top_x_div{margin:auto}
+	#top_y_div{
+		margin:auto					
 	}
 </style>
 <div id="top_x_div" style="width: 500px; height: 300px;"></div>
 <div id="top_y_div" style="width: 500px; height: 300px;"></div>
+<div id="top_z_div" style="width: 500px; height: 300px;"></div>
 <%@ include file="../include/footer.jsp"%>
