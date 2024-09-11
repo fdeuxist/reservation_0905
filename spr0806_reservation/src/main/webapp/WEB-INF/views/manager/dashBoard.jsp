@@ -8,6 +8,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['bar']});
+    google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawStuff);
     google.charts.setOnLoadCallback(drawStuff2);
     google.charts.setOnLoadCallback(crowdedTime);
@@ -121,13 +122,13 @@
     	//주요 접속시간대
     	var crowdedTimes = [
         	<% 
-            List<Map<String, Object>> usingTimes = (List<Map<String, Object>>) request.getAttribute("usingTimes");
-        	System.out.println(usingTimes);
-        	if (usingTimes != null) {
-                for (Map<String, Object> usingTime : usingTimes) {
-                	System.out.println(usingTime);
-                    String timeZone = (String) usingTime.get("TIMES_HHMM");
-                    Number timesAmount =(Number) usingTime.get("TIMES_TOTAL");
+            List<Map<String, Object>> usingDates = (List<Map<String, Object>>) request.getAttribute("usingDates");
+        	System.out.println(usingDates);
+        	if (usingDates != null) {
+                for (Map<String, Object> usingDate : usingDates) {
+                	System.out.println(usingDate);
+                    String timeZone = (String) usingDate.get("RESERVATION_DATE");
+                    Number timesAmount =(Number) usingDate.get("DATE_TOTAL");
             		//System.out.println("["+vendorName+","+totalServicePrice+"]");
             %>
             ['<%= timeZone %>', <%= timesAmount %>],

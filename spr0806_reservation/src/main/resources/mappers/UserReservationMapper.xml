@@ -57,7 +57,7 @@ select count(total_service_name) from user_reservation where service_name=#{tota
 select times_hhmm,count(times_hhmm)as times_total from user_reservation group by times_hhmm
 </select>
 <select id="countReservationDate" resultType="map">
-select times_hhmm,count(reservation_date)as times_total from user_reservation group by reservation_date
+select reservation_date,count(reservation_date)as date_total from user_reservation group by reservation_date
 </select>
  <!-- - sum -->
  

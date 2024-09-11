@@ -97,5 +97,11 @@ public class UserReservationServiceImpl implements IUserReservationService {
 		return dao.sumServicePrice();
 	}
 
+	@Override
+	public List<Map<String, Object>> countReservationDate() throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countReservationDate();
+	}
+
 
 }
