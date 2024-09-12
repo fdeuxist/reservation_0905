@@ -63,5 +63,12 @@ select * from vendor where basic_address like '%' || #{basic_address} || '%'
 
 
 
+<!-- 대시보드 기능 관련 추가 sql 만든이: 오규원 추가일자:0905-->
+<select id="countBusinessType">
+select count(business_type) from vendor where business_type=${business_type}
+</select>
 
+<select id="selectbusinessType">
+select business_type from vendor where business_regi_num=#{business_regi_num}
+</select>
 </mapper>

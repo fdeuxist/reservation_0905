@@ -59,6 +59,7 @@
                 <li><a href="${pageContext.request.contextPath}/user/manageRoles">역할 관리</a></li>
                 <li><a href="${pageContext.request.contextPath}/user/managePermissions">권한 관리</a></li>
                 <li><a href="${pageContext.request.contextPath}/reports">보고서</a></li>
+                <li><a href="${pageContext.request.contextPath}/manager/dashBoard">대시보드</a></li>
                 <li><a href="${pageContext.request.contextPath}/settings">설정</a></li>
             </ul>
         </aside>

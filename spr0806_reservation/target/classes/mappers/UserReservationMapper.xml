@@ -36,6 +36,32 @@ update user_reservation set status=#{status} where reservation_number=#{reservat
 
 
 
+<!-- 대시보드 기능 관련 추가 sql 만든이: 오규원 추가일자:0905-->
+<!-- - count -->
+<select id="count_email">
+select count(user_email) from user_reservation where status='3'
+</select>
+<select id="countVendorName">
+select count(vendor_name) from user_reservation where vendor_name=#{vendor_name}
+</select>
+<select id="countBasicAddress">
+select count(basic_address) from user_reservation where basic_address=#{basic_address}
+</select>
+<select id="countDetailAddress">
+select count(detail_address) from user_reservation where detail_address=#{detail_address}
+</select>
+<select id="countServiceName" resultType="map">
+select total_service_name,count(total_service_name) as Amount from user_reservation group by total_service_name
+</select>
+<select id="countTimeshhmm" resultType="map">
+select times_hhmm,count(times_hhmm)as times_total from user_reservation group by times_hhmm order by times_hhmm asc
+</select>
+ <!-- - sum -->
+ 
+<select id="sumServicePrice" resultType="map">
+select vendor_name,sum(total_service_price) as total_price from user_reservation group by vendor_name
+</select>
+
 
 <!--
 dto 수정 이전 sql 

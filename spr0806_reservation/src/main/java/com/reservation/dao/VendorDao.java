@@ -28,4 +28,8 @@ public interface VendorDao {
 
 	public BusinessPlaceInfoDto selectOneBusinessPlaceInfo(@Param("email") String email, @Param("business_regi_num") String business_regi_num);
 	
+	
+	//대시보드 관련 기능 만든이:오규원 추가일자:0905
+	public int countBusinessType(String business_type)throws Exception;
+	public String selectBusinessType(String business_regi_num)throws Exception;
 }
