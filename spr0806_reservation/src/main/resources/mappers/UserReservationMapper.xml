@@ -54,7 +54,7 @@ select count(detail_address) from user_reservation where detail_address=#{detail
 select total_service_name,count(total_service_name) as Amount from user_reservation group by total_service_name
 </select>
 <select id="countTimeshhmm" resultType="map">
-select times_hhmm,count(times_hhmm)as times_total from user_reservation group by times_hhmm
+select times_hhmm,count(times_hhmm)as times_total from user_reservation group by times_hhmm order by times_hhmm asc
 </select>
  <!-- - sum -->
  

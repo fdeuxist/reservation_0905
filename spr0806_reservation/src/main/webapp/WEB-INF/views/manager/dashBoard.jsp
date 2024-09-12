@@ -44,7 +44,7 @@
         data.addRows(shopRevenue);
 
         var options = {
-            width: 300,
+            width: 480,
             legend: { position: 'none' },
             chart: {
                 title: 'Shop Revenue',
@@ -52,7 +52,12 @@
             },
             axes: {
                 x: {
-                    0: { side: 'bottom', label: 'Shop Name' } // X-axis label
+                    0: { side: 'bottom', 
+                    	label: 'Shop Name', 
+                   		slantedText: true,
+                        slantedTextAngle: 45,
+                        textStyle: { fontSize: 10 }
+                    } // X-axis label
                 }
             },
             bar: { groupWidth: "50%" }
@@ -95,7 +100,7 @@
       data.addRows(times);
 
       var options = {
-          width: 300,
+          width: 480,
           legend: { position: 'none' },
           chart: {
               title: 'Booking density',
@@ -106,7 +111,7 @@
                   0: { side: 'bottom', label: 'Time zone' } // X-axis label
               }
           },
-          bar: { groupWidth: "50%" }
+          bar: { groupWidth: "80%" }
       };
 
       var chart2 = new google.charts.Bar(document.getElementById('top_y_div'));
@@ -146,11 +151,11 @@
   		console.log(serviceNames)
         data.addRows(serviceNames);
         var options = {
-            width: 300,
+            width: 480,
             title: 'Product Variance',
-            legend: { position: 'none' },
+            legend: { position: 'label'},
             pieSliceText:'label',
-           chartArea: { left: 0, top: 50, width: '100%', height: '80%' },
+           chartArea: { left:50, top: 100, width: '100%', height: '60%' },
         }
         var chart3 = new google.visualization.PieChart(document.getElementById('top_z_div'));
         // Convert the Classic options to Material options.
@@ -163,12 +168,13 @@
        display: flex;
        justify-content: space-around;
        align-items: center;
-       padding:50px;
-       gap: 20px;
+       padding:10px;
+       gap: 0px;
    }
    .chart-container > div {
-       width: 400px;
-       height: 300px;
+  		margin:auto;
+       width: 500px;
+       height: 500px;
    }
 </style>
 <div class="chart-container">
