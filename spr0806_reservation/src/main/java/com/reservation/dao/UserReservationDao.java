@@ -21,8 +21,7 @@ public interface UserReservationDao {
 		public int countVendorName(String vendor_name) throws Exception;
 		public int countBasicAddress(String basic_address) throws Exception;
 		public int countDetailAddress(String detail_address) throws Exception;
-		public int countServiceName(String service_name) throws Exception;
+		public List<Map<String,Object>> countServiceName() throws Exception;
 		public List<Map<String,Object>> countTimeshhmm() throws Exception;
 		public List<Map<String,Object>> sumServicePrice() throws Exception;
-		public List<Map<String,Object>> countReservationDate() throws Exception;
 }

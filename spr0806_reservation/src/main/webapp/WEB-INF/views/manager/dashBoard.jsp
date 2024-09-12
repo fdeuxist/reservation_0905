@@ -11,7 +11,7 @@
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawStuff);
     google.charts.setOnLoadCallback(drawStuff2);
-    google.charts.setOnLoadCallback(crowdedTime);
+    google.charts.setOnLoadCallback(productVariance);
 	//업체별 매출액
     function drawStuff() {
     	  var data = new google.visualization.DataTable();
@@ -114,24 +114,25 @@
       chart2.draw(data, google.charts.Bar.convertOptions(options));
   	console.log(times);
   }
-    function corwdedTime() {
+    function productVariance() {
     	  var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Time Name');
-          data.addColumn('number', 'Total Time');
+          data.addColumn('string', 'product');
+          data.addColumn('number', 'The number of Usage');
     	
-    	//주요 접속시간대
-    	var crowdedTimes = [
+    	//상품별 예약 수
+    	var serviceNames = [
         	<% 
-            List<Map<String, Object>> usingDates = (List<Map<String, Object>>) request.getAttribute("usingDates");
-        	System.out.println(usingDates);
-        	if (usingDates != null) {
-                for (Map<String, Object> usingDate : usingDates) {
-                	System.out.println(usingDate);
-                    String timeZone = (String) usingDate.get("RESERVATION_DATE");
-                    Number timesAmount =(Number) usingDate.get("DATE_TOTAL");
+            List<Map<String, Object>> serviceNames = (List<Map<String, Object>>) request.getAttribute("serviceNames");
+        	System.out.println(serviceNames);
+        	if (serviceNames != null) {
+                for (Map<String, Object> serviceName : serviceNames) {
+                	System.out.println(serviceName);
+                    String service = (String) serviceName.get("TOTAL_SERVICE_NAME");
+                    Number amount =(Number) serviceName.get("AMOUNT");
             		//System.out.println("["+vendorName+","+totalServicePrice+"]");
             %>
-            ['<%= timeZone %>', <%= timesAmount %>],
+            
+            ['<%= service %>', <%= amount %>],
             <% 
                 }
             } else { 
@@ -142,37 +143,37 @@
             %>
             // Add any additional static data if needed
         ];
-  		console.log(crowdedTimes)
-        data.addRows(crowdedTimes);
-
+  		console.log(serviceNames)
+        data.addRows(serviceNames);
         var options = {
             width: 300,
+            title: 'Product Variance',
             legend: { position: 'none' },
-            chart: {
-                title: 'The Rush Hour Of Traffic',
-                subtitle: ''
-            },
-            axes: {
-                x: {
-                    0: { side: 'bottom', label: 'Time zone' } // X-axis label
-                }
-            },
-            bar: { groupWidth: "50%" }
-        };
-
-        var chart3 = new google.charts.Bar(document.getElementById('top_z_div'));
+            pieSliceText:'label',
+           chartArea: { left: 0, top: 50, width: '100%', height: '80%' },
+        }
+        var chart3 = new google.visualization.PieChart(document.getElementById('top_z_div'));
         // Convert the Classic options to Material options.
-        chart3.draw(data, google.charts.Bar.convertOptions(options));
-    	console.log(crowdedTimes);
+        chart3.draw(data, options);
+    	console.log(serviceNames);
     }
 </script>
 <style>
-	#top_x_div{margin:auto}
-	#top_y_div{
-		margin:auto					
-	}
+   .chart-container {
+       display: flex;
+       justify-content: space-around;
+       align-items: center;
+       padding:50px;
+       gap: 20px;
+   }
+   .chart-container > div {
+       width: 400px;
+       height: 300px;
+   }
 </style>
-<div id="top_x_div" style="width: 500px; height: 300px;"></div>
-<div id="top_y_div" style="width: 500px; height: 300px;"></div>
-<div id="top_z_div" style="width: 500px; height: 300px;"></div>
+<div class="chart-container">
+    <div id="top_x_div"></div>
+    <div id="top_y_div"></div>
+    <div id="top_z_div"></div>
+</div>
 <%@ include file="../include/footer.jsp"%>

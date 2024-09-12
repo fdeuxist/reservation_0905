@@ -80,9 +80,9 @@ public class UserReservationServiceImpl implements IUserReservationService {
 	}
 
 	@Override
-	public int countServiceName(String service_name) throws Exception {
+	public List<Map<String,Object>> countServiceName() throws Exception {
 		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
-		return dao.countServiceName(service_name);
+		return dao.countServiceName();
 	}
 
 	@Override
@@ -96,12 +96,4 @@ public class UserReservationServiceImpl implements IUserReservationService {
 		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
 		return dao.sumServicePrice();
 	}
-
-	@Override
-	public List<Map<String, Object>> countReservationDate() throws Exception {
-		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
-		return dao.countReservationDate();
-	}
-
-
 }

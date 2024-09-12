@@ -50,14 +50,11 @@ select count(basic_address) from user_reservation where basic_address=#{basic_ad
 <select id="countDetailAddress">
 select count(detail_address) from user_reservation where detail_address=#{detail_address}
 </select>
-<select id="countServiceName">
-select count(total_service_name) from user_reservation where service_name=#{total_service_name}
+<select id="countServiceName" resultType="map">
+select total_service_name,count(total_service_name) as Amount from user_reservation group by total_service_name
 </select>
 <select id="countTimeshhmm" resultType="map">
 select times_hhmm,count(times_hhmm)as times_total from user_reservation group by times_hhmm
-</select>
-<select id="countReservationDate" resultType="map">
-select reservation_date,count(reservation_date)as date_total from user_reservation group by reservation_date
 </select>
  <!-- - sum -->
  

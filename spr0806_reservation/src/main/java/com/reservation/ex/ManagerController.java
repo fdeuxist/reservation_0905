@@ -75,10 +75,12 @@ public class ManagerController {
 			model.addAttribute("dtos",dtos);
 			List<Map<String,Object>> times =  userRService.countTimeshhmm();
 			model.addAttribute("times",times);
-			List<Map<String,Object>> usingDates =  userRService.countReservationDate();
-			model.addAttribute("usingDates",usingDates);
+			List<Map<String,Object>> serviceNames =  userRService.countServiceName();
+			model.addAttribute("serviceNames",serviceNames);
+			
 			System.out.println("dashBoard...."+dtos);
 			System.out.println("dashBoard...."+times);
+			System.out.println("dashBoard...."+serviceNames);
 			return "/manager/dashBoard";
 		}
 	
