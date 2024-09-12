@@ -34,5 +34,8 @@ public interface IBusinessPlaceImagePathService {
 			@Param("business_regi_num") String business_regi_num) throws Exception;
 
 	public void insertMyBusinessPlaceImagePath(BusinessPlaceImagePathDto dto) throws Exception;
+	
+	public ArrayList<BusinessPlaceImagePathDto> selectNormalImage(@Param("email") String email, @Param("business_regi_num") String business_regi_num)
+	throws Exception;
 
 }

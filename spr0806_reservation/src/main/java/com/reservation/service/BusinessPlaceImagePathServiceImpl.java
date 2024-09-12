@@ -75,6 +75,13 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
 		dao.insertMyBusinessPlaceImagePath(dto);
 	}
+	@Override
+	public ArrayList<BusinessPlaceImagePathDto> selectNormalImage(String email, String business_regi_num)
+			throws Exception {
+		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
+		
+		return dao.selectNormalImage(email,business_regi_num);
+	}
 
 
 
