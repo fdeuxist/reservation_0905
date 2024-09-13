@@ -12,7 +12,7 @@ insert into user_reservation values (
     #{business_name}, #{zipcode}, #{basic_address}, #{detail_address},
     #{reservation_date}, #{reservation_use_date}, #{times}, #{times_hhmm}, 
     #{total_service_name}, #{total_service_price}, #{total_required_time},
-    #{user_request_memo}, '1')
+    #{user_request_memo}, '2')
 </insert>
 
 <!-- 0913 vendor myorder용 --> 

@@ -49,7 +49,25 @@ public class MemberRestController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	
-	
+
+	//0902	
+	    @RequestMapping(value = "/memberrest/orderCompleted", method = RequestMethod.POST)
+	    public ResponseEntity<Map<String, Object>> orderCompleted(
+	            @RequestBody Map<String, Object> requestBody) throws Exception {
+	        String email = (String) requestBody.get("email");
+	        String reservationNumber = (String) requestBody.get("reservationNumber");
+	        String status = (String) requestBody.get("status");
+	        logger.info("MemberRestController - /memberrest/orderCompleted   " 
+	            + email + " " + reservationNumber + " " + status);
+	        
+	        uRService.changeOrdersStatus("3", reservationNumber);//status를3이용완료로
+	        //UserReservationDto dto = uRService.selectOneMyOrder(reservationNumber);
+	        //System.out.println(dto);
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("message", "success");
+	        
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    }
 //0902	
     @RequestMapping(value = "/memberrest/tryCancel", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> tryCancel(

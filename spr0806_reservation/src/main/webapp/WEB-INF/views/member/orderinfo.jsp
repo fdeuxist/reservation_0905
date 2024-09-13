@@ -48,6 +48,38 @@
 <script>
 $(function() {
 
+$("#orderCompleted").click(function() {
+    	
+    	var userConfirmed = confirm("이용완료합니다. 취소나 환불처리가 불가합니다.");
+        
+        if (userConfirmed) {
+	        var email = $("#loginEmail").val();
+	        var reservationNumber = $("#reservationNumber").val();
+	        var status = $("#status").val();
+	        //console.log(email, reservationNumber, status);	//member 2024082613221338 1
+	        $.ajax({
+	            url: '/ex/memberrest/orderCompleted',
+	            method: 'POST',
+	            dataType: 'json',
+	            contentType: 'application/json; charset=utf-8',
+	            data: JSON.stringify({
+	                email: email,
+	                reservationNumber: reservationNumber,
+	                status: status
+	            }),
+	            success: function(response) {
+	                //console.log(response.message);
+	                window.location.href = "/ex/member/orderinfo?reservationNumber=" + reservationNumber;
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('Failed to fetch data:', error);
+	            }
+        	});
+        }
+    });
+	
+	
+	
     $("#tryCancel").click(function() {
     	
     	var userConfirmed = confirm("예약의 취소를 요청합니다. 사업자의 취소 승인 후 취소 완료 됩니다.");
