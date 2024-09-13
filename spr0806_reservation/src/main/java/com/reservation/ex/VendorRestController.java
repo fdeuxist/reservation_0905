@@ -8,7 +8,11 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,15 +20,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reservation.dto.BusinessPlaceInfoDto;
+import com.reservation.dto.UserReservationDto;
 import com.reservation.dto.VendorDto;
 import com.reservation.dto.VendorReservationDto;
 import com.reservation.service.IBusinessPlaceInfoService;
+import com.reservation.service.IUserReservationService;
 import com.reservation.service.IVendorReservationService;
 import com.reservation.service.IVendorService;
 
 @RestController
 public class VendorRestController {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
 	private IVendorService vendorService;
 	
@@ -33,7 +41,35 @@ public class VendorRestController {
 	
 	@Autowired
 	private IVendorReservationService vRService;
+
+	@Autowired
+	private IUserReservationService uRService;
 	
+	
+	//0913	
+    @RequestMapping(value = "/vendorrest/confirmCancel", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> confirmCancel(
+            @RequestBody Map<String, Object> requestBody) throws Exception {
+        String email = (String) requestBody.get("email");
+        String reservationNumber = (String) requestBody.get("reservationNumber");
+        String status = (String) requestBody.get("status");
+        logger.info("VendorRestController - /vendorrest/confirmCancel   " 
+            + email + " " + reservationNumber + " " + status);
+        String updateStatus=null;
+        
+        if(status.equals("4")) {		//4취소대기
+        	updateStatus="5";			//5취소완료
+        }else if(status.equals("6")) {	//6환불대기
+        	updateStatus="7";			//7환불완료
+        }
+        uRService.changeOrdersStatus(updateStatus, reservationNumber);
+        UserReservationDto dto = uRService.selectOneMyOrder(reservationNumber);
+        System.out.println(dto);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "success");
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 	@RequestMapping(value = "/vendorrest/myonemonth", method = RequestMethod.GET)
 	public List<VendorReservationDto> selectOneVendorsMyOneMonthReservation(

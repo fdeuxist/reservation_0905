@@ -24,7 +24,7 @@
 <h3>아이디와 비밀번호를 입력해주세요.</h3>
 <c:url value="/login" var="loginUrl" />
 <form name="frmLogin" action="${loginUrl}" method="POST">
-<!-- csrf가 있어야 된다. -->
+<%-- csrf가 있어야 된다. --%>
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
     <p>
         <label for="email">이메일</label>
@@ -37,7 +37,7 @@
     <button type="submit" class="btn">로그인</button>
 </form>
 <br>
-<!-- form태그를 이용한 경우/ 상단에  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 추가해야함 -->
+<%-- form태그를 이용한 경우/ 상단에  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 추가해야함 
 <c:url value="/login" var="loginUrl" />
 <form:form name="frmLogin" action="${loginUrl}" method="POST">
     <c:if test="${param.error != null}">
@@ -56,6 +56,6 @@
     </p>
     <button type="submit" class="btn">로그인</button>
 </form:form>
-
+--%>
 </main>
 <%@include file="../include/footer.jsp"%>

@@ -27,10 +27,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
 import com.reservation.dto.ServiceItemsDto;
+import com.reservation.dto.UserReservationDto;
 import com.reservation.dto.VendorReservationDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IBusinessPlaceInfoService;
 import com.reservation.service.IServiceItemsService;
+import com.reservation.service.IUserReservationService;
 import com.reservation.service.IUserService;
 import com.reservation.service.IVendorReservationService;
 import com.reservation.service.IVendorService;
@@ -48,6 +50,9 @@ public class VendorController {
 	private IVendorReservationService vRService;
 
 	@Autowired
+	private IUserReservationService uRService;
+	
+	@Autowired
 	private IBusinessPlaceInfoService bpService;
 	
 	@Autowired
@@ -60,6 +65,33 @@ public class VendorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
+	
+	
+    //0913 
+    @RequestMapping(value = "/vendor/myorders", method = RequestMethod.GET)
+    public String vendorrMyorders(HttpSession session, Model model) throws Exception {
+        System.out.println("VendorController - /vendor/myorders");
+        String vendor_email = (String)session.getAttribute("loginEmail");
+        String business_regi_num = (String)session.getAttribute("loginBusiness_regi_num");
+//        String open_date = (String)session.getAttribute("open_date");
+        String status="3";
+        ArrayList<UserReservationDto> dtoList = uRService.selectAllVendorOrdersNotInStatus(vendor_email, business_regi_num, status);
+        model.addAttribute("dtoList", dtoList);
+        
+        return "/vendor/myorders";
+    }
+	
+	//0913 
+    @RequestMapping(value = "/vendor/orderinfo", method = RequestMethod.GET)
+    public String orderinfo(String reservationNumber, HttpSession session, Model model) throws Exception {
+        logger.info("VendorController - /vendor/orderinfo");
+        UserReservationDto myOrder = 
+                 uRService.selectOneMyOrder(reservationNumber);
+        model.addAttribute("myOrder", myOrder);
+        return "/vendor/orderinfo";
+    }
+	
+	
 	@RequestMapping(value = "/vendor/dailyschedule", method = RequestMethod.GET)
 	public String DailySchedule(@RequestParam("date") String date, HttpSession session, Model model) {
 		System.out.println("VendorController - /vendor/dailyschedule(get) selectedDate:" + date);

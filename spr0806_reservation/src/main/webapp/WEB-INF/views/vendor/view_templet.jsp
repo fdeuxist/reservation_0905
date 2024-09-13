@@ -7,8 +7,9 @@
 <div class="header-placeholder"></div>
 <main>
 
-${sessionScope.loginName}<br>
+<%--${sessionScope.loginName}<br>
 ${sessionScope.loginEmail}<br>
 ${sessionScope.loginAuthority}<br>
+ --%>
 </main>
 <%@include file="/WEB-INF/views/include/footer.jsp"%>

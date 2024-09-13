@@ -13,14 +13,18 @@ insert into user_reservation values (
     #{reservation_date}, #{reservation_use_date}, #{times}, #{times_hhmm}, 
     #{total_service_name}, #{total_service_price}, #{total_required_time},
     #{user_request_memo}, '1')
-    
 </insert>
 
+<!-- 0913 vendor myorder용 --> 
+<select id="selectAllVendorOrdersNotInStatus" resultType="UserReservationDto">
+select * from user_reservation where vendor_email=#{vendor_email} and business_regi_num=#{business_regi_num} and status not in (#{status})
+</select>
 
 <update id="tryCancelOrder">
 update user_reservation set status='4' where reservation_number=#{reservation_number}
 </update>
 
+<!-- 0902 member myorder용 -->
 <select id="selectAllMyOrders" resultType="UserReservationDto">
 select * from user_reservation where user_email=#{user_email}
 </select>

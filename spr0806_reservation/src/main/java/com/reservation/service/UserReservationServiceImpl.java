@@ -30,6 +30,14 @@ public class UserReservationServiceImpl implements IUserReservationService {
 		dao.tryCancelOrder(reservation_number);
 	}
 
+	//0913 vendor my order용
+	@Override
+	public ArrayList<UserReservationDto> selectAllVendorOrdersNotInStatus(
+			String vendor_email, String business_regi_num, String status) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.selectAllVendorOrdersNotInStatus(vendor_email, business_regi_num, status);
+	}
+	
 	@Override
 	public ArrayList<UserReservationDto> selectAllMyOrders(String user_email) throws Exception {
 		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
@@ -96,4 +104,5 @@ public class UserReservationServiceImpl implements IUserReservationService {
 		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
 		return dao.sumServicePrice();
 	}
+
 }

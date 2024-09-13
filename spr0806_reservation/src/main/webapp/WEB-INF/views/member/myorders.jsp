@@ -39,7 +39,7 @@
     </div>
 
 </main>
-    <style1>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -99,5 +99,5 @@
         .button:hover {
             background-color: #0056b3;
         }
-    </style1>
+    </style>
 <%@include file="/WEB-INF/views/include/footer.jsp"%>
