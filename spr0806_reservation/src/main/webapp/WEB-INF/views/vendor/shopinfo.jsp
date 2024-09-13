@@ -101,7 +101,7 @@ h2 {
     border-radius: 4px;
     border: 1px solid #ddd; /* 썸네일 테두리 색상 */
     background-color: #f0f0f0; /* 기본 배경색 */
-    cursor: pointer;
+    cursor: pointer; /* 클릭 가능 표시 */
 }
 
 .default-image {
@@ -137,7 +137,7 @@ h2 {
             <form:textarea path="place_info" id="place_info" rows="5" cols="40"></form:textarea>
         </div>
         <div class="form-group">
-            <label for="main_image">대표 이미지(등록시 대표이미지 업데이트)</label>
+            <label for="main_image">대표 이미지(등록시 대표이미지 업데이트) *클릭시 제외됩니다.</label>
             <div id="main_image_container" class="image_container">
                 <div id="main_image_preview_container" class="default-image">
                     <img id="main_image_preview" src="${pageContext.request.contextPath}/${mainImg.place_img_path}" alt="대표 이미지 미리보기" />
@@ -146,12 +146,8 @@ h2 {
             <input type="file" id="main_image" name="mainImage" accept="image/*" />
         </div>
         <div class="form-group">
-            <label for="multi_files">이미지 리스트(클릭시 삭제됩니다)</label>
-            <div id="multi_files_container" class="thumbnail-container">
-                <c:forEach var="image" items="${normalList}">
-                    <img src="${pageContext.request.contextPath}/${image.place_img_path}" alt="부수 이미지 미리보기" data-image-id="${image.place_img_path}" />
-                </c:forEach>
-            </div>
+            <label for="multi_files">이미지 리스트  *클릭시 제외됩니다.</label>
+            <div id="multi_files_container" class="thumbnail-container"></div>
             <input type="file" id="multi_files" name="multiFile" multiple accept="image/*" />
         </div>
         <input type="hidden" id="deleted_images" name="deletedImages" value="" /> <!-- 숨겨진 필드 추가 -->
@@ -180,7 +176,7 @@ $(document).ready(function() {
     
     let deletedImages = [];
 
-    // 대표 이미지 미리보기 기능
+    // 대표 이미지 미리보기 및 클릭 시 삭제 기능
     mainImageInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         
@@ -195,7 +191,15 @@ $(document).ready(function() {
         }
     });
 
-    // 부수 이미지 미리보기 기능
+    // 메인 이미지 클릭 시 삭제
+    mainImagePreview.addEventListener('click', function() {
+        if (confirm('대표 이미지를 삭제하시겠습니까?')) {
+            mainImagePreview.src = defaultImageURL; // 기본 이미지로 변경
+            mainImageInput.value = ''; // 파일 입력 필드 초기화
+        }
+    });
+
+    // 부수 이미지 미리보기 및 클릭 시 삭제 기능
     multiFilesInput.addEventListener('change', function(event) {
         const files = event.target.files;
         multiFilesContainer.innerHTML = ''; // 기존 썸네일 제거
@@ -220,19 +224,16 @@ $(document).ready(function() {
         });
     });
 
-    // 이미지 클릭 시 삭제 요청 처리 및 UI 업데이트
+    // 썸네일 클릭 시 삭제 요청 처리 및 UI 업데이트
     multiFilesContainer.addEventListener('click', function(event) {
         if (event.target.tagName === 'IMG') {
-            const imageId = event.target.getAttribute('data-image-id');
-            
-            if (imageId) {
-                if (confirm('이 이미지를 삭제하시겠습니까?')) {
-                    event.target.remove(); // UI에서 이미지 제거
-                    deletedImages.push(imageId); // 삭제된 이미지 저장
-                    deletedImagesInput.value = deletedImages.join(','); // 숨겨진 필드에 저장된 이미지 ID들 설정
-                }
+            if (confirm('이 이미지를 삭제하시겠습니까?')) {
+                event.target.remove(); // UI에서 이미지 제거
+                // 데이터베이스에서의 삭제 처리는 서버 측 코드에서 처리해야 함
             }
         }
     });
 });
 </script>
+
+

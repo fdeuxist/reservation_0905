@@ -133,29 +133,17 @@ public class VendorController {
 		System.out.println(email + "  ddddddddd   " + business_regi_num);
 		BusinessPlaceInfoDto dto = bpService.selectOneBusinessPlaceInfo(email, business_regi_num);
 		System.out.println("aaaaaa   " + dto);
-		ArrayList<BusinessPlaceImagePathDto> imgList = bpiService.selectAllMyBusinessPlaceImgPaths(email,
-				business_regi_num);
-		BusinessPlaceImagePathDto mainImg = bpiService.selectMainImage(email, business_regi_num);
-		System.out.println(mainImg);
-		for (BusinessPlaceImagePathDto img : imgList) {
-			System.out.println(imgList);
-		}
+
 		model.addAttribute("businessPlaceInfo", dto);
-		model.addAttribute("normalList", imgList);
-		model.addAttribute("mainImg", mainImg);
 
 		return "/vendor/shopinfo";
 	}
 
 	@RequestMapping(value = "/vendor/shopinfo", method = RequestMethod.POST)
 	public String shopinfoDB(BusinessPlaceInfoDto dto, HttpSession session,
-			@RequestParam("deletedImages") String deletedImages,
 			@RequestParam("multiFile") List<MultipartFile> multiFileList,
 			@RequestParam("mainImage") MultipartFile mainImage) throws Exception {
 		System.out.println("VendorController - /vendor/shopinfo(post)");
-
-		// 삭제되어야 할 이미지값들 추출
-		String[] deletedImageArray = deletedImages.split(",");
 
 		// 업로드 디렉토리 경로
 		String uploadDir = servletContext.getRealPath("/resources/imgs");
@@ -165,24 +153,6 @@ public class VendorController {
 		}
 
 		// 기존 데이터베이스 이미지 경로 조회
-		List<BusinessPlaceImagePathDto> existingImagePaths = bpiService.selectAllMyBusinessPlaceImgPaths(
-				(String) session.getAttribute("loginEmail"), (String) session.getAttribute("loginBusiness_regi_num"));
-
-		// 삭제할 이미지 파일 삭제 및 데이터베이스 업데이트
-		for (String imgPath : deletedImageArray) {
-			if (!imgPath.isEmpty()) {
-				File fileToDelete = new File(uploadDir + File.separator + imgPath);
-				if (fileToDelete.exists()) {
-					if (fileToDelete.delete()) {
-						System.out.println("Deleted file: " + fileToDelete.getAbsolutePath());
-						// 데이터베이스에서 해당 이미지 정보 삭제
-						bpiService.deleteImage(imgPath);
-					} else {
-						System.out.println("Failed to delete file: " + fileToDelete.getAbsolutePath());
-					}
-				}
-			}
-		}
 
 		// Vendor 정보 수정하기
 		String email = (String) session.getAttribute("loginEmail");
@@ -231,11 +201,10 @@ public class VendorController {
 				System.out.println("Uploading file to: " + uploadFile.getAbsolutePath());
 				multiFileList.get(i).transferTo(uploadFile);
 				String imgPath = "/resources/imgs/" + fileList.get(i).get("newFileName");
-				if (!existingImagePaths.contains(imgPath)) {
-					BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, imgPath,
-							"N");
-					bpiService.insertMyBusinessPlaceImagePath(imgDto);
-				}
+				BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, imgPath,
+						"N");
+				bpiService.insertMyBusinessPlaceImagePath(imgDto);
+
 			}
 
 			// Upload main image
@@ -243,14 +212,11 @@ public class VendorController {
 			System.out.println("Main image path: " + uploadMain.getAbsolutePath());
 			mainImage.transferTo(uploadMain); // Ensure the main image is also saved
 			String mainImgPath = "/resources/imgs/" + newOriginName;
-			if (!existingImagePaths.contains(mainImgPath)) {
-				BusinessPlaceImagePathDto mainDto = new BusinessPlaceImagePathDto(email, business_regi_num, mainImgPath,
-						"Y");
-				bpiService.insertMyBusinessPlaceImagePath(mainDto);
-				bpiService.updateIsMainYToN(email, business_regi_num);
-				bpiService.setMainImage(mainDto.getEmail(), mainDto.getBusiness_regi_num(),
-						mainDto.getPlace_img_path());
-			}
+			BusinessPlaceImagePathDto mainDto = new BusinessPlaceImagePathDto(email, business_regi_num, mainImgPath,
+					"Y");
+			bpiService.insertMyBusinessPlaceImagePath(mainDto);
+			bpiService.updateIsMainYToN(email, business_regi_num);
+			bpiService.setMainImage(mainDto.getEmail(), mainDto.getBusiness_regi_num(), mainDto.getPlace_img_path());
 
 			System.out.println("이미지 업로드 성공");
 		} catch (IllegalStateException e) {
