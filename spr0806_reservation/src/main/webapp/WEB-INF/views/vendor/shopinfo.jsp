@@ -111,13 +111,10 @@
         </div>
     </form:form>
     
-    <!-- 정보 박스 -->
-    <div class="info-box">
-        <h3>사용자 정보</h3>
-        <p>${sessionScope.loginName}</p>
-        <p>${sessionScope.loginEmail}</p>
-        <p>${sessionScope.loginAuthority}</p>
-    </div>
+    <%--
+${sessionScope.loginName}<br>
+${sessionScope.loginEmail}<br>
+${sessionScope.loginAuthority}<br> --%>
 </main>
 
 <%@include file="../include/footer.jsp"%>

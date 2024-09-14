@@ -2,6 +2,10 @@ window.onload = function() {
             document.getElementById('postcodeBtn').addEventListener('click', openDaumPostcode);
         };
 
+        
+// 참고사이트 https://newehblog.tistory.com/25
+        
+        
 var element_layer = document.getElementById('layer');
 
 // 주소 검색 닫아주기

@@ -9,13 +9,14 @@
 <div class="header-placeholder"></div>
 
 <main> name : ${vendorInfo.name } <br>
+<%--
 phone : ${vendorInfo.phone } <br>
 business_name : ${vendorInfo.business_name } <br>
 vendorInfo.zipcode : ${vendorInfo.zipcode } <br>
 vendorInfo.basic_address : ${vendorInfo.basic_address } <br>
 vendorInfo.detail_address : ${vendorInfo.detail_address } <br>
 vendorInfo.business_type : ${vendorInfo.business_type } <br>
-
+ --%>
 장소 정보<br>
 <img src="${pageContext.request.contextPath}/${mainImg}" alt="메인 이미지"
 	style="max-width: 200px; max-height: 200px;" /> <c:if
@@ -77,6 +78,7 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 </div>
 <input type="button" id="nextBtn" value="다음단계" /> <!-- 값 가져갈거 가격,시간,벤더이메일,사업자번호,선택된아이템id들 -->
 <br>
+<%--
 data = { //SelectedItemsDto 다음페이지로 넘어가면서 세션에 저장 <br>
 email: email, 벤더이메일 <br>
 business_regi_num: businessRegiNum, 벤더사업자번호<br>
@@ -88,6 +90,7 @@ selectedItems: selectedItemIdsAry //cardObjDto 선택한메뉴각각의정보객
 ${sessionScope.loginName}<br>
 ${sessionScope.loginEmail}<br>
 ${sessionScope.loginAuthority}<br>
+ --%>
 </main>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script>

@@ -86,22 +86,21 @@
 					// 입력여부 검사 input tag에 입력값 없이 버튼 누를시 alert이 실행된다.
 					if (!input_value) {
 						alert("사업자번호를 입력하세요.");
-						$("input[name='business_regi_num']").focus();/*focus()는 선택시 활성화되는것*/
+						$("input[name='business_regi_num']").focus(); //focus()는 선택시 활성화되는것
 						return false;//기본이벤트 막음 
 					}
 					
 					 $.ajax({
-					        url: '/ex/vendorrest/business_regi_numcheck', // 서버에서 정의한 URL
-					        type: 'GET', // HTTP 메서드
+					        url: '/ex/vendorrest/business_regi_numcheck',
+					        type: 'GET',
 					        data: {
-					        	business_regi_num: input_value // 서버로 보낼 파라미터
+					        	business_regi_num: input_value
 					        },
 					        success: function(response) {
 					        	console.log(response);
-					            // 서버에서 반환된 JSON 데이터를 파싱
 					            var result = response.result;
 					            console.log(result);
-					            // result가 "true"인지 "false"인지 판단하여 사용자에게 메시지 표시
+
 					            if (result === "true") {
 					                $(".console2").html("<span style='color:blue'>사용할 수 있는 사업자번호입니다.</span>");
 					                submitBtn.disabled = false;

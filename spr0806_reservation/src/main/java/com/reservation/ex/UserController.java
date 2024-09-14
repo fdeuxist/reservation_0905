@@ -117,13 +117,13 @@ public class UserController {
 	}
 	
 	
-
+/*
 	@RequestMapping(value = "/user/scheduleselect", method = RequestMethod.GET)
 	public String userScheduleselect(Locale locale, Model model) {
 		System.out.println("UserController - /user/scheduleselect(get)");
 		return "/user/scheduleselect";
 	}
-	
+*/	
 	//0905
 	@RequestMapping(value = "/user/findMyAccount", method = RequestMethod.GET)
 	public String userFindId(Locale locale, Model model) {

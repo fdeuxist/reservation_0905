@@ -92,7 +92,7 @@ public class VendorController {
     
 	
 	
-//0904	임시, 테스트중  /vendor/dailyschedule대신사용예정
+//0904	 /vendor/dailyschedule대신사용
 	@RequestMapping(value = "/vendor/dailyscheduleupdate", method = RequestMethod.GET)
 	public String vendorScheduleupdate(
 			@RequestParam("date") String date,
@@ -106,19 +106,6 @@ public class VendorController {
 	}
 	
 	
-	//미사용예정 update사용예정 
-	@RequestMapping(value = "/vendor/dailyschedule", method = RequestMethod.GET)
-    public String DailySchedule(@RequestParam("date") String date, HttpSession session, Model model) {
-		System.out.println("VendorController - /vendor/dailyschedule(get) selectedDate:" + date);
-		
-//		String email = (String)session.getAttribute("loginEmail");
-//		String business_regi_num = (String)session.getAttribute("loginBusiness_regi_num");
-//		String open_date = (String)session.getAttribute("open_date");
-		model.addAttribute("selectedDate", date);
-		//System.out.println(date);
-		return "/vendor/dailyschedule";
-    }
-
 	@RequestMapping(value = "/vendor/monthlyschedule", method = RequestMethod.GET)
 	public String MonthlySchedule(HttpSession session, Model model) {
 		System.out.println("VendorController - /vendor/schedulemodify(get)");

@@ -21,6 +21,9 @@
 <c:if test="${param.update != null}">
         <p>회원정보가 수정되었습니다. 로그인 해 주세요.</p>
 </c:if>
+<c:if test="${param.delete != null}">
+        <p>회원탈퇴되었습니다. 이용해주셔서 감사합니다.</p>
+</c:if>
 <h3>아이디와 비밀번호를 입력해주세요.</h3>
 <c:url value="/login" var="loginUrl" />
 <form name="frmLogin" action="${loginUrl}" method="POST">
@@ -34,9 +37,13 @@
         <label for="password">비밀번호</label>
         <input type="password" id="password" name="password"/>
     </p>
-    <button type="submit" class="btn">로그인</button>
+    <button type="submit" class="btn">로그인</button>  
+    <input type="button" id="findIdBtn" class="btn" value="계정 찾기">
+    <input type="button" id="memberJoinBtn" class="btn" value="회원가입">
 </form>
 <br>
+
+<%--
 <!-- form태그를 이용한 경우/ 상단에  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 추가해야함 -->
 <c:url value="/login" var="loginUrl" />
 <form:form name="frmLogin" action="${loginUrl}" method="POST">
@@ -56,6 +63,14 @@
     </p>
     <button type="submit" class="btn">로그인</button>
 </form:form>
-
+ --%>
 </main>
+<script>
+$(document).ready(function() {
+    $('#findIdBtn').click(function() {
+    	window.location.href = 'findMyAccount';
+    });
+});
+
+</script>
 <%@include file="../include/footer.jsp"%>

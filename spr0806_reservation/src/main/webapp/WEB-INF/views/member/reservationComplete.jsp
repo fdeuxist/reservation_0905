@@ -6,7 +6,7 @@
 <%@include file="../include/header.jsp"%>
 <div class="header-placeholder"></div>
 <main>
-    <h2>예약이 완료되었습니다!</h2>
+    <h2>${result }</h2>
 
     <p>예약 번호: ${dto.reservation_number}</p>
     <p>유저 이메일: ${dto.user_email}</p>

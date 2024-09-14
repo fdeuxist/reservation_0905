@@ -10,21 +10,28 @@ $(function() {
         timeButtonsContainer.append(`<div class="time-slot" data-value="0" data-time="${i}:30">${i}:30</div>`);
     }
 
-    $('.time-slot').click(function() {
-        $(this).toggleClass('selected');
-    });
+    
+    let timeSlots = $('.time-slot');
+    for (let i = 0; i < timeSlots.length; i++) {
+        $(timeSlots[i]).click(function() {
+            $(timeSlots[i]).toggleClass('selected');
+        });
+    }
 
+    
     $('#submitBtn').click(function() {
         const selectedDate = $("#datepicker").val();
 
+        let timeSlots = $('.time-slot'); 
         let result = '';
-        $('.time-slot').each(function() {
-            if ($(this).hasClass('selected')) {
+
+        for (let i = 0; i < timeSlots.length; i++) {
+            if ($(timeSlots[i]).hasClass('selected')) {
                 result += '1';
             } else {
                 result += '0';
             }
-        });
+        }
 
 
         $.ajax({
