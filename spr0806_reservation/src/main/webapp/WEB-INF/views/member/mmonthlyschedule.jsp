@@ -78,10 +78,6 @@ table tbody tr:hover {
     background-color: #f1f1f1;
 }
 
-/* 클릭 가능한 셀 스타일 */
-td {
-    transition: background-color 0.3s;
-}
 
 td:hover {
     background-color: #e0e0e0;
@@ -171,35 +167,35 @@ var currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로
     }
 
     
-    // 테이블 업데이트
+    // 테이블 그리기
     function updateReservationTable(reservations) {
-    var tableBody = document.querySelector("#reservationTable tbody");
-    tableBody.innerHTML = ""; // 테이블 초기화
-
-    for (var i = 0; i < reservations.length; i++) {
-        let reservation = reservations[i]; // let을 사용하여 클로저 유지
-
-        let row = document.createElement("tr");
-
-        let dateCell = document.createElement("td");
-        dateCell.textContent = reservation.open_date.split(' ')[0]; 
-        // 공백 기준으로 문자열을 나눠서 날짜 부분("YYYY-MM-DD")만을 추출
-        // "2024-08-15 14:30".split(' ')를 호출하면, 
-        // 이 문자열은 공백을 기준으로 나뉘어 ["2024-08-15", "14:30"]라는 배열이 생성
-
-        dateCell.style.cursor = "pointer"; // 클릭 가능한 스타일 추가
-        dateCell.addEventListener("click", function() {
-            //alert(reservation.open_date.split(' ')[0]);
-            window.location.href = "/ex/member/mscheduleselect?date=" + reservation.open_date.split(' ')[0];
-        });
-        row.appendChild(dateCell);
-        
-        let statusCell = document.createElement("td");
-        statusCell.textContent = reservation.status_flag === '1' ? '예약 가능' : '예약 불가';
-        row.appendChild(statusCell);
-
-        tableBody.appendChild(row);
-    	}
+	    var tableBody = document.querySelector("#reservationTable tbody");
+	    tableBody.innerHTML = ""; // 테이블 초기화
+	
+	    for (var i = 0; i < reservations.length; i++) {
+	        let reservation = reservations[i]; // let을 사용하여 클로저 유지
+	
+	        let row = document.createElement("tr");
+	
+	        let dateCell = document.createElement("td");
+	        dateCell.textContent = reservation.open_date.split(' ')[0]; 
+	        // 공백 기준으로 문자열을 나눠서 날짜 부분("YYYY-MM-DD")만을 추출
+	        // "2024-08-15 14:30".split(' ')를 호출하면, 
+	        // 이 문자열은 공백을 기준으로 나뉘어 ["2024-08-15", "14:30"]라는 배열이 생성
+	
+	        dateCell.style.cursor = "pointer";
+	        dateCell.addEventListener("click", function() {
+	            //alert(reservation.open_date.split(' ')[0]);
+	            window.location.href = "/ex/member/mscheduleselect?date=" + reservation.open_date.split(' ')[0];
+	        });
+	        row.appendChild(dateCell);
+	        
+	        let statusCell = document.createElement("td");
+	        statusCell.textContent = reservation.status_flag === '1' ? '예약 가능' : '예약 불가';
+	        row.appendChild(statusCell);
+	
+	        tableBody.appendChild(row);
+	    	}
 
 
     }

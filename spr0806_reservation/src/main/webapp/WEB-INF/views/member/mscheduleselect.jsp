@@ -4,9 +4,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 <style>
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
 .acontainer {
 	width: 400px;
 	margin: 0 auto;
+    text-align: center;
 }
 
 #time-buttons {
@@ -41,6 +50,29 @@
     color: #a0a0a0;
     cursor: not-allowed;
 }
+
+
+
+#nextStepBtn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 5px;
+    display: inline-block;
+    background-color: #ffc107;
+}
+
+#nextStepBtn:hover:enabled {
+    background-color: #e0a800;
+}
+
+
 </style>
 
 
@@ -69,7 +101,7 @@
 <input type="hidden" id="" value="${sessionScope.selectedItemsDto.totalServicePrice}" data-comment="★서비스 가격 총 합 :  ">
 <input type="hidden" id="" value="${sessionScope.selectedItemsDto.totalRequiredTime}" data-comment="★제공(필요)시간 총 합 ">
 
-<!-- 
+<%-- 
 selectedItems: [${sessionScope.selectedItemsDto.selectedItems}] ,<br><br><br>
 selectedItemsDto: [<input type="txt" id="seletedItemsDto" value="${sessionScope.selectedItemsDto}">] ,<br>
 
@@ -85,8 +117,8 @@ selectedItemsDto.totalRequiredTime
 <input type="text" id="selectedItemsDto" value="${sessionScope.selectedItemsDto.totalRequiredTime}"><br>
 selectedItemsDto.totalServicePrice
 <input type="text" id="selectedItemsDto" value="${sessionScope.selectedItemsDto.totalServicePrice}"><br>
- -->
-<!-- 다음 주문확인 페이지에서 정보들 정리해서 결제 한셈 치고 userreservation테이블로 넘기면 주문완료까지는 진행 -->
+ --%>
+<%-- 다음 주문확인 페이지에서 정보들 정리해서 결제 한셈 치고 userreservation테이블로 넘기면 주문완료까지는 진행 --%>
 <br><br>
 <div class="acontainer">
     <h3>${selectedDate}<br>예약 시간 선택</h3>

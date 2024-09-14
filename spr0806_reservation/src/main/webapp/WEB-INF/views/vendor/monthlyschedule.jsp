@@ -76,13 +76,6 @@ table tbody tr:nth-child(odd) {
 
 table tbody tr:hover {
     background-color: #f1f1f1;
-    cursor: pointer;
-}
-
-/* 클릭 가능한 셀 스타일 */
-td {
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 td:hover {
@@ -187,6 +180,7 @@ ${sessionScope.loginBusiness_regi_num}<br> --%>
         	//공백 기준으로 문자열을 나눠서 날짜 부분("YYYY-MM-DD")만을 추출
         	//"2024-08-15 14:30".split(' ')를 호출하면, 
         	//이 문자열은 공백을 기준으로 나뉘어 ["2024-08-15", "14:30"]라는 배열이 생성
+        	
             dateCell.style.cursor = "pointer";
 	        dateCell.addEventListener("click", function() {
 
