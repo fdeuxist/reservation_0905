@@ -9,6 +9,7 @@ import com.reservation.dto.VendorDto;
 
 public interface VendorDao {
 	
+	//public VendorDto selectOneVendorEmailBusinessRegiNum(String vendor_email, String business_regi_num);
 	
 	public void insert(VendorDto dto) throws Exception;
 	
@@ -26,7 +27,7 @@ public interface VendorDao {
 	
 	public ArrayList<VendorDto> selectAllVendorByBasicAddress(String basic_address) throws Exception;
 
-	public BusinessPlaceInfoDto selectOneBusinessPlaceInfo(@Param("email") String email, @Param("business_regi_num") String business_regi_num);
+	//public BusinessPlaceInfoDto selectOneBusinessPlaceInfo(@Param("email") String email, @Param("business_regi_num") String business_regi_num);
 	
 	
 	//대시보드 관련 기능 만든이:오규원 추가일자:0905

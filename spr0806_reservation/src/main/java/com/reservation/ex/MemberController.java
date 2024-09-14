@@ -30,6 +30,7 @@ import com.reservation.dto.ServiceItemsDto;
 import com.reservation.dto.UserDto;
 import com.reservation.dto.UserReservationDto;
 import com.reservation.dto.VendorDto;
+import com.reservation.dto.VendorReservationDto;
 import com.reservation.dto.VendorUserDto;
 import com.reservation.dto.cardObjDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
@@ -37,6 +38,7 @@ import com.reservation.service.IBusinessPlaceInfoService;
 import com.reservation.service.IServiceItemsService;
 import com.reservation.service.IUserReservationService;
 import com.reservation.service.IUserService;
+import com.reservation.service.IVendorReservationService;
 import com.reservation.service.IVendorService;
 import com.reservation.service.IVendorUserService;
 
@@ -70,7 +72,10 @@ public class MemberController {
 	
     @Autowired
     private IUserReservationService uRService;
-    
+
+	@Autowired
+	private IVendorReservationService vRService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@RequestMapping(value = "/member/member", method = RequestMethod.GET)
@@ -112,6 +117,14 @@ public class MemberController {
 		System.out.println(dto);
 		return "redirect:/user/login?update";
 	}
+//0903
+		@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
+		public String memberDelete(UserDto dto, HttpSession session, Model model) throws Exception {
+			System.out.println("MemberController - /member/delete");
+			uService.delete(dto.getEmail());
+			session.invalidate();
+			return "redirect:/user/login?delete";
+		}
 //0829
 	@RequestMapping(value = "/member/memberReservation", method = RequestMethod.POST)
 	public String memberReservation(UserReservationDto dto, HttpSession session, Model model) throws Exception {
@@ -129,15 +142,47 @@ public class MemberController {
 		return "/member/mreservationconfirm";
 	}
 
-//0831
+//0831 0906수정중에러처리 0907예약 중 타멤버 선약 품절처리
 	@RequestMapping(value = "/member/reservationComplete", method = RequestMethod.POST)
 	public String reservationComplete(UserReservationDto dto, HttpSession session, Model model) throws Exception {
-		System.out.println("MemberController - /member/reservationComplete(post)");
-		System.out.println(dto);
-		uRService.newOrder(dto);
-		model.addAttribute("dto", dto);
+		System.out.println("MemberController - /member/reservationComplete(post) " + dto.getReservation_number());
+		System.out.println("my" +dto.getTimes()); //000000000000000000000000000000000000010000000000
+		VendorReservationDto isOpenDay = vRService.selectOneVendorsReservation(
+				dto.getVendor_email(),
+				dto.getBusiness_regi_num(),
+				dto.getReservation_use_date());
+		VendorReservationDto isPossible = null;
+		if(isOpenDay!=null) {	//null이면 vendor가 스케줄 해당일을 비공개로 해둔상태
+			System.out.println("ur" +isOpenDay.getTimes());
+			String vendorTime = isOpenDay.getTimes();
+			String selectTime = dto.getTimes();
+	        int position = selectTime.indexOf('1');
+	        char[] timeChars = vendorTime.toCharArray();
+	        if(timeChars[position] != '1') {
+	        	isOpenDay=null;
+	        }else {
+	        	isPossible = isOpenDay;
+	        }
+		}
+		if(isPossible!=null) {
+			uRService.newOrder(dto);
+			model.addAttribute("dto", dto);
+			model.addAttribute("result","예약이 완료되었습니다!");
+		}else {
+			model.addAttribute("dto", null);
+			model.addAttribute("result","예약 과정에 문제가 생겼습니다 다시 시도해주세요.");
+		}
+		
 		return "/member/reservationComplete";
 	}
+
+//0902
+	@RequestMapping(value = "/member/mypage", method = RequestMethod.GET)
+	public String myPage(UserReservationDto dto, HttpSession session, Model model) throws Exception {
+		System.out.println("MemberController - /member/mypage");
+		return "/member/mypage";
+	}
+	
 //0902    
     @RequestMapping(value = "/member/myorders", method = RequestMethod.GET)
     public String myorders(HttpSession session, Model model) throws Exception {

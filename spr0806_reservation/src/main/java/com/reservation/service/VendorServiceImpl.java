@@ -22,6 +22,12 @@ public class VendorServiceImpl implements IVendorService{
 	private SqlSession sqlSession;
 
 
+//	@Override
+//	public VendorDto selectOneVendorEmailBusinessRegiNum(String vendor_email, String business_regi_num) {
+//		VendorDao dao = sqlSession.getMapper(VendorDao.class);
+//		return dao.selectOneVendorEmailBusinessRegiNum(vendor_email, business_regi_num);
+//	}
+	
 	@Transactional(isolation=Isolation.SERIALIZABLE)
 	@Override
 	public void insert(VendorDto dto) throws Exception {
@@ -101,12 +107,13 @@ public class VendorServiceImpl implements IVendorService{
 		return dao.selectAllVendorByBasicAddress(basic_address);
 	}
 
+	/*
 	@Override
 	public BusinessPlaceInfoDto selectOneBusinessPlaceInfo(String email, String business_regi_num) {
 		VendorDao dao = sqlSession.getMapper(VendorDao.class);
 		return dao.selectOneBusinessPlaceInfo(email, business_regi_num);
 	}
-
+*/
 		
 		
 }

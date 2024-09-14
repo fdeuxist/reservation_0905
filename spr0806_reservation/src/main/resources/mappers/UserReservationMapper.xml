@@ -12,10 +12,27 @@ insert into user_reservation values (
     #{business_name}, #{zipcode}, #{basic_address}, #{detail_address},
     #{reservation_date}, #{reservation_use_date}, #{times}, #{times_hhmm}, 
     #{total_service_name}, #{total_service_price}, #{total_required_time},
-    #{user_request_memo}, '1')
+    #{user_request_memo}, '2')
     
 </insert>
 
+<!-- 0913 vendor myorder용 --> 
+<select id="selectAllVendorOrdersNotInStatus" resultType="UserReservationDto">
+select * from user_reservation where vendor_email=#{vendor_email} and business_regi_num=#{business_regi_num} and status not in (#{status})
+</select>
+
+<!-- 1입금대기/2입금완료/3이용완료/
+     4(취소요청)이용자취소(회원요청,사업자승인필요)/
+     5(취소완료)사업자취소(사업자요청,회원승인불필요)/6환불대기/7환불완료 -->
+<!-- 0906 vendor가 취소요청 들어온거 승인해줄때 씀 -->
+<update id="cancelOrderConfirm">
+update user_reservation set status='5' where reservation_number=#{reservation_number} and status='4'
+</update>
+
+<!-- 0906 member가 이용완료처리할때 씀 -->
+<update id="orderCompleted">
+update user_reservation set status='3' where reservation_number=#{reservation_number}
+</update>
 
 <update id="tryCancelOrder">
 update user_reservation set status='4' where reservation_number=#{reservation_number}

@@ -28,6 +28,9 @@ public interface UserReservationDao {
             @Param("status") String status, @Param("reservation_number") String reservation_number) throws Exception;
     
 	
+    public void tryCancelOrder(String reservation_number) throws Exception;
+	public ArrayList<UserReservationDto> selectAllMyOrders(String user_email) throws Exception;
+	public UserReservationDto selectOneMyOrder(String reservation_number) throws Exception;
 	
 	
 	

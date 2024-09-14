@@ -11,7 +11,9 @@ public interface IVendorReservationService {
    public VendorReservationDto selectAllEnableVendorsReservation(
          String email, String business_regi_num) throws Exception;
    
-
+   //0906 overloading 컬럼 직접 넣어주기 위해 오버로딩함   특정 벤더 특정 일이 영업중인지 체크하기 위해 사용
+   public VendorReservationDto selectOneVendorsReservation(
+			String email, String business_regi_num, String open_date) throws Exception;
    public VendorReservationDto selectOneVendorsReservation(
          VendorReservationDto dto) throws Exception;
    
@@ -22,6 +24,7 @@ public interface IVendorReservationService {
 	//														'YYYY-MM'
 	
 	// 특정 벤더가 특정 날짜 안에 등록한 시간을 볼 때 씀
+	public VendorReservationDto selectOneOneVendorsMyOneDayReservation(VendorReservationDto dto) throws Exception;
 	public VendorReservationDto selectOneOneVendorsMyOneDayReservation(
 					String email, String business_regi_num, String open_date) throws Exception;
 	// 																'YYYY-MM-DD'
@@ -32,9 +35,15 @@ public interface IVendorReservationService {
 			String email, String business_regi_num, String open_date) throws Exception;
 	//														'YYYY-MM'
    
+	//0903	newOrder로 인한 vendor time update
+	public void newOrderOpenDateTimesUpdate (String times, String email, String business_regi_num, String open_date) throws Exception;
+	   
+	//0904 overloading status 수정용
+	public void closeDay(VendorReservationDto dto) throws Exception;
+	public void openDay(VendorReservationDto dto) throws Exception;
+	//0905 overloading times 수정용 (vendor가 자기 일일 스케줄 수정하기 위함)
+	public void openDateTimesUpdate(VendorReservationDto dto) throws Exception;
    
-   
-
    //=====↓↓↓↓↓↓↓↓↓↓↓↓↓======0813오규원===========
    
    public VendorReservationDto selectAllVendorsReservation(String email, String business_regi_num) throws Exception;

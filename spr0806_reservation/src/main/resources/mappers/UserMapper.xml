@@ -5,6 +5,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.reservation.dao.UserDao">
 
+<!-- 0905 email과name으로 회원찾기  pw변경용-->
+<select id="selectEmailAndName" resultType="UserDTO">
+select * from users where email=#{email} and name=#{name}
+</select>
+<!-- 0905 phone과name으로 회원찾기  pw변경용 -->
+<select id="selectPhoneAndName" resultType="UserDTO">
+select * from users where phone=#{phone} and name=#{name}
+</select>
+<!-- 0905 email과name으로 찾은 회원 pw 변경하기 -->
+<update id="updatePwByEmailAndName">
+update users set 
+password=#{password}
+where email=#{email} and name=#{name}
+</update>
+<!-- 0905 phone과name으로 찾은 회원 pw 변경하기 -->
+<update id="updatePwByPhoneAndName">
+update users set 
+password=#{password}
+where phone=#{phone} and name=#{name}
+</update>
+
 <insert id="insert">
 insert into users (email,password,name,phone,enable)
 values (#{email}, #{password}, #{name}, #{phone}, #{enable})

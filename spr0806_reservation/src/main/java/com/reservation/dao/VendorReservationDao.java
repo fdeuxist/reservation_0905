@@ -31,6 +31,7 @@ public interface VendorReservationDao {
 	//									'YYYY-MM'
 	
 	// 특정 벤더가 특정 날짜 안에 등록한 시간을 볼 때 씀
+	public VendorReservationDto selectOneOneVendorsMyOneDayReservation(VendorReservationDto dto) throws Exception;
 	public VendorReservationDto selectOneOneVendorsMyOneDayReservation(
 					String email, String business_regi_num, String open_date) throws Exception;
 	// 																'YYYY-MM-DD'

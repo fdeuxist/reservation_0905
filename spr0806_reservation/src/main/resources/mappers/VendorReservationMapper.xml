@@ -28,6 +28,14 @@ select * from vendor_reservation
       AND status_flag NOT IN ('0')
 </select>
 
+<!-- 0905 어떤 사업자의 특정 일을 조회 (해당 일의 예약 가능한 시간대를 수정하기 위한 목적) -->
+<select id="selectOneVendorsMyOneDayReservation" parameterType="VendorReservationDto" resultType="VendorReservationDto">
+    SELECT * FROM vendor_reservation 
+    WHERE email = #{email} 
+      AND business_regi_num = #{business_regi_num} 
+      AND open_date = #{open_date} 
+</select>
+
 <!-- 멤버가 특정 벤더 특정달 조회 (멤버가 특정 벤더 조회. 신규 예약의 의도로) -->
 <select id="selectAllOneVendorsYourOneMonthReservations" resultType="VendorReservationDto">
 select * from vendor_reservation
@@ -58,6 +66,20 @@ where email = #{email}
 </select>
 
 
+<!-- 0903	newOrder로 인한 vendor time update -->
+<update id="newOrderOpenDateTimesUpdate">
+   update vendor_reservation set times=#{times} 
+   where email=#{email} 
+   and business_regi_num=#{business_regi_num} 
+   and open_date=#{open_date}
+   and status_flag = '1'
+</update> 
+
+
+
+
+
+
 <!--=====↓↓↓↓↓↓↓↓↓↓↓↓↓======0813오규원===========-->
 
 <select id="selectAllVendorsReservation" resultType="VendorReservationDto">
@@ -81,11 +103,18 @@ where email = #{email}
    and open_date=#{open_date}
 </update> 
 
+<!-- 벤더 자기가 자기거 수정이라 status 상관x    
+     0905   안전하게 status_flag 0 인거만 수정하게변경하도록
+          and status_flag='0'  한줄 추가하고 
+          status_flag도 다시 1로 되돌려줘야해서 관련내용 추가함 -->
 <update id="openDateTimesUpdate">
-   update vendor_reservation set times=#{times} 
+   update vendor_reservation 
+   set times=#{times}, 
+       status_flag='1'
    where email=#{email} 
    and business_regi_num=#{business_regi_num} 
    and open_date=#{open_date}
+   and status_flag='0'
 </update> 
 
 <!--=====↑↑↑↑↑↑↑↑↑↑↑↑↑======0813오규원===========-->

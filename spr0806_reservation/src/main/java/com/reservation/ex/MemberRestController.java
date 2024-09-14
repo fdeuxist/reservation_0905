@@ -48,7 +48,24 @@ public class MemberRestController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	
+	//0913    
+    @RequestMapping(value = "/memberrest/orderCompleted", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> orderCompleted(
+            @RequestBody Map<String, Object> requestBody) throws Exception {
+        //String email = (String) requestBody.get("email");
+        String reservationNumber = (String) requestBody.get("reservationNumber");
+        String status = (String) requestBody.get("status");
+        logger.info("MemberRestController - /memberrest/orderCompleted   " 
+            + reservationNumber + " " + status);
+        
+        uRService.changeOrdersStatus("3", reservationNumber);//status를3이용완료로
+        //UserReservationDto dto = uRService.selectOneMyOrder(reservationNumber);
+        //System.out.println(dto);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "success");
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 	
 //0902	
     @RequestMapping(value = "/memberrest/tryCancel", method = RequestMethod.POST)
@@ -61,12 +78,14 @@ public class MemberRestController {
             + email + " " + reservationNumber + " " + status);
         
         //예약취소sql
-        if(status.equals("1")||status.equals("2"))//1입금대기 2입금완료
+        if(status.equals("1")||status.equals("2")) {//1입금대기 2입금완료
             uRService.tryCancelOrder(reservationNumber);//status를4취소대기로
+        }
         //UserReservationDto dto = uRService.selectOneMyOrder(reservationNumber);
-        //System.out.println(dto);
+        //dto model에 담아서 수정된 페이지 보여줘야됨
         Map<String, Object> response = new HashMap<>();
         response.put("message", "success");
+        //response.put("dto", reservationDto);
         
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -118,7 +137,7 @@ public class MemberRestController {
 	
 	
 	
-    @RequestMapping(value = "/memberrest/mmonthlyschedule", method = RequestMethod.POST)
+	@RequestMapping(value = "/memberrest/mmonthlyschedule", method = RequestMethod.POST)
     public Map<String, Object> mMonthlySchedule(@RequestBody SelectedItemsDto dto, 
     		Model model, HttpSession session) throws Exception {
         logger.info("MemberRestController - /memberrest/mmonthlyschedule   dto " + dto);
@@ -145,18 +164,28 @@ public class MemberRestController {
         List<cardObjDto> cardObjDtos = dto.getSelectedItems();
         session.setAttribute("myPick", null);
         session.setAttribute("myPick", cardObjDtos);
+    	//String myPickServiceNames = "";
+    	
+    	List<String> serviceNames = new ArrayList<>();
+    	// 항목을 추가하는 로직
+    	for (cardObjDto card : cardObjDtos) {
+    	    serviceNames.add(card.getServicename());
+    	}
+    	// 모든 항목을 쉼표로 구분하여 연결
+    	String myPickServiceNames = String.join(", ", serviceNames);
+    	
         if (cardObjDtos != null) {
             for (cardObjDto item : cardObjDtos) {
                 System.out.println(item.toString());
             }
         } else {
-            System.out.println("Selected items are null.");
+            //System.out.println("null");
             //왜널?배열인데 리스트로 받아서? dto가 정확히일치하지않아서? -> dto 필드 정확히 일치시켜주니 잘 됨
         }
-        
+        session.setAttribute("myPickServiceNames", myPickServiceNames);
         //dto.getSubItems().size()
         //session.setAttribute("vendorList", vendorList);
-        
+        System.out.println("myPickServiceNames : " + myPickServiceNames);
         Map<String, Object> response = new HashMap<>();
         response.put("redirectUrl", "/ex/member/mmonthlyschedule");
         return response;

@@ -27,10 +27,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
 import com.reservation.dto.ServiceItemsDto;
+import com.reservation.dto.UserReservationDto;
 import com.reservation.dto.VendorReservationDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IBusinessPlaceInfoService;
 import com.reservation.service.IServiceItemsService;
+import com.reservation.service.IUserReservationService;
 import com.reservation.service.IUserService;
 import com.reservation.service.IVendorReservationService;
 import com.reservation.service.IVendorService;
@@ -47,6 +49,9 @@ public class VendorController {
 	@Autowired
 	private IVendorReservationService vRService;
 
+    @Autowired
+    private IUserReservationService uRService;
+    
 	@Autowired
 	private IBusinessPlaceInfoService bpService;
 	
@@ -60,17 +65,59 @@ public class VendorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
+	//0913 
+    @RequestMapping(value = "/vendor/myorders", method = RequestMethod.GET)
+    public String vendorrMyorders(HttpSession session, Model model) throws Exception {
+        System.out.println("VendorController - /vendor/myorders");
+        String vendor_email = (String)session.getAttribute("loginEmail");
+        String business_regi_num = (String)session.getAttribute("loginBusiness_regi_num");
+//        String open_date = (String)session.getAttribute("open_date");
+        String status="3";
+        ArrayList<UserReservationDto> dtoList = uRService.selectAllVendorOrdersNotInStatus(vendor_email, business_regi_num, status);
+        model.addAttribute("dtoList", dtoList);
+        
+        return "/vendor/myorders";
+    }
+    
+    //0913 
+    @RequestMapping(value = "/vendor/orderinfo", method = RequestMethod.GET)
+    public String orderinfo(String reservationNumber, HttpSession session, Model model) throws Exception {
+        logger.info("VendorController - /vendor/orderinfo");
+        UserReservationDto myOrder = 
+                 uRService.selectOneMyOrder(reservationNumber);
+        model.addAttribute("myOrder", myOrder);
+        return "/vendor/orderinfo";
+    }
+    
+    
+	
+	
+//0904	임시, 테스트중  /vendor/dailyschedule대신사용예정
+	@RequestMapping(value = "/vendor/dailyscheduleupdate", method = RequestMethod.GET)
+	public String vendorScheduleupdate(
+			@RequestParam("date") String date,
+	        Model model) {
+		////////////
+//        model.addAttribute("vendorEmail", email);
+//        model.addAttribute("vendorBusiness_regi_num", business_regi_num);
+		model.addAttribute("selectedDate", date);
+		System.out.println("VendorController - /vendor/dailyscheduleupdate");
+		return "/vendor/dailyscheduleupdate";
+	}
+	
+	
+	//미사용예정 update사용예정 
 	@RequestMapping(value = "/vendor/dailyschedule", method = RequestMethod.GET)
-	public String DailySchedule(@RequestParam("date") String date, HttpSession session, Model model) {
+    public String DailySchedule(@RequestParam("date") String date, HttpSession session, Model model) {
 		System.out.println("VendorController - /vendor/dailyschedule(get) selectedDate:" + date);
-
+		
 //		String email = (String)session.getAttribute("loginEmail");
 //		String business_regi_num = (String)session.getAttribute("loginBusiness_regi_num");
 //		String open_date = (String)session.getAttribute("open_date");
 		model.addAttribute("selectedDate", date);
-		// System.out.println(date);
+		//System.out.println(date);
 		return "/vendor/dailyschedule";
-	}
+    }
 
 	@RequestMapping(value = "/vendor/monthlyschedule", method = RequestMethod.GET)
 	public String MonthlySchedule(HttpSession session, Model model) {
@@ -123,16 +170,17 @@ public class VendorController {
 	}
 
 	@RequestMapping(value = "/vendor/shopinfo", method = RequestMethod.GET)
-	public String shopinfo(HttpSession session, Model model) throws Exception {
-		System.out.println("VendorController - /vendor/shopinfo(post)");
+    public String shopinfo(HttpSession session, Model model) throws Exception {
+		System.out.println("VendorController - /vendor/shopinfo(get)");
+		
 		String email = (String) session.getAttribute("loginEmail");
-		String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
-		System.out.println(email + "  ddddddddd   " + business_regi_num);
-		BusinessPlaceInfoDto dto = bpService.selectOneBusinessPlaceInfo(email, business_regi_num);
-		System.out.println("aaaaaa   " + dto);
-		model.addAttribute("businessPlaceInfo", dto);
-		return "/vendor/shopinfo";
-	}
+        String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
+        System.out.println(email + "  ddddddddd   " + business_regi_num);
+        BusinessPlaceInfoDto dto = bpService.selectOneBusinessPlaceInfo(email, business_regi_num);
+        System.out.println("aaaaaa   "+dto);
+        model.addAttribute("businessPlaceInfo", dto);
+        return "/vendor/shopinfo";
+    }
 
 	@RequestMapping(value = "/vendor/shopinfo", method = RequestMethod.POST)
 	public String shopinfoDB(BusinessPlaceInfoDto dto, HttpSession session,
