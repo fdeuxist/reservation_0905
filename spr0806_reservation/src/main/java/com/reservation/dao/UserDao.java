@@ -8,6 +8,24 @@ import com.reservation.dto.UserDto;
 
 public interface UserDao {
 
+
+	//0905 pw변경하기위해 계정찾는용도
+	public UserDto selectEmailAndName(
+			@Param("email") String email, 
+			@Param("name") String name) throws Exception;
+	public UserDto selectPhoneAndName(
+			@Param("phone") String phone, 
+			@Param("name") String name) throws Exception;
+	//0905 찾은계정으로pw변경하는용도
+	public void updatePwByEmailAndName(
+			@Param("password") String password, 
+			@Param("email") String email, 
+			@Param("name") String name) throws Exception;
+	public void updatePwByPhoneAndName(
+			@Param("password") String password,
+			@Param("phone") String phone, 
+			@Param("name") String name) throws Exception;
+	
 	public void insert(UserDto dto) throws Exception;
 	
 	public ArrayList<UserDto> selectAll() throws Exception;
@@ -18,9 +36,12 @@ public interface UserDao {
 	
 	public void update(UserDto dto) throws Exception;
 
-	public void updateEnable(@Param("enable")Integer enable, @Param("email")String email) throws Exception;
+	public void updateEnable(
+			@Param("enable")Integer enable, 
+			@Param("email")String email) throws Exception;
 	
 	public void delete(String email) throws Exception;
+	
 	public void mUpdate(UserDto dto) throws Exception;
 	
 }

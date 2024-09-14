@@ -13,6 +13,11 @@ public interface VendorReservationDao {
 	public VendorReservationDto selectAllEnableVendorsReservation(String email, String business_regi_num)
 			throws Exception;
 
+	//0906 overloading 컬럼 직접 넣어주기 위해 오버로딩함   특정 벤더 특정 일이 영업중인지 체크하기 위해 사용
+	public VendorReservationDto selectOneVendorsReservation(
+			@Param("email") String email, 
+			@Param("business_regi_num") String business_regi_num, 
+			@Param("open_date") String open_date) throws Exception;
 	public VendorReservationDto selectOneVendorsReservation(VendorReservationDto dto) throws Exception;
 
 	
@@ -38,6 +43,20 @@ public interface VendorReservationDao {
 				@Param("open_date") String open_date) throws Exception;
 		//									'YYYY-MM'
 	   
+		   
+	//0903 newOrder로 인한 vendor time update
+	public void newOrderOpenDateTimesUpdate(
+			@Param("times") String times,
+			@Param("email") String email,
+			@Param("business_regi_num") String business_regi_num,
+			@Param("open_date") String open_date)
+			throws Exception;
+	
+	//0904 overloading status 수정용
+	public void closeDay(VendorReservationDto dto) throws Exception;
+	public void openDay(VendorReservationDto dto) throws Exception;
+	//0905 overloading times 수정용 (vendor가 자기 일일 스케줄 수정하기 위함)
+	public void openDateTimesUpdate(VendorReservationDto dto) throws Exception;
 	
 	
 	
@@ -45,11 +64,21 @@ public interface VendorReservationDao {
 
 	public VendorReservationDto selectAllVendorsReservation(String email, String business_regi_num) throws Exception;
 
-	public void closeDay(String email, String business_regi_num, String open_date) throws Exception;
+	public void closeDay(
+			@Param("email") String email, 
+			@Param("business_regi_num") String business_regi_num,
+			@Param("open_date") String open_date) throws Exception;
 
-	public void openDay(String email, String business_regi_num, String open_date) throws Exception;
+	public void openDay(
+			@Param("email") String email, 
+			@Param("business_regi_num") String business_regi_num,
+			@Param("open_date") String open_date) throws Exception;
 
-	public void openDateTimesUpdate(String times, String email, String business_regi_num, String open_date)
+	public void openDateTimesUpdate(
+			@Param("times") String times,
+			@Param("email") String email,
+			@Param("business_regi_num") String business_regi_num,
+			@Param("open_date") String open_date)
 			throws Exception;
 
 	// =====↑↑↑↑↑↑↑↑↑↑↑↑↑======0813오규원===========
