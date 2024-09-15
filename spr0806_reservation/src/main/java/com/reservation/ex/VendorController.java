@@ -162,9 +162,9 @@ public class VendorController {
 		
 		String email = (String) session.getAttribute("loginEmail");
         String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
-        System.out.println(email + "  ddddddddd   " + business_regi_num);
+        System.out.println("session email : " + email + "  session regi_num:  " + business_regi_num);
         BusinessPlaceInfoDto dto = bpService.selectOneBusinessPlaceInfo(email, business_regi_num);
-        System.out.println("aaaaaa   "+dto);
+        System.out.println("BusinessPlaceInfoDto : " + dto);
         model.addAttribute("businessPlaceInfo", dto);
         return "/vendor/shopinfo";
     }

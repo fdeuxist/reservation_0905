@@ -204,6 +204,15 @@ public class MemberController {
         return "/member/orderinfo";
     }
 	
+    @RequestMapping(value = "/member/reviewsWrite", method = RequestMethod.GET)
+    public String reviewsWrite(String reservationNumber, HttpSession session, Model model) throws Exception {
+        logger.info("MemberController - /member/reviewsWrite");
+        model.addAttribute("reservationNumber", reservationNumber);
+        //model.addAttribute("reservationNumber", reservationNumber);
+        return "/member/reviewsWrite";
+    }
+    
+    
 	@RequestMapping(value = "/member/searchplace", method = RequestMethod.GET)
     public String searchplace(Model model, HttpSession session) throws Exception {
         logger.info("MemberController - /member/searchplace");

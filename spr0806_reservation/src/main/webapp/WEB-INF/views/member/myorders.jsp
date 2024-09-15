@@ -24,7 +24,9 @@
                     <c:choose>
                     <c:when test="${order.status == 1}">입금대기</c:when>
                     <c:when test="${order.status == 2}">입금완료</c:when>
-                    <c:when test="${order.status == 3}">이용완료</c:when>
+                    <c:when test="${order.status == 3}">이용완료   
+			        <a href="${pageContext.request.contextPath}/member/reviewsWrite?reservationNumber=${order.reservation_number}">이용후기작성하기</a>
+			        </c:when>
                     <c:when test="${order.status == 4}">취소대기</c:when>
                     <c:when test="${order.status == 5}">취소완료</c:when>
                     <c:when test="${order.status == 6}">환불대기</c:when>
