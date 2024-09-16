@@ -21,7 +21,9 @@ select * from vendor_reservation
 
 <!-- 어떤 사업자의 영업중인 특정 일을 조회 (해당 일의 예약 가능한 시간대를 조회하기 위한 목적) -->
 <select id="selectOneVendorsReservation" parameterType="VendorReservationDto" resultType="VendorReservationDto">
-    SELECT * FROM vendor_reservation 
+    select email, business_regi_num, 
+        to_char(open_date, 'YYYY-MM-DD') as open_date, times, status_flag 
+    from vendor_reservation 
     WHERE email = #{email} 
       AND business_regi_num = #{business_regi_num} 
       AND open_date = #{open_date} 

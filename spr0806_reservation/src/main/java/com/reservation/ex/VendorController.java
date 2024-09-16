@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
@@ -132,7 +133,8 @@ public class VendorController {
 	}
 
 	@RequestMapping(value = "/vendor/serviceiteminsert", method = RequestMethod.POST)
-	public String ServiceItemInsertDB(ServiceItemsDto dto, HttpSession session) throws Exception {
+	public String ServiceItemInsertDB(ServiceItemsDto dto, 
+            HttpSession session, RedirectAttributes rttr) throws Exception {
 
 		System.out.println("VendorController - /vendor/serviceiteminsert(post)");
 		String email = (String) session.getAttribute("loginEmail");
@@ -152,7 +154,8 @@ public class VendorController {
 //        dto.setItem_status(itemStatus);
 
 		sIService.insertMyItem(dto);
-
+        rttr.addFlashAttribute("msg","success");
+        
 		return "redirect:/vendor/serviceiteminsert";
 	}
 

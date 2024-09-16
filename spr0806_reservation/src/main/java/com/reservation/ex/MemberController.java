@@ -200,6 +200,7 @@ public class MemberController {
         logger.info("MemberController - /member/orderinfo");
         UserReservationDto myOrder = 
                  uRService.selectOneMyOrder(reservationNumber);
+        logger.info("UserReservationDto : " + myOrder);
         model.addAttribute("myOrder", myOrder);
         return "/member/orderinfo";
     }

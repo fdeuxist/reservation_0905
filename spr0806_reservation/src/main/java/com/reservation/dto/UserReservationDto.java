@@ -103,8 +103,8 @@ create table user_reservation (
 		this.zipcode = zipcode;
 		this.basic_address = basic_address;
 		this.detail_address = detail_address;
-		this.reservation_date = reservation_date;
-		this.reservation_use_date = reservation_use_date;
+        this.reservation_date = reservation_date.substring(0, 10);
+        this.reservation_use_date = reservation_use_date.substring(0, 10);
 		this.times = times;
 		this.times_hhmm = times_hhmm;
 		this.total_service_name = total_service_name;
@@ -224,19 +224,19 @@ create table user_reservation (
 	}
 
 	public String getReservation_date() {
-		return reservation_date;
+        return reservation_date.substring(0, 10);
 	}
 
 	public void setReservation_date(String reservation_date) {
-		this.reservation_date = reservation_date;
+		this.reservation_date = reservation_date.substring(0, 10);
 	}
 
 	public String getReservation_use_date() {
-		return reservation_use_date;
+		return reservation_use_date.substring(0, 10);
 	}
 
 	public void setReservation_use_date(String reservation_use_date) {
-		this.reservation_use_date = reservation_use_date;
+		this.reservation_use_date = reservation_use_date.substring(0, 10);
 	}
 
 	public String getTimes() {

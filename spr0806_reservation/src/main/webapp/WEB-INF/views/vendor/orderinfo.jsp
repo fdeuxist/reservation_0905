@@ -18,7 +18,7 @@
         <p><span class="label">주소:</span> ${myOrder.zipcode} </p>
         <p><span class="label"></span> ${myOrder.basic_address}</p>
         <p><span class="label"></span> ${myOrder.detail_address}</p>
-        <p><span class="label">이용(방문)예정일:</span> ${myOrder.reservation_use_date}"</p>
+        <p><span class="label">이용(방문)예정일:</span> ${myOrder.reservation_use_date}</p>
         <p><span class="label">이용예정 시간:</span> ${myOrder.times_hhmm}</p>
         <p><span class="label">예약 목록:</span> ${myOrder.total_service_name}</p>
         <p><span class="label">예약 금액:</span> ${myOrder.total_service_price}</p>
