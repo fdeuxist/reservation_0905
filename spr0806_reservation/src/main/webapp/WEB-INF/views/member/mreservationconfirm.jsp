@@ -11,7 +11,8 @@
     
     <form:form action="/ex/member/reservationComplete" id="reservationCompleteFrm" method="post" modelAttribute="dto">
         <!-- 예약(주문)번호 -->
-            <form:input path="reservation_number" id="reservationNumber" type="hidden" />
+            <%--<form:input path="reservation_number" id="reservationNumber" type="hidden" /> --%>
+            <input name="reservation_number" id="reservationNumber" type="hidden" />
         <div>
             <label for="userEmail">회원 이메일:</label>
             <form:input path="user_email" id="userEmail" type="text" />
@@ -56,7 +57,8 @@
         </div>
         <div>
             <!-- 예약 발생 날짜: -->
-            <form:input path="reservation_date" id="reservationDate" type="hidden" />
+            <%--<form:input path="reservation_date" id="reservationDate" type="text"/>--%>
+            <input name="reservation_date" id="reservationDate" type="hidden" />
         </div>
         <div>
             <label for="reservationUseDate">이용 예정 날짜:</label>
