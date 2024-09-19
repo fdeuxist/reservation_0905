@@ -6,12 +6,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.reservation.dao.BusinessPlaceImagePathDao">
 
 <!-- 0906 특정벤더의 모든 메인 이미지를 메인이미지가 아니게 변경 -->
+<!-- 0912 메인이미지 세팅 전에 해주는 작업으로 만약을 위해 모든 이미지 N으로 만들고 setMainImage 실행해서 업데이트하기 -->
 <update id="updateIsMainYToN">
     update business_place_image_path
     set is_main = 'N'
     where email = #{email}
     and business_regi_num = #{business_regi_num}
-    and is_main = 'Y'
+
 </update>
 
 <!-- 0906 특정벤더의 특정파일을 메인이미지로 변경 -->
@@ -91,6 +92,16 @@ select email, business_regi_num, place_img_path
     where email=#{email} and business_regi_num=#{business_regi_num}
 </select>
 
+
+
+<!-- 0912 N값인 모든 이미지 조회하기 -->
+<select id="selectNormalImage" resultType="com.reservation.dto.BusinessPlaceImagePathDto">
+ select * 
+    from business_place_image_path
+    where email = #{email}
+    and business_regi_num = #{business_regi_num}
+    and is_main = 'N'
+</select>
 
 
 </mapper>
