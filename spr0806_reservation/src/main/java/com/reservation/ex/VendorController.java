@@ -17,11 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -359,6 +362,40 @@ public class VendorController {
 
 
 	// 이미지 삭제 기능
+    // rest처리예정
+
+    // 이미지 리스트 출력
+    @RequestMapping(value = "/vendor/imgList", method = RequestMethod.GET)
+    public void imgList(HttpSession session, Model model) throws Exception {
+        System.out.println("VendorController - /vendor/scheduleinsert");
+        String email = (String) session.getAttribute("loginEmail");
+
+        String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
+        System.out.println(business_regi_num);
+        System.out.println(email);
+        ArrayList<BusinessPlaceImagePathDto> imgList = bpiService.selectAllMyBusinessPlaceImgPaths(email,
+                business_regi_num);
+        System.out.println(imgList);
+        model.addAttribute("imageList", imgList);
+
+    }
+
+    // 이미지 삭제 0919 김하겸
+    @GetMapping("/deleteImage")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> deleteImage(@RequestParam String imagePath) throws Exception {
+        // 이미지 삭제 로직 구현
+        boolean flag = bpiService.deleteImage(imagePath);// 이미지 삭제 메소드 호출
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", flag);
+
+        if (!flag) {
+            response.put("message", "이미지 삭제에 실패했습니다.");
+        }
+
+        return ResponseEntity.ok(response); // JSON 형태로 반환
+
+    }
 
 
 }

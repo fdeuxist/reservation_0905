@@ -35,6 +35,7 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 	public void deleteImage(String place_img_path) throws Exception {
 		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
 		dao.deleteImage(place_img_path);
+		return false;
 	}
 	// 0906 특정 벤더에게 대표 이미지가 있는지 확인  result type int
 	@Override
