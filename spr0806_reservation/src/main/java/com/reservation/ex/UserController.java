@@ -99,6 +99,8 @@ public class UserController {
 		System.out.println("UserController - /user/insert(get)");
 		int ran = new Random().nextInt(900000) + 100000;
 		model.addAttribute("random", ran);
+		int ran2 = new Random().nextInt(900000) + 100000;
+		model.addAttribute("randomp", ran2);
 		return "/user/insert";
 	}
 	
@@ -115,31 +117,21 @@ public class UserController {
 	}
 	
 	
-
+/*
 	@RequestMapping(value = "/user/scheduleselect", method = RequestMethod.GET)
 	public String userScheduleselect(Locale locale, Model model) {
 		System.out.println("UserController - /user/scheduleselect(get)");
 		return "/user/scheduleselect";
 	}
-	
-	
-	
-	
-	
-	
-	
-	/*
-	//이건 여기서 처리할게 아니라 rest에서 해야될듯
-	@RequestMapping(value = "/user/scheduleselect", method = RequestMethod.POST)
-	@ResponseBody
-	public VendorReservationDto userScheduleselectDB(@RequestBody VendorReservationDto dto, 
-			RedirectAttributes rttr) throws Exception{
-		System.out.println("UserController - /user/scheduleselect(post)");
-		
-		System.out.println(dto.toString());
-		
-		return vRService.selectOneVendorsReservation(dto);
+*/	
+	//0905
+	@RequestMapping(value = "/user/findMyAccount", method = RequestMethod.GET)
+	public String userFindId(Locale locale, Model model) {
+		System.out.println("UserController - /user/findMyAccount(get)");
+		int ran = new Random().nextInt(900000) + 100000;
+		model.addAttribute("random", ran);
+		return "/user/findMyAccount";
 	}
-	*/
+	
 	
 }

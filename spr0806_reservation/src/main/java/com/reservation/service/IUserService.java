@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import com.reservation.dto.UserDto;
 
 public interface IUserService {
+
+	//0905 pw변경하기위해 계정찾는용도
+	public UserDto selectEmailAndName(String email, String name) throws Exception;
+	public UserDto selectPhoneAndName(String phone, String name) throws Exception;
+	//0905 찾은계정으로pw변경하는용도
+	public void updatePwByEmailAndName(String password, String email, String name) throws Exception;
+	public void updatePwByPhoneAndName(String password, String phone, String name) throws Exception;
 	
 	public void insert(UserDto dto) throws Exception;
 	

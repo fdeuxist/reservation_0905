@@ -6,16 +6,13 @@
 <%@include file="../include/header.jsp"%>
 <div class="header-placeholder"></div>
 <main>
-    <h2>${result }</h2>
-
-    <p>예약 번호: ${dto.reservation_number}</p>
-    <p>유저 이메일: ${dto.user_email}</p>
-    <p>유저 이름: ${dto.user_name}</p>
-    <p>이용 예정 날짜: ${dto.reservation_use_date}</p>
-    <p>이용 예정 시간: ${dto.times_hhmm}</p>
-    <p>서비스 이름들: ${dto.total_service_name}</p>
-    <p>서비스 가격 총 합: ${dto.total_service_price}</p>
-
-    <a href="/ex/member/member">메인으로 돌아가기</a>
+	<div>
+        <a href="${pageContext.request.contextPath}/member/myorders">주문 내역 보기</a><br>
+        <a href="${pageContext.request.contextPath}/member/update">회원 정보 수정</a>
+    </div>
+    
+${sessionScope.loginName}<br>
+${sessionScope.loginEmail}<br>
+${sessionScope.loginAuthority}<br>
 </main>
 <%@include file="../include/footer.jsp"%>

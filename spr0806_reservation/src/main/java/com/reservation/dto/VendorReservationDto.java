@@ -39,7 +39,7 @@ public class VendorReservationDto {
 		super();
 		this.email = email;
 		this.business_regi_num = business_regi_num;
-		this.open_date = open_date;
+		this.open_date = open_date.substring(0, 10);
 		this.times = times;
 		this.status_flag = status_flag;
 	}
@@ -61,10 +61,10 @@ public class VendorReservationDto {
 		this.business_regi_num = business_regi_num;
 	}
 	public String getOpen_date() {
-		return open_date;
+		return open_date.substring(0, 10);
 	}
 	public void setOpen_date(String open_date) {
-		this.open_date = open_date;
+		this.open_date = open_date.substring(0, 10);
 	}
 	public String getTimes() {
 		return times;

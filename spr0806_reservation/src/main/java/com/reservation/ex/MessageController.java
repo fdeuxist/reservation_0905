@@ -11,10 +11,17 @@ import net.nurigo.sdk.message.response.MessageListResponse;
 import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.reservation.dto.UserDto;
+import com.reservation.service.IUserService;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,14 +31,22 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+@RestController
 public class MessageController {
 	
 	final DefaultMessageService messageService;
-
+	
+	@Autowired
+	private IUserService userService;
+		
     public MessageController() {
-        // 반드시 계정 내 등록된 유효한 API 키, API Secret Key를 입력해주셔야 합니다!
         this.messageService = NurigoApp.INSTANCE.initialize("NCSXS9DBIZWYJVQE", "DAXFAQAZRU0A3E2PSJB1MRJPGJZWP7TA", "https://api.coolsms.co.kr");
     }
 
@@ -92,6 +107,7 @@ public class MessageController {
      */
     @PostMapping("/send-one")
     public SingleMessageSentResponse sendOne() {
+    	System.out.println();
         Message message = new Message();
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
         message.setFrom("01063188216");
@@ -221,4 +237,86 @@ public class MessageController {
 
         return balance;
     }
+    
+    
+    
+    
+    
+    
+    @GetMapping("/createPhoneCheck")
+    public SingleMessageSentResponse sendTest(@RequestParam String phone, @RequestParam int random, HttpServletRequest req) {
+		System.out.println("MessageController - /createPhoneCheck  " + phone);
+    	
+		int ran = new Random().nextInt(900000) + 100000;
+		HttpSession session = req.getSession(true);
+		String authCode = String.valueOf(ran);
+		session.setAttribute("authCodeP", authCode);
+		session.setAttribute("randomP", random);
+
+		String subject = "회원가입 인증 코드 발급 안내 입니다. ";
+		subject += "귀하의 인증 코드는 " + authCode + " 입니다.";
+		
+        Message message = new Message();
+        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+        message.setFrom("01063188216");
+        message.setTo(phone);
+        message.setText(subject);
+
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        System.out.println(response);
+
+        return response;
+    }
+    
+    
+    
+    //0905 findMyAccount 관련 phone과name기준으로 pw찾기
+    @GetMapping("/findPWByPhoneAndName")
+    public Map<String, Object> findPWByPhoneAndName(
+    		@RequestParam String email,
+			@RequestParam String phone,
+			@RequestParam String name, 
+			@RequestParam String findtype, 
+    		@RequestParam int random, HttpServletRequest req) throws Exception {
+		System.out.println("MessageController - /findPWByPhoneAndName  " + phone + " " + name);
+		
+		UserDto dto = userService.selectPhoneAndName(phone, name);
+		Map<String, Object> response = new HashMap<>();
+		if(dto==null) {
+			//phone과이름으로 정보를 찾을 수 없다고 알림
+			response.put("result","2");
+		}else if(dto.getPhone().equals(phone) && dto.getName().equals(name)) {
+			//phone인증번호발송
+			int ran = new Random().nextInt(900000) + 100000;
+			HttpSession session = req.getSession(true);
+			String authCode = String.valueOf(ran);
+			session.setAttribute("authCode", authCode);
+			session.setAttribute("random", random);
+	
+			String subject = "회원정보로 비밀번호 변경하기 인증 코드 발급 안내 입니다. ";
+			subject += "귀하의 인증 코드는 " + authCode + " 입니다.";
+			
+	        Message message = new Message();
+	        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+	        message.setFrom("01063188216");
+	        message.setTo(phone);
+	        message.setText(subject);
+	
+	        //SingleMessageSentResponse smsResponse = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+	        //response.put("message", smsResponse);
+	        response.put("message", subject);	//test용
+			response.put("result","3");
+		}
+        System.out.println(response);
+        return response;
+    }
+  
+    
+    
+    
+    
+    
+    
+    
+    
 }

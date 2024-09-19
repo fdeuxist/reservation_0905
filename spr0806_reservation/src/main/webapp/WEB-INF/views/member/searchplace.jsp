@@ -54,10 +54,10 @@
         </tbody>
     </table>
 </c:if>
-
+<%--
 ${sessionScope.loginName}<br>
 ${sessionScope.loginEmail}<br>
 ${sessionScope.loginAuthority}<br>
-
+ --%>
 </main>
 <%@include file="../include/footer.jsp"%>

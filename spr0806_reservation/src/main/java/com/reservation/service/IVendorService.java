@@ -8,6 +8,8 @@ import com.reservation.dto.VendorDto;
 
 public interface IVendorService {
 
+//	public VendorDto selectOneVendorEmailBusinessRegiNum(String vendor_email, String business_regi_num);
+
 	public void insert(VendorDto dto) throws Exception;
 	
 	public ArrayList<VendorDto> selectAll() throws Exception;
@@ -24,6 +26,6 @@ public interface IVendorService {
 	
 	public ArrayList<VendorDto> selectAllVendorByBasicAddress(String basic_address) throws Exception;
 
-	public BusinessPlaceInfoDto selectOneBusinessPlaceInfo(String email, String businessRegiNum);
+	//public BusinessPlaceInfoDto selectOneBusinessPlaceInfo(String email, String businessRegiNum);
 	
 }
