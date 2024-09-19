@@ -42,12 +42,11 @@
                     <a href="${pageContext.request.contextPath}/vendor/serviceiteminsert">샵메뉴등록</a>
                     <a href="${pageContext.request.contextPath}/vendor/monthlyschedule">월별스케줄목록</a>
                     <a href="${pageContext.request.contextPath}/vendor/scheduleinsert">일일스케줄등록</a>
-                    <a href="#contact">예약요청(주문)목록</a>
-                    <a href="${pageContext.request.contextPath}/vendor/imgList">저장된 이미지 보기</a>
+                    <a href="${pageContext.request.contextPath}/vendor/myorders">예약요청(주문)목록</a>
                 </c:when>
                 <c:when test="${sessionScope.loginAuthority == '일반회원'}">
                     <a href="${pageContext.request.contextPath}/member/searchplace">(샵검색→샵리스트→)</a>
-                    <a href="${pageContext.request.contextPath}/member/myorders">(내주문)</a>
+                    <a href="${pageContext.request.contextPath}/member/mypage">(마이페이지)</a>
                     <a href="#services">Services</a>
                     <a href="#contact">Contact</a>
                 </c:when>

@@ -4,7 +4,7 @@ package com.reservation.dto;
 import java.util.ArrayList;
 
 import com.reservation.dto.BusinessPlaceImagePathDto;
-//벤더 dto와 이미지 경로에 대한 배열 dto
+
 public class VendorAndImageListDto {
 	private ArrayList<VendorDto> vendorList;
 	private ArrayList<BusinessPlaceImagePathDto> mainImageList;

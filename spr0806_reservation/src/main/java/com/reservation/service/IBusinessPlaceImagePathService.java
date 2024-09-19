@@ -17,7 +17,7 @@ public interface IBusinessPlaceImagePathService {
 			@Param("place_img_path") String place_img_path) throws Exception;
 
 	// 0906 특정 벤더 특정 이미지 삭제
-	public boolean deleteImage(String place_img_path) throws Exception;
+	public void deleteImage(String place_img_path) throws Exception;
 
 	// 0906 특정 벤더에게 대표 이미지가 있는지 확인 result type int
 	public int countMainImage(@Param("email") String email, @Param("business_regi_num") String business_regi_num)
@@ -34,8 +34,5 @@ public interface IBusinessPlaceImagePathService {
 			@Param("business_regi_num") String business_regi_num) throws Exception;
 
 	public void insertMyBusinessPlaceImagePath(BusinessPlaceImagePathDto dto) throws Exception;
-	
-	public ArrayList<BusinessPlaceImagePathDto> selectNormalImage(@Param("email") String email, @Param("business_regi_num") String business_regi_num)
-	throws Exception;
 
 }

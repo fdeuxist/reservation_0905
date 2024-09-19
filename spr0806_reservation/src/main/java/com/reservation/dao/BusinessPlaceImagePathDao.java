@@ -35,6 +35,4 @@ public interface BusinessPlaceImagePathDao {
 	public BusinessPlaceImagePathDto selectMainImage(@Param("email") String email,
 			@Param("business_regi_num") String business_regi_num) throws Exception;
 
-	public ArrayList<BusinessPlaceImagePathDto> selectNormalImage(String email, String business_regi_num) throws Exception;
-
 }
