@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
 import com.reservation.dto.ServiceItemsDto;
+
 import com.reservation.dto.UserReservationDto;
 import com.reservation.dto.VendorReservationDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
@@ -177,75 +178,134 @@ public class VendorController {
 	        @RequestParam("multiFile") List<MultipartFile> multiFileList,
 	        @RequestParam("mainImage") MultipartFile mainImage) throws Exception {
 	    System.out.println("VendorController - /vendor/shopinfo(post)");
-	    String email = (String) session.getAttribute("loginEmail");
-	    String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
-	    dto.setEmail(email);
-	    dto.setBusiness_regi_num(business_regi_num);
-	    List<Map<String, String>> fileList = new ArrayList<>();
+
+	    // 업로드 디렉토리 경로
 	    String uploadDir = servletContext.getRealPath("/resources/imgs");
-	    System.out.println(uploadDir);
-	    
-	    // Ensure directory exists
 	    File directory = new File(uploadDir);
 	    if (!directory.exists()) {
 	        directory.mkdirs(); // Create directory if it does not exist
 	    }
 
-	    String mainOriginImg = mainImage.getOriginalFilename();
-	    String originFileExtension = mainOriginImg.substring(mainOriginImg.lastIndexOf("."));
-	    UUID originUUID = UUID.randomUUID();
-	    String uniqueOriginName = originUUID.toString().split("-")[0];
-	    String newOriginName = uniqueOriginName + originFileExtension;
+	    // Vendor 정보 수정하기
+	    String email = (String) session.getAttribute("loginEmail");
+	    String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
+	    dto.setEmail(email);
+	    dto.setBusiness_regi_num(business_regi_num);
 
-	    for (int i = 0; i < multiFileList.size(); i++) {
-	        String originFile = multiFileList.get(i).getOriginalFilename();
-	        String fileExtension = originFile.substring(originFile.lastIndexOf("."));
-	        UUID uuid = UUID.randomUUID();
-	        String uniqueName = uuid.toString().split("-")[0];
-	        String newFileName = uniqueName + fileExtension;
-	        Map<String, String> map = new HashMap<>();
-	        map.put("originFile", originFile);
-	        map.put("newFileName", newFileName);
-	        fileList.add(map);
+	    List<Map<String, String>> fileList = new ArrayList<>();
+
+	    // Main image processing
+	    String mainOriginImg = mainImage.getOriginalFilename();
+	    System.out.println("대표 이미지 파일명: " + mainOriginImg);
+
+	    // 예외 처리: mainOriginImg가 비어있을 경우 업로드를 건너뜀
+	    if (mainOriginImg == null || mainOriginImg.isEmpty()) {
+	        System.out.println("대표 이미지가 비어 있습니다. 업로드를 건너뜁니다.");
+	    } else {
+	        String originFileExtension = "";
+	        int lastDotIndex = mainOriginImg.lastIndexOf(".");
+	        if (lastDotIndex != -1) {
+	            originFileExtension = mainOriginImg.substring(lastDotIndex);
+	        } else {
+	            originFileExtension = ".jpg"; // Default extension if none found
+	        }
+	        
+	        UUID originUUID = UUID.randomUUID();
+	        String uniqueOriginName = originUUID.toString().split("-")[0];
+	        String newOriginName = uniqueOriginName + originFileExtension;
+	        if (mainOriginImg.contains("noimage")) {
+	            newOriginName = "noimage";
+	        }
+
+	        // Upload main image
+	        try {
+	            File uploadMain = new File(uploadDir + File.separator + newOriginName);
+	            System.out.println("Main image path: " + uploadMain.getAbsolutePath());
+	            mainImage.transferTo(uploadMain); // Ensure the main image is also saved
+	            String mainImgPath = "/resources/imgs/" + newOriginName;
+	            BusinessPlaceImagePathDto mainDto = new BusinessPlaceImagePathDto(email, business_regi_num, mainImgPath, "Y");
+	            if (mainDto.getPlace_img_path().contains("noimage")) {
+	                System.out.println("기본 이미지임으로 업로드 및 저장 취소 ...");
+	            } else {
+	                bpiService.insertMyBusinessPlaceImagePath(mainDto);
+	                bpiService.updateIsMainYToN(email, business_regi_num);
+	                bpiService.setMainImage(mainDto.getEmail(), mainDto.getBusiness_regi_num(), mainDto.getPlace_img_path());
+	                System.out.println("메인이미지값은 " + mainDto.getPlace_img_path());
+	                System.out.println("이미지 업로드 성공");
+	            }
+	        } catch (IllegalStateException e) {
+	            System.out.println("업로드 실패");
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            System.out.println("File upload failed due to IO exception");
+	            e.printStackTrace();
+	        }
 	    }
 
-	    try {
-	        for (int i = 0; i < multiFileList.size(); i++) {
-	            File uploadFile = new File(uploadDir + File.separator + fileList.get(i).get("newFileName"));
-	            System.out.println("Uploading file to: " + uploadFile.getAbsolutePath());
-	            multiFileList.get(i).transferTo(uploadFile);
-	            String imgPath = "/resources/imgs/" + fileList.get(i).get("newFileName");
-	            BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, imgPath, "N");
-	            bpiService.insertMyBusinessPlaceImagePath(imgDto);
+	    // Multi-files processing
+	    if (multiFileList.isEmpty()) {
+	        System.out.println("멀티 파일 리스트가 비어 있습니다. 업로드를 건너뜁니다.");
+	    } else {
+	        for (MultipartFile file : multiFileList) {
+	            String originFile = file.getOriginalFilename();
+	            
+	            // originFile이 비어있을 경우 건너뛰기
+	            if (originFile == null || originFile.isEmpty()) {
+	                System.out.println("원본 파일 이름이 비어 있습니다. 해당 파일을 건너뜁니다.");
+	                continue; // 현재 반복을 건너뜁니다.
+	            }
+
+	            System.out.println("신창섭의 절실함은 " + originFile);
+	            String fileExtension = "";
+	            int lastDotIndexFile = originFile.lastIndexOf(".");
+	            if (lastDotIndexFile != -1) {
+	                fileExtension = originFile.substring(lastDotIndexFile);
+	            } else {
+	                fileExtension = ".jpg"; // Default extension if none found
+	            }
+
+	            UUID uuid = UUID.randomUUID();
+	            String uniqueName = uuid.toString().split("-")[0];
+	            String newFileName = uniqueName + fileExtension;
+	            Map<String, String> map = new HashMap<>();
+	            map.put("originFile", originFile);
+	            map.put("newFileName", newFileName);
+	            fileList.add(map);
 	        }
 
-	        File uploadMain = new File(uploadDir + File.separator + newOriginName);
-	        System.out.println("Main image path: " + uploadMain.getAbsolutePath());
-	        mainImage.transferTo(uploadMain); // Ensure the main image is also saved
-	        String mainImgPath = "/resources/imgs/" + newOriginName;
-	        BusinessPlaceImagePathDto mainDto = new BusinessPlaceImagePathDto(email, business_regi_num, mainImgPath, "Y");
-	        bpiService.insertMyBusinessPlaceImagePath(mainDto);
-	        System.out.println("Setting main image with email: " + mainDto.getEmail() +
-	                           ", business_regi_num: " + mainDto.getBusiness_regi_num() +
-	                           ", place_img_path: " + mainDto.getPlace_img_path());
-	        bpiService.setMainImage(mainDto.getEmail(), mainDto.getBusiness_regi_num(), mainDto.getPlace_img_path());
+	        // Upload multi-files
+	        try {
+	            for (int i = 0; i < multiFileList.size(); i++) {
+	                // originFile이 비어있는 경우를 다시 체크
+	                if (fileList.get(i).get("originFile") == null || fileList.get(i).get("originFile").isEmpty()) {
+	                    System.out.println("업로드할 파일이 비어있어 건너뜁니다.");
+	                    continue;
+	                }
 
-	        System.out.println("이미지 업로드 성공");
-	    } catch (IllegalStateException e) {
-	        System.out.println("업로드 실패");
-	        for (int i = 0; i < multiFileList.size(); i++) {
-	            new File(uploadDir + File.separator + fileList.get(i).get("newFileName")).delete();
+	                File uploadFile = new File(uploadDir + File.separator + fileList.get(i).get("newFileName"));
+	                System.out.println("Uploading file to: " + uploadFile.getAbsolutePath());
+	                multiFileList.get(i).transferTo(uploadFile);
+	                String imgPath = "/resources/imgs/" + fileList.get(i).get("newFileName");
+	                BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, imgPath, "N");
+	                bpiService.insertMyBusinessPlaceImagePath(imgDto);
+	            }
+	        } catch (IllegalStateException e) {
+	            System.out.println("업로드 실패");
+	            for (int i = 0; i < multiFileList.size(); i++) {
+	                new File(uploadDir + File.separator + fileList.get(i).get("newFileName")).delete();
+	            }
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            System.out.println("File upload failed due to IO exception");
+	            e.printStackTrace();
 	        }
-	        e.printStackTrace();
-	    } catch (IOException e) {
-	        System.out.println("File upload failed due to IO exception");
-	        e.printStackTrace();
 	    }
 
 	    System.out.println(dto);
 	    bpService.updateMyBusinessPlaceInfo(dto);
-	    return "redirect:/vendor/shopinfo";
+	    return "redirect:/vendor/vendor";
 	}
+
 	
 
 	// vendor 로그인을 하면 vendor 시작페이지로 가면서
@@ -296,5 +356,9 @@ public class VendorController {
 
 		return "/vendor/scheduleinsert";
 	}
+
+
+	// 이미지 삭제 기능
+
 
 }
