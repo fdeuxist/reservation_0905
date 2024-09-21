@@ -10,26 +10,73 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-}
-
-.acontainer {
-	width: 400px;
-	margin: 0 auto;
     text-align: center;
 }
 
+.div1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+}
+
+#datepicker {
+    padding: 15px;
+    font-size: 23px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+#container444 {
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+}
+
+#container282 {
+    display: grid;
+    grid-template-columns: 2fr 8fr 2fr;
+}
+
 #time-buttons {
-	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	gap: 5px;
-	margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    margin-top: 20px;
 }
 
 .time-slot {
-	padding: 10px;
-	text-align: center;
-	border: 1px solid #ccc;
-	cursor: pointer;
+    background-color: white;
+    transition: background-color 0.4s;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid gray;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.time-slot.selected {
+    background-color: #FFEB33;
+    color: #535252;
+    transition: background-color 0.4s;
+}
+
+#submitBtn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 19px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 5px;
+    display: inline-block;
+    background-color: #ffc107;
+}
+
+#submitBtn:hover:enabled {
+    background-color: #e0a800;
 }
 
 
@@ -118,31 +165,41 @@ selectedItemsDto.totalRequiredTime
 selectedItemsDto.totalServicePrice
 <input type="text" id="selectedItemsDto" value="${sessionScope.selectedItemsDto.totalServicePrice}"><br>
  --%>
-<%-- 다음 주문확인 페이지에서 정보들 정리해서 결제 한셈 치고 userreservation테이블로 넘기면 주문완료까지는 진행 --%>
-<br><br>
-<div class="acontainer">
-    <h3>${selectedDate}<br>예약 시간 선택</h3>
-    
-    <div id="time-buttons"></div>
+<%-- 다음 주문확인 페이지에서 정보들 정리해서 userreservation테이블로 넘기면 주문완료 --%>
+<div class="div1">
+	<div id="container444">
+        <div class="empty-space"></div>
+    		<h3>${selectedDate}<br>예약(이용/방문) 시간 선택</h3>
+        <div class="empty-space"></div>
+   	</div>
+    <div id="container282">
+        <div class="empty-space"></div>
+        	<div id="time-buttons"></div>
+        <div class="empty-space"></div>
+    </div>
     <!-- 
     <button type="button" id="getSubmitBtn">g</button>
     <button type="button" id="nextStepBtn">다음단계</button> -->
     
-    <form action="/ex/member/memberReservation" method="POST">
-    <br>
-        <button type="submit" id="nextStepBtn">다음단계</button>
-        <input type="hidden" id="user_email" name="user_email" value="${sessionScope.loginEmail}"><br>
-        <input type="hidden" id="user_name" name="user_name" value="${sessionScope.loginName}" ><br>
-        <input type="hidden" id="user_phone" name="user_phone" value="${sessionScope.loginPhone}" ><br>
-        <input type="hidden" id="vendor_email" name="vendor_email" value="${sessionScope.selectedItemsDto.email}" ><br>
-        <input type="hidden" id="business_regi_num" name="business_regi_num" value="${sessionScope.selectedItemsDto.business_regi_num}" ><br>
-        <input type="hidden" id="reservation_use_date" name="reservation_use_date" value="${selectedDate}"><br>
-        <input type="hidden" id="times" name="times" value=""><br>
-        <input type="hidden" id="times_hhmm" name="times_hhmm" value=""><br><!-- HH:mm -->
-        <input type="hidden" id="total_service_name" name="total_service_name" value="${sessionScope.myPickServiceNames }"><br>
-        <input type="hidden" id="total_service_price" name="total_service_price" value="${sessionScope.selectedItemsDto.totalServicePrice}"><br>
-        <input type="hidden" id="total_required_time" name="total_required_time" value="${sessionScope.selectedItemsDto.totalRequiredTime}"><br>
-    </form>
+    <div id="container444">
+        <div class="empty-space"></div>
+		    <form action="/ex/member/memberReservation" method="POST">
+		    <br>
+		        <button type="submit" id="nextStepBtn">다음단계</button>
+		        <input type="hidden" id="user_email" name="user_email" value="${sessionScope.loginEmail}"><br>
+		        <input type="hidden" id="user_name" name="user_name" value="${sessionScope.loginName}" ><br>
+		        <input type="hidden" id="user_phone" name="user_phone" value="${sessionScope.loginPhone}" ><br>
+		        <input type="hidden" id="vendor_email" name="vendor_email" value="${sessionScope.selectedItemsDto.email}" ><br>
+		        <input type="hidden" id="business_regi_num" name="business_regi_num" value="${sessionScope.selectedItemsDto.business_regi_num}" ><br>
+		        <input type="hidden" id="reservation_use_date" name="reservation_use_date" value="${selectedDate}"><br>
+		        <input type="hidden" id="times" name="times" value=""><br>
+		        <input type="hidden" id="times_hhmm" name="times_hhmm" value=""><br><!-- HH:mm -->
+		        <input type="hidden" id="total_service_name" name="total_service_name" value="${sessionScope.myPickServiceNames }"><br>
+		        <input type="hidden" id="total_service_price" name="total_service_price" value="${sessionScope.selectedItemsDto.totalServicePrice}"><br>
+		        <input type="hidden" id="total_required_time" name="total_required_time" value="${sessionScope.selectedItemsDto.totalRequiredTime}"><br>
+		    </form>
+        <div class="empty-space"></div>
+   	</div>
 </div>
 
 </div>

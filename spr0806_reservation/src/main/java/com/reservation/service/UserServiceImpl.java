@@ -19,6 +19,18 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private SqlSession sqlSession;
 
+    @Override
+    public int checkEmail(String email) throws Exception {
+        UserDao dao=sqlSession.getMapper(UserDao.class);
+        return dao.checkEmail(email);
+    }
+
+    @Override
+    public int checkPhone(String phone) throws Exception {
+        UserDao dao=sqlSession.getMapper(UserDao.class);
+        return dao.checkPhone(phone);
+    }
+    
 	//0905 pw변경하기위해 계정찾는용도
 	@Override
 	public UserDto selectEmailAndName(String email, String name) throws Exception {

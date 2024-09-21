@@ -24,13 +24,31 @@ public class UserReservationServiceImpl implements IUserReservationService {
 	@Autowired
 	private IVendorReservationService vRService;
 
-    //0913 vendor my order용
+	//0913 vendor my order용
     @Override
     public ArrayList<UserReservationDto> selectAllVendorOrdersNotInStatus(
             String vendor_email, String business_regi_num, String status) throws Exception {
         UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
         return dao.selectAllVendorOrdersNotInStatus(vendor_email, business_regi_num, status);
     }
+    
+    //0916 vendor myorder 상태별 주문, 페이지적용 count
+	@Override
+	public int countVendorOrdersStatus(String vendor_email, String business_regi_num, String status) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.countVendorOrdersStatus(vendor_email, business_regi_num, status);
+	}
+
+	//0916 vendor myorder 상태별 주문, 페이지적용
+	@Override
+	public ArrayList<UserReservationDto> selectAllVendorOrdersStatusAndPage(String vendor_email,
+			String business_regi_num, String status, String currPageNum) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		return dao.selectAllVendorOrdersStatusAndPage(vendor_email, business_regi_num, status, currPageNum);
+	}
+    
+    
+    
     
 	//0903 new
 	@Transactional(isolation=Isolation.SERIALIZABLE)

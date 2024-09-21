@@ -21,9 +21,9 @@ body {
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">예약 장소 검색</h5>
-                    <p class="card-text">원하는 서비스, 원하는 장소를 찾아보세요.</p>
-                    <a href="${pageContext.request.contextPath}/member/searchplace" class="btn btn-primary">검색하기</a>
+                    <h5 class="card-title">내 사업장 정보</h5>
+                    <p class="card-text">사업장 정보를 등록하고 수정합니다.</p>
+                    <a href="${pageContext.request.contextPath}/vendor/shopinfo" class="btn btn-primary">검색하기</a>
                 </div>
             </div>
         </div>
@@ -31,9 +31,29 @@ body {
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">주문 내역 보기</h5>
-                    <p class="card-text">주문 내역을 확인하세요.</p>
-                    <a href="${pageContext.request.contextPath}/member/myorders" class="btn btn-primary">확인하기</a>
+                    <h5 class="card-title">내 서비스 등록</h5>
+                    <p class="card-text">새로운 서비스를 등록합니다.</p>
+                    <a href="${pageContext.request.contextPath}/vendor/serviceiteminsert" class="btn btn-primary">등록하기</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">스케줄 관리</h5>
+                    <p class="card-text">영업중으로 등록한 날을 조회 하며<br>일일 스케줄의 등록, 수정을 합니다</p>
+                    <a href="${pageContext.request.contextPath}/vendor/monthlyschedule" class="btn btn-primary">등록하기</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">예약 내역 보기</h5>
+                    <p class="card-text">고객의 예약 내역을 확인하세요.</p>
+                    <a href="${pageContext.request.contextPath}/vendor/myorders" class="btn btn-primary">확인하기</a>
                 </div>
             </div>
         </div>
@@ -48,15 +68,6 @@ body {
             </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">사업자회원으로 전환하기</h5>
-                    <p class="card-text">서비스를 제공하려면 사업자회원으로 전환하세요.</p>
-                    <a href="${pageContext.request.contextPath}/member/membertovendor" class="btn btn-primary">전환하기</a>
-                </div>
-            </div>
-        </div>
 
     
     <%-- 

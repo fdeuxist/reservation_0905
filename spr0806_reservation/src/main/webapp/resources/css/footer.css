@@ -1,5 +1,4 @@
-/* 푸터 스타일 */
-footer {
+#footer {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -7,11 +6,6 @@ footer {
     background-color: #3C1E1E;
     color: #fff;
     text-align: center;
-    line-height: 0px; /* 텍스트를 수직 중앙에 배치 */
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 (선택 사항) */
-}
-
-/* 페이지 내용 아래 여백 추가 */
-.content {
-    padding-bottom: 70px; /* 푸터 높이보다 약간 더 큰 여백 */
+    line-height: 32px;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 }

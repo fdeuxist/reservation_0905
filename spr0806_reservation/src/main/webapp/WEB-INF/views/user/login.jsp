@@ -27,7 +27,14 @@
 <h3>아이디와 비밀번호를 입력해주세요.</h3>
 <c:url value="/login" var="loginUrl" />
 <form name="frmLogin" action="${loginUrl}" method="POST">
-<!-- csrf가 있어야 된다. -->
+<%-- CSRF가 있어야 된다. 
+Security에서 CSRF (Cross-Site Request Forgery) 공격을 방지하기 위한 CSRF 토큰을 HTML 폼에 포함시키는 방식
+CSRF 공격이란: 공격자가 사용자의 권한을 이용해 웹 애플리케이션에서 원하지 않는 요청을 보내는 공격입니다. 
+	예를 들어, 사용자가 로그인된 상태에서 악의적인 사이트를 방문하면 
+	해당 사이트가 사용자의 인증 정보를 이용해 임의의 요청을 보낼 수 있습니다.
+CSRF 토큰의 역할: CSRF 토큰은 서버가 클라이언트에게 전달하는 고유한 비밀 토큰입니다. 
+	폼을 제출할 때 이 토큰을 함께 전송하여 요청이 실제로 의도된 사용자에 의해 발생한 것임을 확인합니다.
+--%>
 	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
     <p>
         <label for="email">이메일</label>
