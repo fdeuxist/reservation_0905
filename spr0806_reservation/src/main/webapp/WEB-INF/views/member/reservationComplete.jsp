@@ -9,6 +9,10 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <style>
+body {
+    margin: 0;
+    background-color: #f4f4f4;
+}
 #container444 {
     display: grid;
     grid-template-columns: 4fr 4fr 4fr;
@@ -33,7 +37,7 @@
                 <p class="card-text">서비스 이름들: <strong>${dto.total_service_name}</strong></p>
                 <p class="card-text">서비스 가격 총 합: <strong>${dto.total_service_price}</strong></p>
 
-                <a href="/ex/member/member" class="btn btn-primary mt-3">메인으로 돌아가기</a>
+                <a href="/ex/member/mypage" class="btn btn-primary mt-3">메인으로 돌아가기</a>
             </div>
         </div>
     </div>

@@ -5,9 +5,14 @@
 <%@ page session="true" %>
 <%@include file="../include/header.jsp"%>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <div class="header-placeholder"></div>
 <style>
-/* 전반적인 스타일 */
+<%-- 
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -15,31 +20,25 @@ body {
     padding: 0;
 }
 
-/* 헤더, 메인, 푸터 */
 header, main, footer {
     padding: 20px;
 }
 
-/* 헤더를 위한 자리 유지 */
 .header-placeholder {
-    height: 50px; /* 헤더의 높이에 맞춰 조절 */
+    height: 50px;
 }
 
-/* 제목 중앙 정렬 */
 h2 {
     color: #333;
-    margin-top: 20px;
     margin-bottom: 20px;
-    text-align: center; /* 제목 중앙 정렬 */
+    text-align: center;
 }
 
-/* 월 선택 UI 중앙 정렬 */
 .centered-container {
     text-align: center;
-    margin-bottom: 20px; /* 제목과 월 선택 UI 사이의 간격 */
+    margin-bottom: 20px;
 }
 
-/* 월 선택 UI 스타일 */
 label {
     font-weight: bold;
 }
@@ -53,17 +52,16 @@ select {
     background-color: #fff;
 }
 
-/* 예약 목록 테이블 스타일 */
 table {
-    width: 80%; /* 테이블의 너비를 화면 너비의 80%로 설정 */
-    margin: 20px auto; /* 화면 중앙에 배치 */
+    width: 80%;
+    margin: 20px auto;
     border-collapse: collapse;
 }
 
 table th, table td {
     border: 1px solid #ddd;
     padding: 10px;
-    text-align: center; /* 중앙 정렬 */
+    text-align: center;
 }
 
 table th {
@@ -82,69 +80,45 @@ table tbody tr:hover {
 td:hover {
     background-color: #e0e0e0;
 }
-
-.text-center {
-    text-align: center;
-    margin-top: 20px;
-}
-.notice-text {
-    font-size: 18px;
-    color: #333;
-    margin: 20px 0;
-    text-align: center;
-}
-
-.a-btn {
-	display: inline-block;
-    padding: 10px 20px;
-    margin-top: 15px;
-    background-color: #007bff; /* 파란색 배경 */
-    color: white; /* 흰색 글자 */
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    font-size: 18px;
-}
-
-.a-btn:active {
-    background-color: #003f7f; /* 클릭 시 더 어두운 색상 */
+--%>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
 </style>
 <main>
 <%--
-    <p>사업자명: ${sessionScope.loginName}</p>
-    <p>사업자 이메일: ${sessionScope.loginEmail}</p>
-    <p>권한: ${sessionScope.loginAuthority}</p>
+    <p>사업자명: ${sessionScope.data.email}</p>
+    <p>사업자 이메일: ${sessionScope.data.business_regi_num}</p>
  --%>
- 
-    <h2>월별 스케줄 조회</h2>
-    
-    <div class="centered-container">
-	    <label for="monthSelect">조회 월 선택: </label>
-	    <select id="monthSelect" onchange="loadReservations()">
-	    </select>
-    <div class="notice-text">
-        <h5>등록일을 클릭하면 그 날의 스케줄을 수정할 수 있습니다.</h5>
-    </div>
-    </div>
-    
-    <table border="1">
-        <thead>
-            <tr>
-                <th>영업중으로 등록된 날</th>
-                <th>회원에게 공개</th>
-            </tr>
-        </thead>
-        <tbody id="openDateTbody">
-        </tbody>
-    </table>
-
-    <div class="text-center">
-        <a href="${pageContext.request.contextPath}/vendor/scheduleinsert" class="a-btn">일일 스케줄 등록하러 가기</a>
-    </div>
-    
+	<div class="row">
+		<div class="col-2">
+		</div>
+		<div class="col-8">
+		    <h2 class ="text-center">예약 날짜 선택</h2>
+		    
+		    <div class="centered-container text-center">
+			    <label for="monthSelect">조회 월 선택: </label>
+			    <select id="monthSelect" onchange="loadReservations()">
+			    </select>
+		    </div>
+		    
+		    <table  class="table table-hover table-striped  text-center">
+		        <thead>
+		            <tr>
+		                <th>영업중으로 등록된 날</th>
+		                <th>예약 가능 여부</th>
+		            </tr>
+		        </thead>
+		        <tbody id="openDateTbody">
+		        </tbody>
+		    </table>
+		</div>
+		<div class="col-2">
+		</div>
+	</div>
 <%--
 ${sessionScope.loginName}<br>
 ${sessionScope.loginEmail}<br>
@@ -152,6 +126,8 @@ ${sessionScope.loginAuthority}<br>
 ${sessionScope.loginBusiness_regi_num}<br> --%>
 </main>
 <script>
+
+
 document.addEventListener("DOMContentLoaded", function() {
     monthOptions();
     loadReservations();
@@ -208,10 +184,12 @@ var currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로
         monthSelect.innerHTML = optionsStr;
 	}
 
+
+
     function loadReservations() {
         var selectedMonth = document.getElementById("monthSelect").value;
         $.ajax({
-            url: '/ex/vendorrest/myonemonth',
+            url: '/ex/memberrest/youronemonth',	
             type: 'GET',
             data: { month: selectedMonth },
             dataType: 'json',
@@ -225,7 +203,6 @@ var currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로
         });
 
     }
-
     
     function updateReservationTable(reservations) {
         var tableBody = document.getElementById("openDateTbody");
@@ -261,7 +238,7 @@ var currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로
             let reservation = reservations[i];
 
             trtdStr += otrtd + reservation.open_date + ctdotd;
-            trtdStr += reservation.status_flag == "1" ? "공개" : "비공개";
+            trtdStr += reservation.status_flag == "1" ? "예약 가능" : "예약 불가";
             trtdStr += ctrtr;
         }
 
@@ -274,16 +251,12 @@ var currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로
         for (var i = 0; i < dateCells.length; i++) {
             let dateCell = dateCells[i];
             dateCell.addEventListener("click", function() {
-                window.location.href = "/ex/vendor/dailyscheduleupdate?date=" + dateCell.innerText;
+                window.location.href = "/ex/member/mscheduleselect?date=" + dateCell.innerText;
             });
         }
-        
-        
-        
-        
-        
-}
 
+    }
 
+    
 </script>
 <%@include file="../include/footer.jsp"%>

@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <style>
-<%--
+<%-- 
 /* 전체 페이지 스타일 */
 body {
     font-family: Arial, sans-serif;
@@ -65,17 +65,53 @@ main {
 .order-card br {
     content: "\A";
     white-space: pre;
-}
- --%>
-
-body {
-    background-color: #f4f4f4;
-}
-
+}--%>
 </style>
+
 <div class="header-placeholder"></div>
 <main>
-    <div class="container m-5">
+
+<%--
+    <div class="order-card">
+        <h3>주문 상세 정보</h3>
+        <p><span class="label">예약번호:</span> ${myOrder.reservation_number}</p>
+        <p><span class="label">예약자 Email:</span> ${myOrder.user_email}</p>
+        <p><span class="label">예약자 전화번호:</span> ${myOrder.user_phone}</p>
+        <p><span class="label">예약자 이름:</span> ${myOrder.user_name}</p><br><br>
+        <p><span class="label">사업자 이름:</span> ${myOrder.vendor_name}</p>
+        <p><span class="label">사업자 전화번호:</span> ${myOrder.vendor_phone}</p>
+        <p><span class="label">장소 이름:</span> ${myOrder.business_name}</p>
+        <p><span class="label">주소:</span> ${myOrder.zipcode} </p>
+        <p><span class="label"></span> ${myOrder.basic_address}</p>
+        <p><span class="label"></span> ${myOrder.detail_address}</p>
+        <p><span class="label">이용(방문)예정일:</span> ${myOrder.reservation_use_date}</p>
+        <p><span class="label">이용예정 시간:</span> ${myOrder.times_hhmm}</p>
+        <p><span class="label">예약 목록:</span> ${myOrder.total_service_name}</p>
+        <p><span class="label">예약 금액:</span> ${myOrder.total_service_price}</p>
+        <p><span class="label">예상 소요 시간:</span> ${myOrder.total_required_time}</p>
+        <p><span class="label">주문자 메모:</span> ${myOrder.user_request_memo}</p>
+        <p><span class="label">주문 상태:</span>
+        	<c:choose>
+                <c:when test="${myOrder.status == 1}">입금대기</c:when>
+                <c:when test="${myOrder.status == 2}">입금완료</c:when>
+                <c:when test="${myOrder.status == 3}">이용완료</c:when>
+                <c:when test="${myOrder.status == 4}">취소대기</c:when>
+                <c:when test="${myOrder.status == 5}">취소완료</c:when>
+                <c:when test="${myOrder.status == 6}">환불대기</c:when>
+                <c:when test="${myOrder.status == 7}">환불완료</c:when>
+           	</c:choose>
+        </p>
+        <input type="hidden" id="reservationNumber" value="${myOrder.reservation_number}">
+        <input type="hidden" id="status" value="${myOrder.status}">
+        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
+        	<input type="button" id="tryCancel" value="취소요청하기">
+        </c:if>
+        <c:if test="${myOrder.status == 2 || myOrder.status == 4 || myOrder.status == 6}">
+	        <input type="button" id="orderCompleted" value="이용완료확정하기">
+        </c:if>
+    </div>
+--%>
+	<div class="container m-5">
     <div class="card">
         <div class="card-header bg-primary text-white">
             <h3 class="mb-0">주문 상세 정보</h3>
@@ -169,36 +205,67 @@ body {
                     </tr>
                 </tbody>
             </table>
-
-            <!-- 숨겨진 필드로 예약 정보 및 상태값 전달 -->
-            <input type="hidden" id="reservationNumber" value="${myOrder.reservation_number}">
-            <input type="hidden" id="status" value="${myOrder.status}">
-        </div>
         <div class="card-footer">
-            <!-- 조건부 버튼 출력 -->
-            <c:if test="${myOrder.status == 4 || myOrder.status == 6}">
-                <button class="btn btn-success" id="confirmCancel">취소/환불 승인</button>
-            </c:if>
-            <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
-                <button class="btn btn-danger" id="confirmCancel">강제취소/환불하기</button>
-            </c:if>
+	        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
+	        	<input type="button" class="btn btn-danger" id="tryCancel" value="취소요청하기">
+	        </c:if>
+	        <c:if test="${myOrder.status == 2 || myOrder.status == 4 || myOrder.status == 6}">
+		        <input type="button" class="btn btn-success" id="orderCompleted" value="이용완료확정하기">
+	        </c:if>
+	        <c:if test="${myOrder.status == 3}">
+	        	<input type="button" class="btn btn-info" id="reply" value="후기작성하기">
+	        </c:if>
         </div>
     </div>
-</div>
+
+
+</main>
 <script>
 $(function() {
-
-    $("#confirmCancel").click(function() {
+	
+$("#orderCompleted").click(function() {
+        
+        var userConfirmed = confirm("이용완료합니다. 취소나 환불처리가 불가합니다.");
+        
+        if (userConfirmed) {
+            var email = $("#loginEmail").val();
+            var reservationNumber = $("#reservationNumber").val();
+            var status = $("#status").val();
+            //console.log(email, reservationNumber, status);    //member 2024082613221338 1
+            $.ajax({
+                url: '/ex/memberrest/orderCompleted',
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    email: email,
+                    reservationNumber: reservationNumber,
+                    status: status
+                }),
+                success: function(response) {
+                    //console.log(response.message);
+                    window.location.href = "/ex/member/orderinfo?reservationNumber=" + reservationNumber;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to fetch data:', error);
+                }
+            });
+        }
+    });
+    
+    
+    
+    $("#tryCancel").click(function() {
     	
-    	var userConfirmed = confirm("예약의 취소를 승인합니다.");
+    	var userConfirmed = confirm("예약의 취소를 요청합니다. 사업자의 취소 승인 후 취소 완료 됩니다.");
         
         if (userConfirmed) {
 	        var email = $("#loginEmail").val();
 	        var reservationNumber = $("#reservationNumber").val();
 	        var status = $("#status").val();
-	        console.log(email, reservationNumber, status);	//member 2024082613221338 1
+	        //console.log(email, reservationNumber, status);	//member 2024082613221338 1
 	        $.ajax({
-	            url: '/ex/vendorrest/confirmCancel',
+	            url: '/ex/memberrest/tryCancel',
 	            method: 'POST',
 	            dataType: 'json',
 	            contentType: 'application/json; charset=utf-8',
@@ -209,7 +276,7 @@ $(function() {
 	            }),
 	            success: function(response) {
 	                //console.log(response.message);
-	                window.location.href = "/ex/vendor/orderinfo?reservationNumber=" + reservationNumber;
+	                window.location.href = "/ex/member/orderinfo?reservationNumber=" + reservationNumber;
 	            },
 	            error: function(xhr, status, error) {
 	                console.error('Failed to fetch data:', error);
@@ -218,7 +285,13 @@ $(function() {
         }
     });
     
+    $("#reply").click(function() {
+    	//
+    }
+    
+    
 });
 </script>
+
 
 <%@include file="/WEB-INF/views/include/footer.jsp"%>
