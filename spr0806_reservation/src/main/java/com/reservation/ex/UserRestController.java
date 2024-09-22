@@ -9,6 +9,8 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +57,8 @@ public class UserRestController {
 	
 	@Autowired
     PasswordEncoder passwordEncoder;
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 	
 	
 	@RequestMapping(value = "/userrest/scheduleinsert", method = RequestMethod.POST)
@@ -134,30 +137,31 @@ public class UserRestController {
 	}
 	
 	//이메일 중복 체크
-	@RequestMapping(value = "/userrest/emailcheck", method = RequestMethod.GET)
-	public Map userEmailCheck(String email)  {
-		System.out.println("UserRestController - /userrest/emailcheck " + email);
-		
-		Map<String, String> result = new HashMap<>();
-		UserDto checkDto =null;
-		try {
-			checkDto = userService.selectEmail(email);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		@RequestMapping(value = "/userrest/emailcheck", method = RequestMethod.GET)
+		public Map userEmailCheck(String email)  {
+			System.out.println("UserRestController - /userrest/emailcheck " + email);
+			
+			Map<String, String> result = new HashMap<>();
+			int checkEmail = -1;
+			try {
+				checkEmail = userService.checkEmail(email);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			System.out.println("UserRestController - /userrest/emailcheck    input email : " 
+						+ email + " , checkEmail return val : " + checkEmail);
+			if(checkEmail == 0) {
+				result.put("result", "true");
+				System.out.println("result : true 중복이 아님");
+			}else {
+				result.put("result", "false");
+				System.out.println("result : false 중복임");
+			}
+			
+			return result;
 		}
-		
-		System.out.println("UserRestController - /userrest/emailcheck    input email : " + email + " , return dto : " + checkDto);
-		if(checkDto == null) {
-			result.put("result", "true");
-			System.out.println("result : true 중복이 아님");
-		}else {
-			result.put("result", "false");
-			System.out.println("result : false 중복임");
-		}
-		
-		return result;
-	}
 
 	//전화번호 중복 체크
 		@RequestMapping(value = "/userrest/phonecheck", method = RequestMethod.GET)
@@ -165,16 +169,18 @@ public class UserRestController {
 			System.out.println("UserRestController - /userrest/phonecheck " + phone);
 			
 			Map<String, String> result = new HashMap<>();
-			UserDto checkDto =null;
+			int checkPhone = -1;
 			try {
-				checkDto = userService.selectPhone(phone);
+				checkPhone = userService.checkPhone(phone);
+				System.out.println("checkPhone : " + checkPhone);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			System.out.println("UserRestController - /userrest/phonecheck    input phone : " + phone + " , return dto : " + checkDto);
-			if(checkDto == null) {
+			System.out.println("UserRestController - /userrest/phonecheck    input phone : " 
+						+ phone + " , checkPhone return val : " + checkPhone);
+			if(checkPhone == 0) {
 				result.put("result", "true");
 				System.out.println("result : true 중복이 아님");
 			}else {
@@ -304,7 +310,7 @@ public class UserRestController {
 	
 ///////////이메일인증코드관련↓↓↓↓↓↓↓↓↓↓//////////////////////
 	//						 createEmailCheck
-	@RequestMapping(value = "/createEmailCheck", method = RequestMethod.GET)
+  	@RequestMapping(value = "/createEmailCheck", method = RequestMethod.GET)
 	public boolean emailauth(@RequestParam String email, @RequestParam int random, HttpServletRequest req) {
 		// 이메일 인증
 		System.out.println("uc /createEmailCheck");
@@ -316,6 +322,7 @@ public class UserRestController {
 		String subject = "회원가입 인증 코드 발급 안내 입니다.";
 		StringBuilder sb = new StringBuilder();
 		sb.append("귀하의 인증 코드는 " + authCode + "입니다.");
+		logger.info("귀하의 인증 코드는 " + authCode + "입니다.");
 		String sendEmailId = "everysreservation@gmail.com";
 		return mailService.send(subject, sb.toString(), sendEmailId, email, null);
 	}

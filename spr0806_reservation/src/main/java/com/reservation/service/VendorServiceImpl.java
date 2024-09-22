@@ -72,6 +72,12 @@ public class VendorServiceImpl implements IVendorService{
 	}
 
 	@Override
+	public int checkEmail(String email) throws Exception {
+		VendorDao dao = sqlSession.getMapper(VendorDao.class);
+		return dao.checkEmail(email);
+	}
+	
+	@Override
 	public VendorDto selectEmail(String email) throws Exception {
 		VendorDao dao = sqlSession.getMapper(VendorDao.class);
 		return dao.selectEmail(email);

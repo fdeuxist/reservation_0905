@@ -44,7 +44,7 @@
                     <a href="${pageContext.request.contextPath}/vendor/myorders">예약요청(주문)목록</a> --%>
                 </c:when>
                 <c:when test="${sessionScope.loginAuthority == '일반회원'}">
-                    <a href="${pageContext.request.contextPath}/member/searchplace"><i class="fa-solid fa-magnifying-glass-location"></i>예약 장소 검색</a>
+                    <%-- <a href="${pageContext.request.contextPath}/member/searchplace"><i class="fa-solid fa-magnifying-glass-location"></i>예약 장소 검색</a> --%>
                 </c:when>
                 <c:otherwise>
                     <%--<a href="/ex/user/insert">회원가입</a> --%>

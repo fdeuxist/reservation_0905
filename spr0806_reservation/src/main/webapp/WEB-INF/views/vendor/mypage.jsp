@@ -23,7 +23,7 @@ body {
                 <div class="card-body">
                     <h5 class="card-title">내 사업장 정보</h5>
                     <p class="card-text">사업장 정보를 등록하고 수정합니다.</p>
-                    <a href="${pageContext.request.contextPath}/vendor/shopinfo" class="btn btn-primary">검색하기</a>
+                    <a href="${pageContext.request.contextPath}/vendor/shopinfo" class="btn btn-primary">등록하기</a>
                 </div>
             </div>
         </div>

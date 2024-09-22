@@ -234,16 +234,16 @@ public class VendorRestController {
 		System.out.println("VendorRestController - /vendorrest/emailcheck " + email);
 		
 		Map<String, String> result = new HashMap<>();
-		VendorDto checkDto = null;
+		int count = -1;
 		try {
-			checkDto = vendorService.selectEmail(email);
+			count = vendorService.checkEmail(email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		System.out.println("VendorRestController - /vendorrest/emailcheck    input email : " + email + " , return dto : " + checkDto);
-		if(checkDto == null) {
+		System.out.println("VendorRestController - /vendorrest/emailcheck    input email : " + email + " , return count : " + count);
+		if(count == 0) {
 			result.put("result", "true");
 			System.out.println("result : true");
 		}else {

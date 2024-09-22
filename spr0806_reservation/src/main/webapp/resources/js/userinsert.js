@@ -163,7 +163,7 @@
 		            } else if (result === "false") {
 		                //$(".console").html("<span style='color:red'>사용할 수 없는 아이디입니다.</span>");
 		            	$(".console").html(`<div class="alert-sm alert-danger alert-dismissible p-1" style="font-size: 0.75rem;">`+
-		    					`사용할 수 없는 아이디입니다.`+
+		    					`사용할 수 없는 이메일(아이디)입니다.`+
 		    					  `</div>`);
 		    				//$("#emailBtn").prop('disabled', true);
 		    				//$("#emailAuthBtn").prop('disabled', true);
@@ -224,13 +224,13 @@
 	    					  `</div>`);
 	            	$("#phoneBtn").prop('disabled',true);	//전화번호인증번호발송 버튼 숨기기
 	            } else {
-	                $(".consolep").html("<span style='color:gray'>알 수 없는 결과입니다.</span>");
+	                //$(".consolep").html("<span style='color:gray'>알 수 없는 결과입니다.</span>");
 	            }
 				checkVerificationStatus();
 	        },
 	        error: function(xhr, status, error) {
 	            console.error("AJAX 요청 실패: ", status, error);
-	            $(".consolep").html("<span style='color:red'>서버 요청에 실패했습니다.</span>");
+	            //$(".consolep").html("<span style='color:red'>서버 요청에 실패했습니다.</span>");
 	        }
 	    });
 
