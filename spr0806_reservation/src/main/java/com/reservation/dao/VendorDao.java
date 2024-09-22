@@ -15,6 +15,8 @@ public interface VendorDao {
 	
 	public ArrayList<VendorDto> selectAll() throws Exception;
 
+    public int checkEmail(String email) throws Exception;
+    
 	public VendorDto selectEmail(String email) throws Exception;
 	
 	public void update(VendorDto dto) throws Exception;

@@ -16,9 +16,32 @@ insert into user_reservation values (
     
 </insert>
 
-<!-- 0913 vendor myorder용 --> 
+
+
+
+
+<!-- 0916 vendor myorder 상태별 주문, 페이지적용 count --> <!-- 테스트중 -->
+<select id="countVendorOrdersStatus" resultType="int">
+select count(*) from user_reservation 
+	where vendor_email=#{vendor_email} and business_regi_num=#{business_regi_num} and status = #{status}
+</select>
+
+<!-- 0916 vendor myorder 상태별 주문, 페이지적용 --> <!-- 테스트중 -->
+<select id="selectAllVendorOrdersStatusAndPage" resultType="UserReservationDto">
+<![CDATA[
+select * from user_reservation 
+	where vendor_email=#{vendor_email} and business_regi_num=#{business_regi_num} and status = #{status}
+	order by reservation_number asc
+	OFFSET (#{currPageNum} - 1) * 10 ROWS 
+        FETCH NEXT 10 ROWS ONLY
+        ]]>
+</select>
+
+<!-- 0913 vendor myorder용 위에 테스트중 되면 미사용예정 --> 
 <select id="selectAllVendorOrdersNotInStatus" resultType="UserReservationDto">
-select * from user_reservation where vendor_email=#{vendor_email} and business_regi_num=#{business_regi_num} and status not in (#{status})
+select * from user_reservation 
+	where vendor_email=#{vendor_email} and business_regi_num=#{business_regi_num} and status not in (#{status})
+	order by reservation_number desc
 </select>
 
 <!-- 1입금대기/2입금완료/3이용완료/

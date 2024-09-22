@@ -16,6 +16,16 @@ public interface IUserReservationService {
 	//0906 0906 member가 이용완료처리할때 씀 주문번호의 status를 3으로
 	public void orderCompleted(String reservation_number) throws Exception;
 	
+
+    //0916 vendor myorder 상태별 주문, 페이지적용 count
+    public int countVendorOrdersStatus(
+            String vendor_email, String business_regi_num, String status) throws Exception;    
+
+    //0916 vendor myorder 상태별 주문, 페이지적용
+    public ArrayList<UserReservationDto> selectAllVendorOrdersStatusAndPage(
+            String vendor_email, String business_regi_num, String status, String currPageNum) throws Exception;
+    
+    
     //0913 vendor my order용
     public ArrayList<UserReservationDto> selectAllVendorOrdersNotInStatus(
             String vendor_email,

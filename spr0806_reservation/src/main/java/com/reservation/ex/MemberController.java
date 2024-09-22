@@ -180,6 +180,14 @@ public class MemberController {
 	@RequestMapping(value = "/member/mypage", method = RequestMethod.GET)
 	public String myPage(UserReservationDto dto, HttpSession session, Model model) throws Exception {
 		System.out.println("MemberController - /member/mypage");
+
+		String email = (String)session.getAttribute("loginEmail");
+		if(session.getAttribute("loginName")==null) {
+			UserDto userDto = uService.selectEmail(email);
+			session.setAttribute("loginName", userDto.getName());
+			session.setAttribute("loginPhone", userDto.getPhone());
+		}
+		
 		return "/member/mypage";
 	}
 	
@@ -349,7 +357,7 @@ public class MemberController {
 		System.out.println(dto);	// authorities table에  ROLE_MEMBER가  ROLE_VENDOR 로 update 됨     VeendorServiceImpl구현부. 트렌젝션 처리 o
 		session.invalidate();
 		rttr.addAttribute("vendor",true);
-        return "redirect:/user/login?vendor";    // 그냥 로그아웃 땡 돼서 뭔가 좀 부자연스러움. 사업자회원전환되엇으니 새로 로그인하라고 보여줘야함
+        return "redirect:/user/login?vendor";
 	}
 	
 	

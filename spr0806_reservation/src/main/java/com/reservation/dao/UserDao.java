@@ -30,6 +30,10 @@ public interface UserDao {
 	
 	public ArrayList<UserDto> selectAll() throws Exception;
 
+    public int checkEmail(String email) throws Exception;
+    
+    public int checkPhone(String phone) throws Exception;
+    
 	public UserDto selectEmail(String email) throws Exception;
 	
 	public UserDto selectPhone(String phone) throws Exception;

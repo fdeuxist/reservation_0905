@@ -46,7 +46,37 @@ public class VendorRestController {
     @Autowired
     private IUserReservationService uRService;
 
+
+    //0916 해당 사업자 주문상태에 따른 주문 갯수
+    @RequestMapping(value = "/vendorrest/countReservationRow", method = RequestMethod.GET)
+    public int countReservationRow(
+    		@RequestParam("vendor_email") String vendor_email,
+    		@RequestParam("business_regi_num") String business_regi_num,
+    		@RequestParam("status") String status) throws Exception {
+    	
+    	int count = uRService.countVendorOrdersStatus(vendor_email, business_regi_num, status);
+    	
+    	logger.info("VendorRestController - /vendorrest/countReservationRow   " 
+                + vendor_email + " " + business_regi_num + " status : " + status + " count : " + count);
+    	
+    	return count;
+    }
     
+    //0916 해당 사업자 주문상태에 따른 주문 리스트 (페이지)
+    @RequestMapping(value = "/vendorrest/reservationListPage", method = RequestMethod.GET)
+    public ArrayList<UserReservationDto> reservationListPage(
+    		@RequestParam("vendor_email") String vendor_email,
+    		@RequestParam("business_regi_num") String business_regi_num,
+    		@RequestParam("status") String status,
+    		@RequestParam("currPageNum") String currPageNum) throws Exception {
+    	
+    	ArrayList<UserReservationDto> list = uRService.selectAllVendorOrdersStatusAndPage(
+    			vendor_email, business_regi_num, status, currPageNum);
+    	
+    	logger.info("VendorRestController - /vendorrest/reservationListPage   " 
+                + vendor_email + " " + business_regi_num + " stats : " + status + " currPageNum : " + currPageNum + "\n list : " + list);
+    	return list;
+    }
     
 
     //0913    
@@ -204,16 +234,16 @@ public class VendorRestController {
 		System.out.println("VendorRestController - /vendorrest/emailcheck " + email);
 		
 		Map<String, String> result = new HashMap<>();
-		VendorDto checkDto = null;
+		int count = -1;
 		try {
-			checkDto = vendorService.selectEmail(email);
+			count = vendorService.checkEmail(email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		System.out.println("VendorRestController - /vendorrest/emailcheck    input email : " + email + " , return dto : " + checkDto);
-		if(checkDto == null) {
+		System.out.println("VendorRestController - /vendorrest/emailcheck    input email : " + email + " , return count : " + count);
+		if(count == 0) {
 			result.put("result", "true");
 			System.out.println("result : true");
 		}else {

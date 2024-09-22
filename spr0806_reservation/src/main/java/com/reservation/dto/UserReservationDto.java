@@ -116,7 +116,7 @@ create table user_reservation (
 
 	@Override
 	public String toString() {
-		return "UserReservationDto [reservation_number=" + reservation_number + ", user_email=" + user_email
+		return "\nUserReservationDto [reservation_number=" + reservation_number + ", user_email=" + user_email
 				+ ", user_phone=" + user_phone + ", user_name=" + user_name + ", vendor_email=" + vendor_email
 				+ ", business_regi_num=" + business_regi_num + ", vendor_name=" + vendor_name + ", vendor_phone="
 				+ vendor_phone + ", business_name=" + business_name + ", zipcode=" + zipcode + ", basic_address="

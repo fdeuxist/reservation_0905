@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 <%--
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -48,6 +49,10 @@ body {
     grid-template-columns: repeat(6, 1fr);
     gap: 5px;
     margin-top: 20px;
+}
+
+#space{
+	margin-bottom: 20px;
 }
 
 .time-slot {
@@ -97,6 +102,29 @@ loginName: [${sessionScope.loginName}]
  --%>
 <br>
 
+
+<%--
+<div class="div1">
+    <!-- <h1>영업일 및 영업시간 선택</h1> -->
+    <br><br>
+    <div class="row">
+        <div class="col-4"></div>
+    	<input type="text" id="datepicker" class="col-4" placeholder="날짜를 선택하세요">
+        <div class="col-4"></div>
+   	</div>
+    <div class="row">
+        <div class="col-2"></div>
+       	<div class="col-8 row" id="time-buttons"></div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-5"></div>
+    	<button type="button" class="col-2" id="submitBtn">전송</button>
+        <div class="col-5"></div>
+   	</div>
+</div>
+ --%>
+
 <div class="div1">
     <!-- <h1>영업일 및 영업시간 선택</h1> -->
     <br><br>
@@ -110,12 +138,15 @@ loginName: [${sessionScope.loginName}]
         <div id="time-buttons"></div>
         <div class="empty-space"></div>
     </div>
+    <div id="space"></div>
     <div id="container444">
         <div class="empty-space"></div>
     	<button type="button" id="submitBtn" >등록</button>
         <div class="empty-space"></div>
    	</div>
 </div>
+
+ 
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

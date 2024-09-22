@@ -42,7 +42,15 @@ select * from users where email=#{email}
 <select id="selectPhone" resultType="UserDTO">
 select * from users where phone=#{phone}
 </select>
- 
+
+<select id="checkEmail" resultType="int">
+select count(*) from users where email=#{email}
+</select>
+
+<select id="checkPhone" resultType="int">
+select count(*) from users where phone=#{phone}
+</select>
+
 <update id="update">
 update users set 
 password=#{password}, name=#{name}, phone=#{phone}, enable=#{enable} where email=#{email}
