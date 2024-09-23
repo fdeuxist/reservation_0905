@@ -28,6 +28,7 @@ header, main, footer {
 /* 제목 중앙 정렬 */
 h2 {
     color: #333;
+    margin-top: 20px;
     margin-bottom: 20px;
     text-align: center; /* 제목 중앙 정렬 */
 }
@@ -82,6 +83,33 @@ td:hover {
     background-color: #e0e0e0;
 }
 
+.text-center {
+    text-align: center;
+    margin-top: 20px;
+}
+.notice-text {
+    font-size: 18px;
+    color: #333;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.a-btn {
+	display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #007bff; /* 파란색 배경 */
+    color: white; /* 흰색 글자 */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-size: 18px;
+}
+
+.a-btn:active {
+    background-color: #003f7f; /* 클릭 시 더 어두운 색상 */
+}
 
 </style>
 <main>
@@ -91,25 +119,32 @@ td:hover {
     <p>권한: ${sessionScope.loginAuthority}</p>
  --%>
  
-    <h2>예약 날짜 선택</h2>
+    <h2>월별 스케줄 조회</h2>
     
     <div class="centered-container">
 	    <label for="monthSelect">조회 월 선택: </label>
 	    <select id="monthSelect" onchange="loadReservations()">
 	    </select>
+    <div class="notice-text">
+        <h5>등록일을 클릭하면 그 날의 스케줄을 수정할 수 있습니다.</h5>
+    </div>
     </div>
     
-    
-    <table border="1" id="reservationTable">
+    <table border="1">
         <thead>
             <tr>
                 <th>영업중으로 등록된 날</th>
                 <th>회원에게 공개</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="openDateTbody">
         </tbody>
     </table>
+
+    <div class="text-center">
+        <a href="${pageContext.request.contextPath}/vendor/scheduleinsert" class="a-btn">일일 스케줄 등록하러 가기</a>
+    </div>
+    
 <%--
 ${sessionScope.loginName}<br>
 ${sessionScope.loginEmail}<br>
@@ -117,35 +152,61 @@ ${sessionScope.loginAuthority}<br>
 ${sessionScope.loginBusiness_regi_num}<br> --%>
 </main>
 <script>
-    var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    var currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+document.addEventListener("DOMContentLoaded", function() {
+    monthOptions();
+    loadReservations();
+});
 
-    function populateMonthOptions() {
-        var select = document.getElementById("monthSelect");
 
-        for (var i = -3; i <= 12; i++) {	//이전 3개월부터 이후12개월
-            var optionDate = new Date(currentYear, currentMonth - 1 + i);
-            var year = optionDate.getFullYear();
-            var month = optionDate.getMonth() + 1;
+var currentDate = new Date();
+//console.log(currentDate);
+var currentYear = currentDate.getFullYear();
+//console.log(currentYear);
+var currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+//console.log(currentMonth);
 
-            var formattedMonth = month < 10 ? '0' + month : month;	//10보다 작은 달은 앞에 0붙임
+	function monthOptions() {
+	    var monthSelect = document.getElementById("monthSelect");
+	    var optionsStr = "";
+	    
+	    /*
+	    <select id="monthSelect" onchange="loadReservations()">
+			<option value="2024-06">2024년 06월</option>
+			<option value="2024-07">2024년 07월</option>
+			<option value="2024-08">2024년 08월</option>
+			<option value="2024-09">2024년 09월</option>
+			<option value="2024-10">2024년 10월</option>
+			<option value="2024-11">2024년 11월</option>
+			<option value="2024-12">2024년 12월</option>
+			<option value="2025-01">2025년 01월</option>
+			<option value="2025-02">2025년 02월</option>
+			<option value="2025-03">2025년 03월</option>
+		</select>
+	    */
+	    
+	    for (var i = -3; i <= 6; i++) {	//이전 3개월 ~ 이후 6개월
+	        let optionDate = new Date(currentYear, currentMonth - 1 + i); //월은 0부터 시작이라 -1 빼줌
+	        //console.log(optionDate)
+	        let year = optionDate.getFullYear();
+	        let month = optionDate.getMonth() + 1;
+	
+	        let formattedMonth = month < 10 ? "0" + month : month;	//10보다 작은 달은 앞에 0붙임
+	
+	        let optionValue = year + "-" + formattedMonth;			//'YYYY-MM'
+	        let optionText = year + "년 " + formattedMonth + "월";	//'YYYY년 MM월'
+	
 
-            var optionValue = year + '-' + formattedMonth;			//'YYYY-MM'
-            var optionText = year + '년 ' + formattedMonth + '월';	//'YYYY년 MM월'
-
-            var option = document.createElement("option");
-            option.value = optionValue;
-            option.text = optionText;	// <option value="YYYY-MM">YYYY년 MM월</option>
-
-            // 현재 월이 기본 선택되도록 설정
-            if (i === 0) {
-                option.selected = true;
-            }
-
-            select.appendChild(option);
-        }
-    }
+	        // 현재 월을 기본 선택
+	        if (i === 0) {
+	            optionsStr += `<option value="` + optionValue + `" selected>` + optionText + `</option>`;
+	        } else {
+	            optionsStr += `<option value="` + optionValue + `">` + optionText + `</option>`;
+	        }
+	    }
+	    
+	    //console.log("optionsStr ", optionsStr);
+        monthSelect.innerHTML = optionsStr;
+	}
 
     function loadReservations() {
         var selectedMonth = document.getElementById("monthSelect").value;
@@ -155,8 +216,8 @@ ${sessionScope.loginBusiness_regi_num}<br> --%>
             data: { month: selectedMonth },
             dataType: 'json',
             success: function(data) {
+                console.log("reservations ", data);
                 updateReservationTable(data);
-                console.log(data);
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
@@ -165,43 +226,64 @@ ${sessionScope.loginBusiness_regi_num}<br> --%>
 
     }
 
-    // 테이블 그리기
+    
     function updateReservationTable(reservations) {
-	    var tableBody = document.querySelector("#reservationTable tbody");
-	    tableBody.innerHTML = ""; // 테이블 초기화
-	
-	    for (var i = 0; i < reservations.length; i++) {
-	    	let reservation = reservations[i]; // let을 사용하여 클로저 유지
-	
-	    	let row = document.createElement("tr");
-	
-	    	let dateCell = document.createElement("td");
-	        dateCell.textContent = reservation.open_date.split(' ')[0]; 
-        	//공백 기준으로 문자열을 나눠서 날짜 부분("YYYY-MM-DD")만을 추출
-        	//"2024-08-15 14:30".split(' ')를 호출하면, 
-        	//이 문자열은 공백을 기준으로 나뉘어 ["2024-08-15", "14:30"]라는 배열이 생성
-        	
-            dateCell.style.cursor = "pointer";
-	        dateCell.addEventListener("click", function() {
+        var tableBody = document.getElementById("openDateTbody");
+        tableBody.innerHTML = "";
+        /*
+        <table border="1">
+	        <thead>
+	            <tr>
+	                <th>영업중으로 등록된 날</th>
+	                <th>예약 가능 여부</th>
+	            </tr>
+	        </thead>
+	        <tbody id="openDateTbody">
+				<tr>
+					<td class="openDate" style="cursor: pointer">2024-09-02</td><td>예약 가능</td>
+				</tr>
+				<tr>
+					<td class="openDate" style="cursor: pointer">2024-09-03</td><td>예약 가능</td>
+				</tr>
+				<tr>
+					<td class="openDate" style="cursor: pointer">2024-09-04</td><td>예약 가능</td>
+				</tr>
+			</tbody>
+		    </table>
+        */
+        var otrtd = `<tr><td class="openDate" style="cursor: pointer">`;
+        var ctdotd = "</td><td>";
+        var ctrtr = "</td></tr>";
 
-            window.location.href = "/ex/vendor/dailyscheduleupdate?date=" + reservation.open_date.split(' ')[0];
+        var trtdStr = "";
 
-	        });
-	        row.appendChild(dateCell);
-	
-	        let statusCell = document.createElement("td");
-	        statusCell.textContent = reservation.status_flag === '1' ? '공개' : '비공개';
-	        row.appendChild(statusCell);
-	
-	        tableBody.appendChild(row);
-	    }
+        for (var i = 0; i < reservations.length; i++) {
+            let reservation = reservations[i];
+
+            trtdStr += otrtd + reservation.open_date + ctdotd;
+            trtdStr += reservation.status_flag == "1" ? "공개" : "비공개";
+            trtdStr += ctrtr;
+        }
+
+        //console.log(trtdStr);
+
+        tableBody.innerHTML = trtdStr;
+
+        
+        var dateCells = document.getElementsByClassName("openDate");
+        for (var i = 0; i < dateCells.length; i++) {
+            let dateCell = dateCells[i];
+            dateCell.addEventListener("click", function() {
+                window.location.href = "/ex/vendor/dailyscheduleupdate?date=" + dateCell.innerText;
+            });
+        }
+        
+        
+        
+        
+        
 }
 
 
-    // 페이지 로드 시 기본적으로 현재 월의 데이터를 불러오고 옵션을 설정
-    document.addEventListener("DOMContentLoaded", function() {
-        populateMonthOptions();
-        loadReservations();
-    });
 </script>
 <%@include file="../include/footer.jsp"%>

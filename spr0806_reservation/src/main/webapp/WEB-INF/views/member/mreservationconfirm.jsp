@@ -4,56 +4,75 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 <%@include file="../include/header.jsp"%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
 
+#container444 {
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+}
+
+#container282 {
+    display: grid;
+    grid-template-columns: 2fr 8fr 2fr;
+}
+</style>
 <div class="header-placeholder"></div>
 <main>
+
+    <div id="container282">
+        <div class="empty-space"></div>
+        <div>
     <h2>예약 정보 확인</h2>
     
     <form:form action="/ex/member/reservationComplete" id="reservationCompleteFrm" method="post" modelAttribute="dto">
         <!-- 예약(주문)번호 -->
             <%--<form:input path="reservation_number" id="reservationNumber" type="hidden" /> --%>
-            <input name="reservation_number" id="reservationNumber" type="hidden" />
+            <input class="form-control" name="reservation_number" id="reservationNumber" type="hidden" />
         <div>
             <label for="userEmail">회원 이메일:</label>
-            <form:input path="user_email" id="userEmail" type="text" />
+            <form:input class="form-control" path="user_email" id="userEmail" type="text" />
         </div>
         <div>
             <label for="userName">예약자 이름:</label>
-            <form:input path="user_name" id="userName" type="text" />
+            <form:input class="form-control" path="user_name" id="userName" type="text" />
         </div>
         <div>
             <label for="userPhone">예약자 전화번호:</label>
-            <form:input path="user_phone" id="user_phone" type="text" />
+            <form:input class="form-control" path="user_phone" id="user_phone" type="text" />
         </div>
         <div>
             <label for="vendorEmail">사업자 이메일:</label>
-            <form:input path="vendor_email" id="vendorEmail" type="text" value="${sessionScope.selectedItemsDto.email}"/>
+            <form:input class="form-control" path="vendor_email" id="vendorEmail" type="text" value="${sessionScope.selectedItemsDto.email}"/>
         </div>
         <!-- 사업자등록번호: -->
             <form:input path="business_regi_num" id="businessRegiNum" type="hidden" value="${sessionScope.selectedItemsDto.business_regi_num}"/>
         <div>
             <label for="vendorName">장소 이름(간판명):</label>
-            <form:input path="business_name" id="business_name" type="text" />
+            <form:input class="form-control" path="business_name" id="business_name" type="text" />
         </div>
         <div>
             <label for="vendorName">사업자 이름:</label>
-            <form:input path="vendor_name" id="vendorName" type="text" />
+            <form:input class="form-control" path="vendor_name" id="vendorName" type="text" />
         </div>
         <div>
             <label for="vendorPhone">사업자 전화번호:</label>
-            <form:input path="vendor_phone" id="vendorPhone" type="text" />
+            <form:input class="form-control" path="vendor_phone" id="vendorPhone" type="text" />
         </div>
         <div>
             <label for="zipcode">우편번호:</label>
-            <form:input path="zipcode" id="zipcode" type="text" />
+            <form:input class="form-control" path="zipcode" id="zipcode" type="text" />
         </div>
         <div>
             <label for="basicAddress">기본 주소:</label>
-            <form:input path="basic_address" id="basicAddress" type="text" />
+            <form:input class="form-control" path="basic_address" id="basicAddress" type="text" />
         </div>
         <div>
             <label for="detailAddress">상세 주소:</label>
-            <form:input path="detail_address" id="detailAddress" type="text" />
+            <form:input class="form-control" path="detail_address" id="detailAddress" type="text" />
         </div>
         <div>
             <!-- 예약 발생 날짜: -->
@@ -62,7 +81,7 @@
         </div>
         <div>
             <label for="reservationUseDate">이용 예정 날짜:</label>
-            <form:input path="reservation_use_date" id="reservationUseDate" type="text" />
+            <form:input class="form-control" path="reservation_use_date" id="reservationUseDate" type="text"/>
         </div>
         <div>
             <!-- 이용 예정 시간 값: -->
@@ -70,23 +89,23 @@
         </div>
         <div>
             <label for="times">이용 예정 시간 HH:mm :</label>
-            <form:input path="times_hhmm" id="times_hhmm" type="text" />
+            <form:input class="form-control" path="times_hhmm" id="times_hhmm" type="text" />
         </div>
         <div>
             <label for="totalServiceName">이용 예정 서비스 이름들:</label>
-            <form:textarea path="total_service_name" id="totalServiceName" rows="2" cols="40"></form:textarea>
+            <form:textarea class="form-control" path="total_service_name" id="totalServiceName" rows="2" cols="40"></form:textarea>
         </div>
         <div>
             <label for="totalServicePrice">서비스 가격 총 합:</label>
-            <form:input path="total_service_price" id="totalServicePrice" type="number" />
+            <form:input class="form-control" path="total_service_price" id="totalServicePrice" type="number" />
         </div>
         <div>
             <label for="totalRequiredTime">예상 필요 시간 총 합:</label>
-            <form:input path="total_required_time" id="totalRequiredTime" type="number" />
+            <form:input class="form-control" path="total_required_time" id="totalRequiredTime" type="number" />
         </div>
         <div>
             <label for="userRequestMemo">유저 요청사항 메모:</label>
-            <form:textarea path="user_request_memo" id="userRequestMemo" rows="5" cols="40"></form:textarea>
+            <form:textarea class="form-control" path="user_request_memo" id="userRequestMemo" rows="5" cols="40"></form:textarea>
         </div>
         
         <!-- 주문 상태 
@@ -105,10 +124,12 @@
 -->
 
         <div>
-            <button type="submit" id="submitBtn">예약 하기</button>
+            <button class="btn btn-success mt-3" type="submit" id="submitBtn">예약 하기</button>
         </div>
     </form:form>
-    
+    </div>
+        <div class="empty-space"></div>
+    </div>
 <br><br><br>
 </main>
 <script>
@@ -138,10 +159,9 @@
 	document.addEventListener("DOMContentLoaded", function() {
 	    // submit 버튼을 눌렀을 때 이벤트 발생
 	    document.getElementById("submitBtn").addEventListener("click", function(event) {
-	    	// 기본 submit 이벤트 막기
-	        event.preventDefault();
+	        event.preventDefault(); // 기본 submit 이벤트 막기
 	        
-	        // 예약 번호와 예약 날짜 설정
+	        // 예약 번호와 예약 발생일 설정
 	        let reservationNumber = generateReservationNumber();
 	        let reservationDate = getCurrentDate();
 	        

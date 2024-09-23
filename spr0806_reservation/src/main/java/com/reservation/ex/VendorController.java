@@ -78,18 +78,22 @@ public class VendorController {
         String business_regi_num = (String)session.getAttribute("loginBusiness_regi_num");
 //        String open_date = (String)session.getAttribute("open_date");
         String status="3";
-        ArrayList<UserReservationDto> dtoList = uRService.selectAllVendorOrdersNotInStatus(vendor_email, business_regi_num, status);
-        model.addAttribute("dtoList", dtoList);
+//        ArrayList<UserReservationDto> dtoList = uRService.selectAllVendorOrdersNotInStatus(vendor_email, business_regi_num, status);
+//        model.addAttribute("dtoList", dtoList);
         
         return "/vendor/myorders";
     }
     
-    //0913 
+  //0913 
     @RequestMapping(value = "/vendor/orderinfo", method = RequestMethod.GET)
-    public String orderinfo(String reservationNumber, HttpSession session, Model model) throws Exception {
-        logger.info("VendorController - /vendor/orderinfo");
+    public String orderinfo(String reservationNumber, 
+    		String sn,
+    		String pn, HttpSession session, Model model) throws Exception {
+        logger.info("VendorController - /vendor/orderinfo   sn pn " + sn + ", " + pn);
         UserReservationDto myOrder = 
                  uRService.selectOneMyOrder(reservationNumber);
+        session.setAttribute("sessionStatusNum", sn);
+        session.setAttribute("sessionPageNum", pn);
         model.addAttribute("myOrder", myOrder);
         return "/vendor/orderinfo";
     }
@@ -313,17 +317,18 @@ public class VendorController {
 
 	// vendor 로그인을 하면 vendor 시작페이지로 가면서
 	// 세션에 이름과 사업자번호를 등록해두게 된다
-	@RequestMapping(value = "/vendor/vendor", method = RequestMethod.GET)
+    //vendor/vendor -> vendor/mypage 변경
+	@RequestMapping(value = "/vendor/mypage", method = RequestMethod.GET)
 	public String vendor(HttpSession session, Model model) throws Exception {
-		System.out.println("VendorController - /vendor/vendor");
-
-		String email = (String) session.getAttribute("loginEmail");
-		if (session.getAttribute("loginName") == null) {
+		System.out.println("VendorController - /vendor/mypage");
+		
+		String email = (String)session.getAttribute("loginEmail");
+		if(session.getAttribute("loginName")==null) {
 			session.setAttribute("loginName", uService.selectEmail(email).getName());
 			session.setAttribute("loginBusiness_regi_num", vService.selectEmail(email).getBusiness_regi_num());
 		}
-
-		return "/vendor/vendor";
+		
+		return "/vendor/mypage";
 	}
 
 	@RequestMapping(value = "/vendor/scheduleinsert", method = RequestMethod.GET)

@@ -75,14 +75,15 @@ public class LoginRedirectHandler implements AuthenticationSuccessHandler {
 	        //session.setAttribute("loginName", loginName);
 	        session.setAttribute("loginAuthority", "사업자회원");
 	        System.out.println("사업자회원 " + email);
-			response.sendRedirect("/ex/vendor/vendor");
+			response.sendRedirect("/ex/vendor/mypage"); //바꿈
 			return;
 		}
 		if(roleNames.contains("ROLE_MEMBER")) {
 	        //session.setAttribute("loginName", loginName);
 	        session.setAttribute("loginAuthority", "일반회원");
 	        System.out.println("일반회원 " + email);
-			response.sendRedirect("/ex/member/member");
+			//response.sendRedirect("/ex/member/member");	//바꿈. 로그인시 등록되는 세션정보는 아래 링크 들어갈때 등록되게 수정함
+			response.sendRedirect("/ex/member/mypage");
 			return;
 		}
 	}

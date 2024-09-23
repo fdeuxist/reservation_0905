@@ -12,6 +12,8 @@ import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +42,8 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 public class MessageController {
+
+	private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 	
 	final DefaultMessageService messageService;
 	
@@ -262,9 +266,12 @@ public class MessageController {
         message.setTo(phone);
         message.setText(subject);
 
-        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-        System.out.println(response);
-
+        logger.info("회원가입 phone 인증코드 : " + authCode); //test용
+        
+        //실제문자전송부
+        //SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        //System.out.println(response);
+        SingleMessageSentResponse response = null;	//test용 null전송
         return response;
     }
     

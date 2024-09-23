@@ -33,6 +33,9 @@ select * from vendor
 select * from vendor where email=#{email} and business_regi_num=#{business_regi_num}
 </select>
 
+<select id="checkEmail" resultType="int">
+select count(*) from vendor where email=#{email}
+</select>
 
 <select id="selectEmail" resultType="VendorDTO">
 select * from vendor where email=#{email}

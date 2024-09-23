@@ -4,8 +4,74 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+<%-- 
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* 메인 컨텐츠 영역 스타일 */
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 주문 상세 정보 카드 스타일 */
+.order-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 카드 제목 스타일 */
+.order-card h3 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+/* 카드 내 항목 스타일 */
+.order-card p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* 레이블 스타일 */
+.order-card .label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* 주소 항목의 추가 스타일 */
+.order-card p span:not(.label) {
+    display: block;
+    margin-top: 4px;
+}
+
+/* 공백 스타일 */
+.order-card br {
+    content: "\A";
+    white-space: pre;
+}--%>
+</style>
+
 <div class="header-placeholder"></div>
 <main>
+
+<%--
     <div class="order-card">
         <h3>주문 상세 정보</h3>
         <p><span class="label">예약번호:</span> ${myOrder.reservation_number}</p>
@@ -44,6 +110,115 @@
 	        <input type="button" id="orderCompleted" value="이용완료확정하기">
         </c:if>
     </div>
+--%>
+	<div class="container m-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">주문 상세 정보</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">예약번호</th>
+                        <td>${myOrder.reservation_number}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예약자 이름</th>
+                        <td>${myOrder.user_name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예약자 전화번호</th>
+                        <td>${myOrder.user_phone}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예약자 Email</th>
+                        <td>${myOrder.user_email}</td>
+                    </tr>
+                  </tbody>
+            </table>
+        <div class="border-top my-3"></div>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">사업자 이름</th>
+                        <td>${myOrder.vendor_name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">사업자 전화번호</th>
+                        <td>${myOrder.vendor_phone}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">장소 이름</th>
+                        <td>${myOrder.business_name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">주소</th>
+                        <td>
+                            ${myOrder.zipcode}<br>
+                            ${myOrder.basic_address}<br>
+                            ${myOrder.detail_address}
+                        </td>
+                    </tr>
+                  </tbody>
+            </table>
+        <div class="border-top my-3"></div>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">이용(방문)예정일</th>
+                        <td>${myOrder.reservation_use_date}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">이용(방문)예정 시간</th>
+                        <td>${myOrder.times_hhmm}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예약 목록</th>
+                        <td>${myOrder.total_service_name}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예약 금액</th>
+                        <td>${myOrder.total_service_price}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예상 소요 시간</th>
+                        <td>${myOrder.total_required_time}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">주문자 메모</th>
+                        <td>${myOrder.user_request_memo}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">주문 상태</th>
+                        <td>
+                            <c:choose>
+                                <c:when test="${myOrder.status == 1}">입금대기</c:when>
+                                <c:when test="${myOrder.status == 2}">입금완료</c:when>
+                                <c:when test="${myOrder.status == 3}">이용완료</c:when>
+                                <c:when test="${myOrder.status == 4}">취소대기</c:when>
+                                <c:when test="${myOrder.status == 5}">취소완료</c:when>
+                                <c:when test="${myOrder.status == 6}">환불대기</c:when>
+                                <c:when test="${myOrder.status == 7}">환불완료</c:when>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        <div class="card-footer">
+	        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
+	        	<input type="button" class="btn btn-danger" id="tryCancel" value="취소요청하기">
+	        </c:if>
+	        <c:if test="${myOrder.status == 2 || myOrder.status == 4 || myOrder.status == 6}">
+		        <input type="button" class="btn btn-success" id="orderCompleted" value="이용완료확정하기">
+	        </c:if>
+	        <c:if test="${myOrder.status == 3}">
+	        	<input type="button" class="btn btn-info" id="reply" value="후기작성하기">
+	        </c:if>
+        </div>
+    </div>
+
+
 </main>
 <script>
 $(function() {
@@ -110,64 +285,13 @@ $("#orderCompleted").click(function() {
         }
     });
     
+    $("#reply").click(function() {
+    	//
+    }
+    
+    
 });
 </script>
 
-<style>
-/* 전체 페이지 스타일 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
 
-/* 메인 컨텐츠 영역 스타일 */
-main {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* 주문 상세 정보 카드 스타일 */
-.order-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* 카드 제목 스타일 */
-.order-card h3 {
-    margin-top: 0;
-    font-size: 24px;
-    color: #333;
-}
-
-/* 카드 내 항목 스타일 */
-.order-card p {
-    margin: 8px 0;
-    font-size: 16px;
-    color: #555;
-}
-
-/* 레이블 스타일 */
-.order-card .label {
-    font-weight: bold;
-    color: #333;
-}
-
-/* 주소 항목의 추가 스타일 */
-.order-card p span:not(.label) {
-    display: block;
-    margin-top: 4px;
-}
-
-/* 공백 스타일 */
-.order-card br {
-    content: "\A";
-    white-space: pre;
-}
-</style>
 <%@include file="/WEB-INF/views/include/footer.jsp"%>

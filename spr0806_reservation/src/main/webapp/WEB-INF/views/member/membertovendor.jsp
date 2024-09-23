@@ -1,16 +1,34 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- jQuery Framework 참조하기 -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
-<body>
+<%@include file="../include/header.jsp"%>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+#container444 {
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+}
+#container282 {
+    display: grid;
+    grid-template-columns: 2fr 8fr 2fr;
+}
+.hidden {
+    display: none;
+}
+</style>
+<div class="header-placeholder"></div>
+<main>
+<%--
 <h4>데이터 입력</h4>
 <form action="/ex/member/membertovendor" method="post">
 	<div class="console1"></div>
@@ -26,101 +44,163 @@
 </form>
 <div id="layer"></div>
 </body>
+ --%>
+ 
+<div id="container282">
+    <div class="empty-space"></div>
+    <div>
+        <div><h3 class="text-center mt-3 mb-3">사업자 회원으로 전환</h3></div>
+			<div id="layer" style="display:none; position:fixed; z-index:9999; background:white; border:1px solid black; overflow:hidden; -webkit-overflow-scrolling:touch;"></div>
+        <form action="/ex/member/membertovendor" method="post" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="email">이메일:</label>
+                <input type="text" class="form-control" id="email" name="email" value="${sessionScope.loginEmail }" readonly>
+                <div class="console1"></div>
+            </div>
 
+            <div class="form-group">
+                <label for="business_regi_num">사업자번호:</label>
+                <input type="text" class="form-control" id="business_regi_num" name="business_regi_num" required>
+                <div class="console2"></div>
+                <button type="button" id="checkbusiness_regi_num" class="btn btn-secondary mt-2" disabled>중복검사</button>
+            </div>
 
+            <div class="form-group">
+                <label for="business_name">사업명 (간판 등):</label>
+                <input type="text" class="form-control" id="business_name" name="business_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="zipcode">우편번호:</label>
+                <input type="text" class="form-control" id="zipcode" name="zipcode" required>
+                <button type="button" id="postcodeBtn" class="btn btn-info mt-2">우편번호 검색</button>
+            </div>
+            <div class="form-group">
+                <label for="basic_address">기본주소:</label>
+                <input type="text" class="form-control" id="basic_address" name="basic_address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="detail_address">상세주소:</label>
+                <input type="text" class="form-control" id="detail_address" name="detail_address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="business_type">업종:</label>
+                <input type="text" class="form-control" id="business_type" name="business_type" required>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary" disabled>등록</button>
+        </form>
+    </div>
+    <div class="empty-space"></div>
+</div>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="../resources/js/mbtvaddrapi.js"></script>
-		<!-- 사용자 스크립트 블록 -->
+<script type="text/javascript">
+	$(function() {
 		
-		<script type="text/javascript">
-			$(function() {
-
-		        const submitBtn = document.getElementById('submitBtn');
-		        const checkbusiness_regi_numBtn = document.getElementById('checkbusiness_regi_num');
-		        
-
-	        	
-					// 사용자 입력값 얻어오기
-		        	var input_value = $("input[name='email']").val();
-					 $.ajax({
-					        url: '/ex/vendorrest/emailcheck', // 서버에서 정의한 URL
-					        type: 'GET', // HTTP 메서드
-					        data: {
-					        	email: input_value // 서버로 보낼 파라미터
-					        },
-					        success: function(response) {
-					        	console.log(response);
-					            // 서버에서 반환된 JSON 데이터를 파싱
-					            var result = response.result;
-					            console.log(result);
-					            // result가 "true"인지 "false"인지 판단하여 사용자에게 메시지 표시
-					            if (result === "true") {
-					                $(".console1").html("<span style='color:blue'>사업자회원 전환이 가능한 이메일입니다.</span>");
-					                checkbusiness_regi_numBtn.disabled = false;
-					            } else if (result === "false") {
-					                $(".console1").html("<span style='color:red'>이미 사업자회원으로 전환 되어 있는 이메일입니다.</span>");
-					            } else {
-					                $(".console1").html("<span style='color:gray'>알 수 없는 결과입니다.</span>");
-					            }
-					        },
-					        error: function(xhr, status, error) {
-					            console.error("AJAX 요청 실패: ", status, error);
-					            $(".console").html("<span style='color:red'>서버 요청에 실패했습니다.</span>");
-					        }
-					    });
-					
-		        
-		        
-		        
-		        
-		        	
-				
-				
-				
-				
-				$("#checkbusiness_regi_num").click(function() {
-					// 사용자 입력값 얻어오기
-					var input_value = $("input[name='business_regi_num']").val();
-
-					// 입력여부 검사 input tag에 입력값 없이 버튼 누를시 alert이 실행된다.
-					if (!input_value) {
-						alert("사업자번호를 입력하세요.");
-						$("input[name='business_regi_num']").focus(); //focus()는 선택시 활성화되는것
-						return false;//기본이벤트 막음 
-					}
-					
-					 $.ajax({
-					        url: '/ex/vendorrest/business_regi_numcheck',
-					        type: 'GET',
-					        data: {
-					        	business_regi_num: input_value
-					        },
-					        success: function(response) {
-					        	console.log(response);
-					            var result = response.result;
-					            console.log(result);
-
-					            if (result === "true") {
-					                $(".console2").html("<span style='color:blue'>사용할 수 있는 사업자번호입니다.</span>");
-					                submitBtn.disabled = false;
-					            } else if (result === "false") {
-					                $(".console2").html("<span style='color:red'>이미 가입 되어 있는 사업자번호입니다.</span>");
-					            } else {
-					                $(".console2").html("<span style='color:gray'>알 수 없는 결과입니다.</span>");
-					            }
-					        },
-					        error: function(xhr, status, error) {
-					            console.error("AJAX 요청 실패: ", status, error);
-					            $(".console").html("<span style='color:red'>서버 요청에 실패했습니다.</span>");
-					        }
-					    });
-					
-				});
-				
-			});
-		</script>
+		
+		
+		
+		
+		
+		
 		
 
+        const submitBtn = document.getElementById('submitBtn');
+        const checkbusiness_regi_numBtn = document.getElementById('checkbusiness_regi_num');
+        
 
-</html>
+       	
+			// 사용자 입력값 얻어오기
+        	var input_value = $("#email").val();
+			 $.ajax({
+			        url: '/ex/vendorrest/emailcheck',
+			        type: 'GET',
+			        data: {
+			        	email: input_value
+			        },
+			        success: function(response) {
+			        	console.log(response);
+			            var result = response.result;
+			            console.log(result);
+			            if (result === "true") {
+			                //$(".console1").html("<span style='color:blue'>사업자회원 전환이 가능한 이메일입니다.</span>");
+			                $(".console1").html(`<div class="alert-sm alert-primary alert-dismissible p-1" style="font-size: 0.75rem;">`+
+			    					`사업자회원 전환이 가능한 이메일입니다.`+
+			    					  `</div>`);
+			                checkbusiness_regi_numBtn.disabled = false;
+			            } else if (result === "false") {
+			                //$(".console1").html("<span style='color:red'>이미 사업자회원으로 전환 되어 있는 이메일입니다.</span>");
+			                $(".console1").html(`<div class="alert-sm alert-primary alert-danger p-1" style="font-size: 0.75rem;">`+
+			    					`이미 사업자회원으로 전환 되어 있는 이메일입니다.`+
+			    					  `</div>`);
+			            } else {
+			                //$(".console1").html("<span style='color:gray'>알 수 없는 결과입니다.</span>");
+			            }
+			        },
+			        error: function(xhr, status, error) {
+			            console.error("AJAX 요청 실패: ", status, error);
+			            //$(".console").html("<span style='color:red'>서버 요청에 실패했습니다.</span>");
+			        }
+			    });
+			
+        
+        
+        
+        
+        	
+		
+		
+		
+		
+		$("#checkbusiness_regi_num").click(function() {
+			// 사용자 입력값 얻어오기
+			var input_value = $("input[name='business_regi_num']").val();
+
+			// 입력여부 검사 input tag에 입력값 없이 버튼 누를시 alert이 실행된다.
+			if (!input_value) {
+				alert("사업자번호를 입력하세요.");
+				$("#business_regi_num").focus();
+				return false; //기본이벤트 막음 
+			}
+			
+			 $.ajax({
+			        url: '/ex/vendorrest/business_regi_numcheck',
+			        type: 'GET',
+			        data: {
+			        	business_regi_num: input_value
+			        },
+			        success: function(response) {
+			        	console.log(response);
+			            var result = response.result;
+			            console.log(result);
+
+			            if (result === "true") {
+			                //$(".console2").html("<span style='color:blue'>사용할 수 있는 사업자번호입니다.</span>");
+			                $(".console2").html(`<div class="alert-sm alert-primary alert-dismissible p-1" style="font-size: 0.75rem;">`+
+			    					`사용할 수 있는 사업자번호입니다.`+
+			    					  `</div>`);
+			                submitBtn.disabled = false;
+			            } else if (result === "false") {
+			                //$(".console2").html("<span style='color:red'>이미 가입 되어 있는 사업자번호입니다.</span>");
+			            	$(".console2").html(`<div class="alert-sm alert-primary alert-danger p-1" style="font-size: 0.75rem;">`+
+			    					`이미 가입 되어 있는 사업자번호입니다.`+
+			    					  `</div>`);
+			            } else {
+			                //$(".console2").html("<span style='color:gray'>알 수 없는 결과입니다.</span>");
+			            }
+			        },
+			        error: function(xhr, status, error) {
+			            console.error("AJAX 요청 실패: ", status, error);
+			            //$(".console").html("<span style='color:red'>서버 요청에 실패했습니다.</span>");
+			        }
+			    });
+			
+		});
+		
+	});
+</script>
+		

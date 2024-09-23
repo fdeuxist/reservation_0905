@@ -43,7 +43,7 @@ if (result == 'success') {
 <div class="header-placeholder"></div>
 <main>
 
-<h3>모든 회원 보기</h3>
+<h3>모든 회원 보기, 권한수정/계정 정지</h3>
 <form action="/ex/admin/accountSearch" method="get" class="search-form">
 	<label for="searchBy">검색 기준:</label>
 	<select name="searchBy" id="searchBy">

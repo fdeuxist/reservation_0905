@@ -15,7 +15,7 @@ body {
 .hidden {
     display: none;
 }
-.acontainer {
+.div1 {
 	width: 400px;
 	margin: 0 auto;
 }
@@ -27,10 +27,22 @@ body {
 	margin-top: 20px;
 }
 
+/*
 .time-slot {
 	padding: 10px;
 	text-align: center;
 	border: 1px solid #ccc;
+}
+*/
+
+.time-slot {
+    background-color: white;
+    transition: background-color 0.4s;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid gray;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 /* 0 수정가능 열지 않은 시간 */
@@ -73,6 +85,19 @@ h2 {
 h3 {
     text-align: center; /* 날짜 중앙 정렬 */
     color: #666;
+}
+
+
+#container444 {
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+    text-align: center;
+}
+
+#container282 {
+    display: grid;
+    grid-template-columns: 2fr 8fr 2fr;
+    text-align: center;
 }
 
 
@@ -131,7 +156,9 @@ button:disabled {
 }
 
 
-
+#mt {
+	margin-top: 20px;
+}
 
 
 </style>
@@ -149,17 +176,38 @@ loginName: [${sessionScope.loginName}]
 <br>
 
 
-<div class="acontainer">
-    <!-- <h1>영업일 및 영업시간 선택</h1> --><h2>일일 스케줄 수정</h2>
-    <input type="hidden" id="vendorEmail" value="${sessionScope.loginEmail}">
-    <input type="hidden" id="vendorBusiness_regi_num" value="${sessionScope.loginBusiness_regi_num}">
-    <input type="hidden" id="selectedDate" value="${selectedDate}" readonly>
-    <h3>${selectedDate}</h3>
-    <div id="time-buttons"></div><br>
-    <div>
-    <button type="button" id="modifySubmitBtn">스케줄 수정</button>
-    <button type="button" id="cancelSubmitBtn">수정 취소</button>
-    <button type="button" id="updateSubmitBtn">수정 완료</button>
+<div >
+
+    <div id="container444">
+        <div class="empty-space"></div>
+        <div>
+		    <!-- <h1>영업일 및 영업시간 선택</h1> --><h2>일일 스케줄 수정</h2>
+		    <input type="hidden" id="vendorEmail" value="${sessionScope.loginEmail}">
+		    <input type="hidden" id="vendorBusiness_regi_num" value="${sessionScope.loginBusiness_regi_num}">
+		    <input type="hidden" id="selectedDate" value="${selectedDate}" readonly>
+		    <h3>${selectedDate}</h3>
+		</div>
+        <div class="empty-space"></div>
+   	</div>
+    
+    <div id="container282">
+        <div class="empty-space"></div>
+        	<div id="time-buttons"></div>
+        <div class="empty-space"></div>
+    </div>
+    <div id="mt"></div>
+    <div id="container282">
+        <div class="empty-space"></div>
+        <div>
+		    <button type="button" id="modifySubmitBtn">스케줄 수정</button>
+		    <button type="button" id="cancelSubmitBtn">수정 취소</button>
+		    <button type="button" id="updateSubmitBtn">수정 완료</button>
+		    <div id="mt">스케줄 수정 버튼을 누르면 수정중인 날짜는 예약이 불가능한 상태(비공개)로 전환 되어집니다. <br>
+		    수정취소나 수정 완료를 누르면 다시 예약이 가능한 상태가 됩니다.<br>
+		    예약받고 싶은 시간대를 클릭하여 노란색으로 만든 후 수정 완료를 눌러주세요.<br>
+		    이미 예약 되어진 시간은 수정 할 수 없습니다.</div>
+	    </div>
+        <div class="empty-space"></div>
     </div>
     <%--<button type="button" id="timesNow">지금시간값</button> --%>
 </div>
