@@ -42,16 +42,16 @@ select * from service_items
 where item_id=#{item_id}
 </select>
 
-<update id="updateMyItem">
+<update id="updateMyItem" parameterType="com.reservation.dto.ServiceItemsDto">
 update service_items set 
     service_name=#{service_name}, service_description=#{service_description}, 
-    required_time=#{required_time}, service_price=#{service_price} 
+    required_time=#{required_time}, service_price=#{service_price}, item_status=#{item_status} 
     where item_id=#{item_id}
 </update>
 
-<delete id="deleteMyItem">
+<update id="deleteMyItem" parameterType="com.reservation.dto.ServiceItemsDto">
 update service_items set item_status='0' where email=#{email} and business_regi_num=#{business_regi_num}
-</delete>
+</update>
 
 <!-- 만든이:김하겸 , 관련 이미지,파일업로드 매퍼 구문 -->
 <insert id="insertItemImg"

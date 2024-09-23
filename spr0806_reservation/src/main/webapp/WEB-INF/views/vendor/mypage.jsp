@@ -32,8 +32,9 @@ body {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">내 서비스 등록</h5>
-                    <p class="card-text">새로운 서비스를 등록합니다.</p>
+                    <p class="card-text">새로운 서비스를 등록하고 관리합니다.</p>
                     <a href="${pageContext.request.contextPath}/vendor/serviceiteminsert" class="btn btn-primary">등록하기</a>
+                    <a href="${pageContext.request.contextPath}/vendor/serviceitemselectAll" class="btn btn-primary">관리하기</a>
                 </div>
             </div>
         </div>

@@ -9,6 +9,12 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <div class="header-placeholder"></div>
+<style>
+body {
+    margin: 0;
+    background-color: #f4f4f4;
+}
+</style>
 <%--
 <style>
 /* 전반적인 스타일 */
@@ -147,7 +153,7 @@ if (result == 'success') {
         <div id="formDiv" class="col-md-6 mt-4">
             <form:form action="${pageContext.request.contextPath}/vendor/serviceiteminsert" method="post" modelAttribute="serviceItems">
             
-    <br><h3 class="text-center">서비스 등록</h3><br>
+    <br><h3 class="text-center">서비스 항목 등록</h3><br>
                 <div class="form-group">
                     <label for="service_name">서비스 이름:</label>
                     <form:input path="service_name" id="service_name" class="form-control" required="true"/>

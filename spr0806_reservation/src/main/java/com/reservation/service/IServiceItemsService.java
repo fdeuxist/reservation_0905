@@ -15,7 +15,7 @@ public interface IServiceItemsService {
 
 	public ServiceItemsDto selectOneItem(String item_id) throws Exception;
 	
-	public void updateMyItem(ServiceItemsDto dto) throws Exception;
+	public int updateMyItem(ServiceItemsDto dto) throws Exception;
 	
 	public void deleteMyItem(String email, String business_regi_num) throws Exception;
 	public void insertItemImg(ImageDto dto) throws Exception;

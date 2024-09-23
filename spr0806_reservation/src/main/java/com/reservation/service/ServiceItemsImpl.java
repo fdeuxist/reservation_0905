@@ -41,9 +41,9 @@ public class ServiceItemsImpl implements IServiceItemsService {
 	}
 	
 	@Override
-	public void updateMyItem(ServiceItemsDto dto) throws Exception {
+	public int updateMyItem(ServiceItemsDto dto) throws Exception {
 		ServiceItemsDao dao = sqlSession.getMapper(ServiceItemsDao.class);
-		dao.updateMyItem(dto);
+		return dao.updateMyItem(dto);
 	}
 
 	@Override

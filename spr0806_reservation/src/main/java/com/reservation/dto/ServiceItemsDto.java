@@ -59,7 +59,7 @@ public class ServiceItemsDto {
 
 	@Override
 	public String toString() {
-		return "ServiceItemsDto [item_id=" + item_id + ", email=" + email + ", business_regi_num=" + business_regi_num
+		return "\nServiceItemsDto [item_id=" + item_id + ", email=" + email + ", business_regi_num=" + business_regi_num
 				+ ", service_name=" + service_name + ", service_description=" + service_description + ", required_time="
 				+ required_time + ", service_price=" + service_price + ", item_status=" + item_status + ", toString()="
 				+ super.toString() + "]";

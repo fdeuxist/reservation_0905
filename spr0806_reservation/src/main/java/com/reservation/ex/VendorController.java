@@ -70,6 +70,49 @@ public class VendorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
+	
+	@RequestMapping(value = "/vendor/serviceitemupdate", method = RequestMethod.GET)
+	public String serviceitemupdate(String item_id, Model model) throws Exception {
+		logger.info("/vendor/serviceitemupdate   item_id : " + item_id);
+		
+		ServiceItemsDto dto = null;
+		dto = sIService.selectOneItem(item_id);
+		logger.info("/vendor/serviceitemupdate   selectOneItem dto : " + dto);
+
+		model.addAttribute("serviceItems", dto);
+		
+		return "/vendor/serviceitemupdate";
+	}
+	
+	
+	@RequestMapping(value = "/vendor/serviceitemupdate", method = RequestMethod.POST)
+	public String serviceitemupdateDB(ServiceItemsDto dto, Model model, RedirectAttributes rttr) throws Exception {
+		logger.info("/vendor/serviceitemupdateDB   dto : " + dto);
+		int count = sIService.updateMyItem(dto);
+		
+		if(count > 0) {
+			rttr.addFlashAttribute("msg","success");	
+		}else {
+			rttr.addFlashAttribute("msg","fail");
+		}
+		
+		return "redirect:/vendor/serviceitemselectAll";
+	}
+	
+	@RequestMapping(value = "/vendor/serviceitemselectAll", method = RequestMethod.GET)
+	public String serviceitemselectAll(Model model, HttpSession session) throws Exception {
+		logger.info("/vendor/serviceitemselectAll");
+		ArrayList<ServiceItemsDto> list = null;
+		list = sIService.selectAllMyItems((String)session.getAttribute("loginEmail"),
+										(String)session.getAttribute("loginBusiness_regi_num"));
+		logger.info("serviceitemselectAll list : " + list);
+		
+		model.addAttribute("list", list);
+		return "/vendor/serviceitemselectAll";
+	}
+	
+	
+	
 	//0913 
     @RequestMapping(value = "/vendor/myorders", method = RequestMethod.GET)
     public String vendorrMyorders(HttpSession session, Model model) throws Exception {
