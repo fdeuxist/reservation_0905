@@ -93,6 +93,8 @@ public class ManagerController {
 		return "/manager/selectUser";
 	}
 
+	
+
 	@RequestMapping(value = "/manager/delete", method = RequestMethod.POST)
 	public String delete(HttpSession session, Model model, @RequestParam("email") String uEmail,
 			RedirectAttributes rttr) throws Exception {
@@ -124,7 +126,7 @@ public class ManagerController {
 		System.out.println(dto.getName());
 		return "redirect:/manager/manageUsers";
 	}
-
+	
 	@GetMapping("/getContent")
 	@ResponseBody
 	public void selectContent(HttpSession session, HttpServletRequest request, HttpServletResponse response)
