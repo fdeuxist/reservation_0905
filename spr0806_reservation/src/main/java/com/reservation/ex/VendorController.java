@@ -310,7 +310,7 @@ public class VendorController {
 
 	    System.out.println(dto);
 	    bpService.updateMyBusinessPlaceInfo(dto);
-	    return "redirect:/vendor/vendor";
+	    return "redirect:/vendor/mypage";
 	}
 
 	
