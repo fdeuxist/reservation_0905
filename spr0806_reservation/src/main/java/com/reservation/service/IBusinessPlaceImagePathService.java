@@ -13,7 +13,7 @@ public interface IBusinessPlaceImagePathService {
 			throws Exception;
 
 	// 0906 특정벤더의 특정파일을 메인이미지로 변경
-	public void setMainImage(@Param("email") String email, @Param("business_regi_num") String business_regi_num,
+	public boolean setMainImage(@Param("email") String email, @Param("business_regi_num") String business_regi_num,
 			@Param("place_img_path") String place_img_path) throws Exception;
 
 	// 0906 특정 벤더 특정 이미지 삭제

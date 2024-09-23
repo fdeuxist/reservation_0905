@@ -73,11 +73,10 @@ body {
 				<h5 class="card-title">내 사진첩 관리하기</h5>
 				<p class="card-text">내가 올린 사진들을 관리해보세요.</p>
 				<a href="${pageContext.request.contextPath}/vendor/imgList"
-					class="btn btn-primary">전환하기</a>
+					class="btn btn-primary">확인하기</a>
 			</div>
 		</div>
 	</div>
-</div>
 
 	<%-- 
     <div class="list-group">

@@ -26,9 +26,14 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 	}
 	// 0906 특정벤더의 특정파일을 메인이미지로 변경
 	@Override
-	public void setMainImage(String email, String business_regi_num, String place_img_path) throws Exception {
+	public boolean setMainImage(String email, String business_regi_num, String place_img_path) throws Exception {
 		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
-		dao.setMainImage(email, business_regi_num, place_img_path);
+		int result = dao.setMainImage(email, business_regi_num, place_img_path);
+		if(result>0) {
+			return true;
+		} else {
+		return false;
+		}
 	}
 	// 0906 특정 벤더 특정 이미지 삭제
 	@Override
