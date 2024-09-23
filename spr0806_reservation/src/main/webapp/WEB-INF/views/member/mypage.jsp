@@ -67,17 +67,6 @@ body {
 		</div>
 	</div>
 
-	<div class="col-md-6 mb-3">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">내 사진첩 관리하기</h5>
-				<p class="card-text">내가 올린 사진들을 관리해보세요.</p>
-				<a href="${pageContext.request.contextPath}/vendor/imgList"
-					class="btn btn-primary">확인하기</a>
-			</div>
-		</div>
-	</div>
-
 	<%-- 
     <div class="list-group">
         <a href="${pageContext.request.contextPath}/member/myorders" class="list-group-item list-group-item-action">주문 내역 보기</a>
