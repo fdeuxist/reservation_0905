@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><%-- Font Awesome 아이콘 --%>
-    <title>Header</title>
+    <title>모두의 예약</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -44,7 +44,7 @@
                     <a href="${pageContext.request.contextPath}/vendor/myorders">예약요청(주문)목록</a> --%>
                 </c:when>
                 <c:when test="${sessionScope.loginAuthority == '일반회원'}">
-                    <%-- <a href="${pageContext.request.contextPath}/member/searchplace"><i class="fa-solid fa-magnifying-glass-location"></i>예약 장소 검색</a> --%>
+                    <%--<a href="${pageContext.request.contextPath}/member/searchplace"><i class="fa-solid fa-magnifying-glass-location"></i>예약 장소 검색</a>--%>
                 </c:when>
                 <c:otherwise>
                     <%--<a href="/ex/user/insert">회원가입</a> --%>
