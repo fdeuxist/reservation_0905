@@ -32,7 +32,7 @@ if (result == 'success') {
 			<th>이름</th>
 			<th>필요시간(1당 30분단위)</th>
 			<th>가격</th>
-			<th>노출상태</th>
+			<th>상태</th>
 			<th>수정</th>
 		</tr>
 		<c:forEach items="${list }" var="dto">

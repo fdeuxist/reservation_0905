@@ -173,8 +173,8 @@ if (result == 'success') {
                 <div class="form-group">
                     <label for="item_status">상태:</label>
                     <form:select path="item_status" id="item_status" class="form-control" required="true">
-                        <form:option value="1" label="사용 가능"/>
-                        <form:option value="0" label="사용 불가"/>
+                        <form:option value="1" label="공개"/>
+                        <form:option value="0" label="비공개"/>
                     </form:select>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">등록</button>
