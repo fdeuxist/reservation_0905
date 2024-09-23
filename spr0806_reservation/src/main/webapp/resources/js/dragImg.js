@@ -4,13 +4,14 @@ $(document).ready(function() {
     const modalImage = $('#modalImage');
     const modalClose = $('.modal-close');
     const deleteButton = $('#deleteButton');
-    const contextPath = '${pageContext.request.contextPath}';
+   
 
     modal.hide();
 
     // 1. 이미지 썸네일 클릭 시 모달로 이미지 확대
     $('#image_list').on('click', 'img', function() {
         const src = contextPath + $(this).data('image-src');
+        console.log(src);
         modalImage.attr('src', src);
         modal.show();
 
@@ -115,6 +116,7 @@ $(document).ready(function() {
             success: function(response) {
                 alert('이미지 업로드 성공!');
                 // 업로드 후 이미지 목록 갱신 등 필요한 후속 작업
+                location.reload();
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
