@@ -374,12 +374,11 @@ public class VendorController {
 
 	}
 
-	// 이미지 삭제 0919 김하겸
 	@GetMapping("/deleteImage")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> deleteImage(@RequestParam String imagePath) throws Exception {
-		// 이미지 삭제 로직 구현
-		boolean flag = bpiService.deleteImage(imagePath);// 이미지 삭제 메소드 호출
+		System.out.println("Received imagePath: " + imagePath); // 디버깅용 로그
+		boolean flag = bpiService.deleteImage(imagePath);
 		Map<String, Object> response = new HashMap<>();
 		response.put("success", flag);
 
@@ -387,8 +386,6 @@ public class VendorController {
 			response.put("message", "이미지 삭제에 실패했습니다.");
 		}
 
-		return ResponseEntity.ok(response); // JSON 형태로 반환
-
+		return ResponseEntity.ok(response);
 	}
-
 }

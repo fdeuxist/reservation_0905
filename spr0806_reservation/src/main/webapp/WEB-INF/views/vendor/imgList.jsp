@@ -160,7 +160,7 @@ $(document).ready(function() {
         
         // AJAX 요청으로 서버에 이미지 삭제 요청
         $.ajax({
-            url: '/ex/deleteImage',
+            url: '/ex/deleteImage', // URL을 확인하세요.
             type: 'GET',
             data: {
                 imagePath: srcToDelete
@@ -181,6 +181,7 @@ $(document).ready(function() {
                 alert('서버 오류가 발생했습니다.');
             }
         });
+
     });
 });
 

@@ -19,7 +19,7 @@ public interface VendorDao {
 	
 	public void update(VendorDto dto) throws Exception;
 	
-	public void delete(String email) throws Exception;
+	public int delete(String email) throws Exception;
 
 	public VendorDto selectBusiness_regi_num(String business_regi_num) throws Exception;
 
