@@ -32,7 +32,7 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 	}
 	// 0906 특정 벤더 특정 이미지 삭제
 	@Override
-	public void deleteImage(String place_img_path) throws Exception {
+	public boolean deleteImage(String place_img_path) throws Exception {
 		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
 		dao.deleteImage(place_img_path);
 		return false;
