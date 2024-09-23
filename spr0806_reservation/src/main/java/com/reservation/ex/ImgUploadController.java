@@ -1,0 +1,182 @@
+package com.reservation.ex;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.reservation.dto.BusinessPlaceImagePathDto;
+import com.reservation.dto.BusinessPlaceInfoDto;
+import com.reservation.dto.ServiceItemsDto;
+
+import com.reservation.dto.UserReservationDto;
+import com.reservation.dto.VendorReservationDto;
+import com.reservation.service.IBusinessPlaceImagePathService;
+import com.reservation.service.IBusinessPlaceInfoService;
+import com.reservation.service.IServiceItemsService;
+import com.reservation.service.IUserReservationService;
+import com.reservation.service.IUserService;
+import com.reservation.service.IVendorReservationService;
+import com.reservation.service.IVendorService;
+
+@Controller
+public class ImgUploadController {
+
+	@Autowired
+	private IVendorService vService;
+
+	@Autowired
+	private IUserService uService;
+
+	@Autowired
+	private IVendorReservationService vRService;
+
+	@Autowired
+	private IUserReservationService uRService;
+
+	@Autowired
+	private IBusinessPlaceInfoService bpService;
+
+	@Autowired
+	private IBusinessPlaceImagePathService bpiService;
+	@Autowired
+	private IServiceItemsService sIService;
+
+	@Autowired
+	private ServletContext servletContext;
+
+	private static final Logger logger = LoggerFactory.getLogger(ImgUploadController.class);
+
+	@PostMapping("/uploadImages")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> uploadImages(HttpSession session,
+			@RequestParam("images") List<MultipartFile> multiFileList) throws Exception {
+		// 이미지 파일 저장 로직
+		System.out.println("드래그 앤 드롭 컨트롤러 진입....");
+		String email = (String) session.getAttribute("loginEmail");
+		String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
+		List<Map<String, String>> fileList = new ArrayList<>();
+		String uploadDir = servletContext.getRealPath("/resources/imgs");
+		
+		
+		File directory = new File(uploadDir);
+		if (!directory.exists()) {
+			directory.mkdirs(); // Create directory if it does not exist
+		}
+		
+		
+		if (multiFileList.isEmpty()) {
+			System.out.println("멀티 파일 리스트가 비어 있습니다. 업로드를 건너뜁니다.");
+		} else {
+			for (MultipartFile file : multiFileList) {
+				String originFile = file.getOriginalFilename();
+
+				// originFile이 비어있을 경우 건너뛰기
+				if (originFile == null || originFile.isEmpty()) {
+					System.out.println("원본 파일 이름이 비어 있습니다. 해당 파일을 건너뜁니다.");
+					continue; // 현재 반복을 건너뜁니다.
+				}
+
+				System.out.println("신창섭의 절실함은 " + originFile);
+				String fileExtension = "";
+				int lastDotIndexFile = originFile.lastIndexOf(".");
+				if (lastDotIndexFile != -1) {
+					fileExtension = originFile.substring(lastDotIndexFile);
+				} else {
+					fileExtension = ".jpg"; // Default extension if none found
+				}
+
+				UUID uuid = UUID.randomUUID();
+				String uniqueName = uuid.toString().split("-")[0];
+				String newFileName = uniqueName + fileExtension;
+				Map<String, String> map = new HashMap<>();
+				map.put("originFile", originFile);
+				map.put("newFileName", newFileName);
+				fileList.add(map);
+			}
+
+			// Upload multi-files
+			try {
+				for (int i = 0; i < multiFileList.size(); i++) {
+					// originFile이 비어있는 경우를 다시 체크
+					if (fileList.get(i).get("originFile") == null || fileList.get(i).get("originFile").isEmpty()) {
+						System.out.println("업로드할 파일이 비어있어 건너뜁니다.");
+						continue;
+					}
+
+					File uploadFile = new File(uploadDir + File.separator + fileList.get(i).get("newFileName"));
+					System.out.println("Uploading file to: " + uploadFile.getAbsolutePath());
+					multiFileList.get(i).transferTo(uploadFile);
+					String imgPath = "/resources/imgs/" + fileList.get(i).get("newFileName");
+					BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, imgPath,
+							"N");
+					bpiService.insertMyBusinessPlaceImagePath(imgDto);
+				}
+			} catch (IllegalStateException e) {
+				System.out.println("업로드 실패");
+				for (int i = 0; i < multiFileList.size(); i++) {
+					new File(uploadDir + File.separator + fileList.get(i).get("newFileName")).delete();
+				}
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println("File upload failed due to IO exception");
+				e.printStackTrace();
+			}
+		}
+
+		
+		// ...
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", true);
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/setMainImage")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> setMainImage(@RequestParam String imagePath, HttpSession session)
+			throws Exception {
+		// 메인 이미지로 설정하는 비즈니스 로직
+		// 데이터베이스에서 기존 메인 이미지를 해제하고, 새 메인 이미지를 설정
+		 boolean success = false;
+		String email = (String) session.getAttribute("loginEmail");
+		String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
+		BusinessPlaceImagePathDto mainDto = new BusinessPlaceImagePathDto(email, business_regi_num, imagePath, "Y");
+		if (mainDto.getPlace_img_path().contains("noimage")) {
+            System.out.println("기본 이미지임으로 업로드 및 저장 취소 ...");
+             success = false;
+        } else {
+        	bpiService.updateIsMainYToN(email, business_regi_num);
+            success = bpiService.setMainImage(mainDto.getEmail(), mainDto.getBusiness_regi_num(), mainDto.getPlace_img_path());
+            System.out.println("메인이미지값은 " + mainDto.getPlace_img_path());
+        }
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", success);
+		return ResponseEntity.ok(response);
+	}
+
+}
