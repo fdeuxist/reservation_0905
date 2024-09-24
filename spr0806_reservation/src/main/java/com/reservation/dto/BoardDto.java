@@ -5,6 +5,32 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class BoardDto {
+	
+	/*
+	 게시판 테이블
+	drop table board;
+	
+	CREATE TABLE board (
+	bGroupKind VARCHAR2(255),
+	bId NUMBER PRIMARY KEY,
+	bName VARCHAR2(255) NOT NULL,
+	bTitle VARCHAR2(255) NOT NULL,
+	bContent VARCHAR2(4000) NOT NULL,
+	bEtc VARCHAR2(4000) NULL,
+	bWriteTime DATE DEFAULT sysdate,
+	bUpdateTime DATE DEFAULT null,
+	bHit NUMBER DEFAULT 0,
+	bGroup NUMBER ,
+	bStep NUMBER DEFAULT 0,
+	bIndent NUMBER DEFAULT 0,
+	bDelete VARCHAR2(1) DEFAULT 'Y',
+	bLike NUMBER DEFAULT 0,
+	bDislike NUMBER DEFAULT 0
+	);
+	create sequence bId;
+	
+	select * from board;
+	*/
 	private String bGroupKind;
 	private int bId;
 	private String bName;
