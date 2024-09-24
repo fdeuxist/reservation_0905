@@ -44,53 +44,30 @@ public class SearchPlaceDto {
 	private String detail_address;
 	private String business_type;
 	private String place_info;
+	
 	public String getEmail() {
 		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
 	}
 	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 	public String getBusiness_regi_num() {
 		return business_regi_num;
-	}
-	public void setBusiness_regi_num(String business_regi_num) {
-		this.business_regi_num = business_regi_num;
 	}
 	public String getBusiness_name() {
 		return business_name;
 	}
-	public void setBusiness_name(String business_name) {
-		this.business_name = business_name;
-	}
 	public String getBasic_address() {
 		return basic_address;
-	}
-	public void setBasic_address(String basic_address) {
-		this.basic_address = basic_address;
 	}
 	public String getDetail_address() {
 		return detail_address;
 	}
-	public void setDetail_address(String detail_address) {
-		this.detail_address = detail_address;
-	}
 	public String getBusiness_type() {
 		return business_type;
 	}
-	public void setBusiness_type(String business_type) {
-		this.business_type = business_type;
-	}
 	public String getPlace_info() {
 		return place_info;
-	}
-	public void setPlace_info(String place_info) {
-		this.place_info = place_info;
 	}
 	@Override
 	public String toString() {
