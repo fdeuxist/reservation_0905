@@ -116,7 +116,7 @@
                 <h2>내용</h2>
                 <textarea name="bContents" rows="8" placeholder="내용을 입력하세요."></textarea>
                 <h2>작성자</h2>
-                <input type="text" name="bName" placeholder="작성자">
+                <input type="text" name="bName" placeholder="작성자" value="${sessionScope.loginName}(${sessionScope.loginAuthority})" readonly>
                 <input type="submit" value="글쓰기">
             </form>
         </div>

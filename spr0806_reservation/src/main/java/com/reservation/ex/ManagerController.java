@@ -48,7 +48,8 @@ public class ManagerController {
 	@Autowired
 	private IUserReservationService userRService;
 
-	@RequestMapping(value = "/manager/manager", method = RequestMethod.GET)
+	//@RequestMapping(value = "/manager/manager", method = RequestMethod.GET)
+	@RequestMapping(value = "/manager/mypage", method = RequestMethod.GET)
 	public String manager(HttpSession session, Model model) throws Exception {
 		System.out.println("ManagerController - /manager/manager");
 
@@ -57,7 +58,8 @@ public class ManagerController {
 			session.setAttribute("loginName", uService.selectEmail(email).getName());
 		}
 
-		return "/manager/manager";
+		//return "/manager/manager";
+		return "/manager/mypage";
 	}
 
 	@RequestMapping(value = "/manager/manageUsers", method = RequestMethod.GET)

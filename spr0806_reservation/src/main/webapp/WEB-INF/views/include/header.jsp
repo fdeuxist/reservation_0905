@@ -32,7 +32,6 @@
       </li>
     </ul>
      --%>
-    <!-- 검색창을 가운데 정렬 -->
     <form class="form-inline my-2 my-lg-0 mx-auto" id="searchForm">
       <select name="searchBy" id="searchBy" class="form-control">
           <option value="business_type">업종</option>
