@@ -416,8 +416,9 @@ button:hover {
 			<h2>Reply</h2>
 			<div>
 				<div>
-					작성자: <input type="text" id="newReplyWriter" />
-				</div>
+					작성자: <input type="text" id="newReplyWriter" 
+						value="${sessionScope.loginName}(${sessionScope.loginAuthority})" readonly/>
+				</div>					<%--작성자 이름을 로그인 이름,권한으로 고정함 [양재하]--%>
 				<br>
 				<div>
 					내용: <input type="text" id="newReplyText" />
@@ -444,8 +445,9 @@ button:hover {
 			<div id='reReplyMod' style="display: none">
 				<div class="re-modal-title"></div>
 				<div>
-					작성자: <input type='text' id='reReplyName'>
-				</div>
+					작성자: <input type="text" id="reReplyName"
+						value="${sessionScope.loginName}(${sessionScope.loginAuthority})" readonly>
+				</div>					<%--작성자 이름을 로그인 이름,권한으로 고정함 [양재하]--%>
 				<div>
 					내용: <input type='text' id='reReplyText'>
 				</div>
