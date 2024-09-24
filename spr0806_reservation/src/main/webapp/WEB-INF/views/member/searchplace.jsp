@@ -84,7 +84,26 @@ body {
         </c:forEach>
     </div>
 </div>
-    
+</c:if>
+
+<c:if test="${empty spList}">
+<div class="container">
+    <div class="row mx-auto">
+	    <div class="col-md-4 mb-4 mx-auto">
+            <div class="card">
+				<div class="card-body">
+					<h5 class="card-title text-center"><i class="fa-solid fa-circle-exclamation"></i></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">검색된 장소가 없습니다.</h6>
+                    <p class="card-text">
+                        <i class="fa-solid fa-phone"></i><br>
+                        <i class="fa-solid fa-map-location-dot"></i> <br>
+                    </p>
+                    <%--<a href="<c:url value='/member/businessplaceinfo?email=${place.email}&business_regi_num=${place.business_regi_num}'/>" class="btn btn-primary">상세보기</a> --%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </c:if>
 <%--
 ${sessionScope.loginName}<br>
