@@ -37,7 +37,7 @@ public class HomeController {
 
         session.setAttribute("loginAuthority", "비회원");	//다른 로그인된 회원은 LoginRedirectHandler에서 등록됨, loginEmail은 각 권한의 Controller에서 등록됨
 		//return "home";
-		return "redirect:/user/login";
+		return "redirect:/user/main";
 	}
 
 	

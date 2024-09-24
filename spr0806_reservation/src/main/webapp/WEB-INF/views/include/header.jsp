@@ -17,7 +17,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark" >
-  <a class="navbar-brand" href="javascript:void(0)">모두의 예약</a>
+  <a class="navbar-brand" href="${pageContext.request.contextPath}/user/main">모두의 예약</a>
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navb">
     <span class="navbar-toggler-icon"></span>
   </button>

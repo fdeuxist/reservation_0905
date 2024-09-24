@@ -49,6 +49,11 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 
+	@RequestMapping(value = "/user/main", method = RequestMethod.GET)
+	public void main(HttpSession session, Model model) throws Exception {
+		System.out.println("UserController - /user/main");
+	}
+
 	@RequestMapping(value = "/user/user", method = RequestMethod.GET)
 	public String user(HttpSession session, Model model) throws Exception {
 		System.out.println("UserController - /user/user");
