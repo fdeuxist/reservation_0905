@@ -10,6 +10,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <style>
 
+body {
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 #container444 {
     display: grid;
     grid-template-columns: 4fr 4fr 4fr;

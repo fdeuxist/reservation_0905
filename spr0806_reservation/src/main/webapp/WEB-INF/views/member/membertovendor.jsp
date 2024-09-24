@@ -46,7 +46,7 @@ body {
 </body>
  --%>
  
-<div id="container282">
+<div id="container282" class="mb-5">
     <div class="empty-space"></div>
     <div>
         <div><h3 class="text-center mt-3 mb-3">사업자 회원으로 전환</h3></div>

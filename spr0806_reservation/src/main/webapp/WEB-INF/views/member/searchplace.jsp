@@ -9,6 +9,13 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+body {
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+</style>
 <div class="header-placeholder"></div>
 <main>
 

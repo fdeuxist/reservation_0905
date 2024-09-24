@@ -8,7 +8,31 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<div class="header-placeholder"></div>
+<div class="header-placeholder">
+<%--
+<div class="toast" data-autohide="false" data-delay="3000">
+	<div class="toast-header">
+		<strong class="mr-auto text-primary">Toast Header</strong>
+		<small class="text-muted">5 mins ago</small>
+		<button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+	</div>
+	<div class="toast-body">
+		Some text inside the toast body
+	</div>
+</div>
+--%>
+<div class="toast mx-auto" data-autohide="true" data-delay="3000">
+    <div class="toast-header">
+        <strong class="mr-auto text-primary">예약 장소 검색</strong>
+        <small class="text-muted"></small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+    </div>
+    <div class="toast-body">
+        업종이나 주소를 선택하고 검색어를 입력하세요.
+    </div>
+</div>
+
+</div>
 <style>
 body {
     margin: 0;
@@ -16,14 +40,17 @@ body {
 }
 </style>
 <main class="container mt-5">
+<div class="text-center">
+		
+</div>
     <div class="row">
-    
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">예약 장소 검색</h5>
                     <p class="card-text">원하는 서비스, 원하는 장소를 찾아보세요.</p>
-                    <a href="${pageContext.request.contextPath}/member/searchplace" class="btn btn-primary">검색하기</a>
+                    <%--<a href="${pageContext.request.contextPath}/member/searchplace" class="btn btn-primary">검색하기</a> --%>
+                    <button id="schBtn" class="btn btn-primary">검색하기</a>
                 </div>
             </div>
         </div>
@@ -75,4 +102,14 @@ body {
     
     
 </main>
+<script>
+$(document).ready(function() {
+    $("#schBtn").click(function() {
+    	$('.toast').toast('show');
+        $("#searchKeyword").focus(); // id="b"로 포커스 이동
+    });
+});
+
+
+</script>
 <%@include file="../include/footer.jsp"%>
