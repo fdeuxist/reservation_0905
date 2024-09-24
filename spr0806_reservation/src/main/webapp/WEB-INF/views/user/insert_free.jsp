@@ -23,7 +23,7 @@ body {
     grid-template-columns: 2fr 8fr 2fr;
 }
 .hidden {
-    display: none;
+/*    display: none;*/
 }
 </style>
 <div class="header-placeholder"></div>
@@ -212,7 +212,7 @@ function checkVerificationStatus() {
     if (emailVerified && passwordVerified && nameEntered && phoneVerified) {
         $("#submit").prop('disabled', false);  // 가입 버튼 활성화
     } else {
-        $("#submit").prop('disabled', true);   // 가입 버튼 비활성화
+        $("#submit").prop('disabled', false);   // 가입 버튼 비활성화
     }
 }
 </script>
