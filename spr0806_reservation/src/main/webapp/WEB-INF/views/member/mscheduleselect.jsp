@@ -3,6 +3,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
+<%@include file="../include/header.jsp"%>
+
 <style>
 
 body {
@@ -122,8 +124,6 @@ body {
 
 </style>
 
-
-<%@include file="../include/header.jsp"%>
 <div class="header-placeholder"></div>
 <div class="content">
 <br><br>
