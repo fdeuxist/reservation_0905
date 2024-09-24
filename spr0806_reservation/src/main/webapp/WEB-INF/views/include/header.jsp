@@ -12,6 +12,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><%-- Font Awesome 아이콘 --%>
 </head>
 <body>
@@ -37,7 +38,7 @@
           <option value="business_type">업종</option>
           <option value="basic_address">주소</option>
       </select>
-      <input class="form-control mr-sm-2" type="text" id="searchKeyword" placeholder="검색어를 입력하세요">
+      <input class="form-control mr-sm-2" type="text" name="searchKeyword" id="searchKeyword" placeholder="검색어를 입력하세요">
       <button class="btn btn-info my-2 my-sm-0" type="button" id="searchBtn">검색</button>
     </form>
     <!--
@@ -89,18 +90,35 @@
 <script>
 
 $(document).ready(function() {
-	  $("#searchBtn").click(function() {
+	function submitForm(){
 	    var searchBy = $("#searchBy").val(); //업종인지 주소인지
 	    var searchKeyword = $("#searchKeyword").val(); // 텍스트 박스 내용
 	    
-	    if(searchBy == "business_type"){	//업종
-	    	$("#searchForm").attr("action", "/member/searchplacebt");	//업종
-	    }else if(searchBy =="basic_address"){	//주소
-	    	$("#searchForm").attr("action", "/member/searchplaceba");	//주소
-	    }
+//	    if(searchBy == "business_type"){	//업종
+//	    	$("#searchForm").attr("action", "/ex/member/searchplacebt");	//업종
+//	    }else if(searchBy =="basic_address"){	//주소
+//	    	$("#searchForm").attr("action", "/ex/member/searchplaceba");	//주소
+//	    }
+//business_type
+//basic_address
+	    console.log("searchBy : " + searchBy + " \nsearchKeyword : " + searchKeyword);
+    	$("#searchForm").attr("action", "/ex/member/searchp");
 	    //alert("searchBy : " + searchBy + "\n searchKeyword : " + searchKeyword);
 	    $("#searchForm").submit();
+	}
+	  $("#searchBtn").click(function() {
+		  submitForm();
 	  });
+	  
+	  $("#searchKeyword").keypress(function(event) {
+	        if (event.which === 13) {
+	            event.preventDefault();
+	            //alert("keypressed "+event.which)
+	            submitForm();
+	        }
+	    });
+	  
+	  
 	});
 
 
@@ -108,6 +126,11 @@ $(document).ready(function() {
 <input type="hidden" id="loginEmail" value="${sessionScope.loginEmail}">
 <input type="hidden" id="loginName" value="${sessionScope.loginName}">
 <input type="hidden" id="loginPhone" value="${sessionScope.loginPhone}">
+<c:choose>
+	<c:when test="${sessionScope.loginAuthority == '사업자회원'}">
+		<input type="hidden" id="loginBusiness_regi_num" value="${sessionScope.loginBusiness_regi_num}">
+	</c:when>
+</c:choose>
         </div>
     </header>
 <!-- <img src="../resources/imgs/fwr.jpg"></img> -->

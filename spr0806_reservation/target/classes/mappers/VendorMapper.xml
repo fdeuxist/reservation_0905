@@ -54,11 +54,11 @@ business_regi_num=#{business_regi_num}, business_name=#{business_name}, zipcode=
 delete vendor where email=#{email}
 </delete>
 
-
+<!-- search_place 로 이사가자 -->
 <select id="selectAllVendorByBusinessType" resultType="VendorDTO">
 select * from vendor where business_type = #{business_type}
 </select>
-
+<!-- search_place 로 이사가자 -->
 <select  id="selectAllVendorByBasicAddress" resultType="VendorDTO">
 select * from vendor where basic_address like '%' || #{basic_address} || '%'
 </select>

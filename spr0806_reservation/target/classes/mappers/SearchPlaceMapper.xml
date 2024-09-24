@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.SearchPlaceDao">
+
+<!-- view -->
+<!-- 
+drop view search_place;
+create view search_place as
+select 
+    u.email,
+    u.phone,
+    v.business_regi_num,
+    v.business_name,
+    v.basic_address,
+    v.detail_address,
+    v.business_type,
+    b.place_info
+from 
+    users u
+join 
+    vendor v on u.email = v.email
+join 
+    business_place_info b on v.email = b.email 
+    	and v.business_regi_num = b.business_regi_num;
+
+View SEARCH_PLACE이(가) 생성되었습니다.
+
+이름                널? 유형             
+EMAIL                VARCHAR2(255)  
+PHONE                VARCHAR2(20)   
+BUSINESS_REGI_NUM    VARCHAR2(20)   
+BUSINESS_NAME        VARCHAR2(255)  
+BASIC_ADDRESS        VARCHAR2(255)  
+DETAIL_ADDRESS       VARCHAR2(255)  
+BUSINESS_TYPE        VARCHAR2(255)  
+PLACE_INFO           VARCHAR2(4000) 
+-->
+
+<!-- search_place 로 이사가자 -->
+<select id="selectAllVendorByBusinessType" resultType="SearchPlaceDto">
+select * from search_place where business_type = #{business_type}
+</select>
+<!-- search_place 로 이사가자 -->
+<select  id="selectAllVendorByBasicAddress" resultType="SearchPlaceDto">
+select * from search_place where basic_address like '%' || #{basic_address} || '%'
+</select>
+
+
+</mapper>

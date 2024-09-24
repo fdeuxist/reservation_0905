@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
+import com.reservation.dto.SearchPlaceDto;
 import com.reservation.dto.SelectedItemsDto;
 import com.reservation.dto.ServiceItemsDto;
 import com.reservation.dto.UserDto;
@@ -35,6 +36,7 @@ import com.reservation.dto.VendorUserDto;
 import com.reservation.dto.cardObjDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IBusinessPlaceInfoService;
+import com.reservation.service.ISearchPlaceService;
 import com.reservation.service.IServiceItemsService;
 import com.reservation.service.IUserReservationService;
 import com.reservation.service.IUserService;
@@ -75,6 +77,9 @@ public class MemberController {
 
 	@Autowired
 	private IVendorReservationService vRService;
+
+	@Autowired
+	private ISearchPlaceService sPService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
@@ -257,6 +262,32 @@ public class MemberController {
         session.setAttribute("vendorList", vendorList);	//검색결과를 세션에 저장해두고
         return "redirect:searchplace";					//리다이렉트로 이동해야 뒤로가기 해도 문제가 없음
     }
+    
+
+    @RequestMapping(value = "/member/searchp", method = RequestMethod.GET)
+    public String searchplace(
+            @RequestParam("searchBy") String searchBy,
+            @RequestParam("searchKeyword") String searchKeyword, 
+            Model model, 
+            HttpSession session) {
+        logger.info("MemberController - /member/searchp   searchBy : [{}] , searchKeyword : [{}]", searchBy, searchKeyword);
+        session.setAttribute("spList", null);
+        List<SearchPlaceDto> spList = null;
+        	try {
+        		if(searchBy.equals("business_type")) {
+        			spList = sPService.selectAllVendorByBusinessType(searchKeyword);
+                }else if(searchBy.equals("basic_address")) {
+                	spList = sPService.selectAllVendorByBasicAddress(searchKeyword);
+                }
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        
+        session.setAttribute("spList", spList); //검색결과를 세션에 저장해두고
+        return "redirect:searchplace"; //리다이렉트로 이동해야 뒤로가기 해도 문제가 없음
+    }
+
     
 
     @RequestMapping(value = "/member/mmonthlyschedule", method = RequestMethod.GET)

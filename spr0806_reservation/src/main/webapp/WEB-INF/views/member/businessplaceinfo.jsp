@@ -6,10 +6,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page session="true"%>
 <%@include file="../include/header.jsp"%>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <div class="header-placeholder"></div>
 
-<main> name : ${vendorInfo.name } <br>
-<%--
+<main> <%--name : ${vendorInfo.name } <br>
+
 phone : ${vendorInfo.phone } <br>
 business_name : ${vendorInfo.business_name } <br>
 vendorInfo.zipcode : ${vendorInfo.zipcode } <br>
@@ -56,7 +63,30 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 </c:if> <!--  안씀 
         <a href="<c:url value='/member/scheduleselect?email=${placeInfo.email}&business_regi_num=${placeInfo.business_regi_num}'/>">예약하기</a>
          -->
-
+<div class="container mt-4">
+    <div class="row">
+        <c:forEach var="serviceItem" items="${serviceItems}" varStatus="status">
+            <div class="col-md-4 mb-4">
+                <div class="card serviceItem-card" data-serviceItemId="${serviceItem.item_id }"
+                     data-serviceName="${serviceItem.service_name }"
+                     data-serviceDescription="${serviceItem.service_description }"
+                     data-requiredTime="${serviceItem.required_time }"
+                     data-servicePrice="${serviceItem.service_price }">
+                    <div class="card-body">
+                        <h5 class="card-title">${serviceItem.service_name }</h5>
+                        <p class="card-text">${serviceItem.service_description }</p>
+                        <p class="card-text text-end">약 ${serviceItem.required_time * 30}분</p>
+                        <p class="card-text text-end">${serviceItem.service_price }원</p>
+                        <input type="checkbox" class="item_idChkBox" id="item_idChkBox_${status.index}"
+                               name="item_idChkBox" value="${serviceItem.item_id }" />
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+         
+<%--
 <div class="serviceItem-container">
 	<c:forEach var="serviceItem" items="${serviceItems }"
 		varStatus="status">
@@ -76,6 +106,7 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 		</div>
 	</c:forEach>
 </div>
+--%>
 <input type="button" id="nextBtn" value="다음단계" /> <!-- 값 가져갈거 가격,시간,벤더이메일,사업자번호,선택된아이템id들 -->
 <br>
 <%--

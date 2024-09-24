@@ -4,10 +4,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 <%@include file="../include/header.jsp"%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <div class="header-placeholder"></div>
 <main>
 
-
+<%--
 <form action="<c:url value='/member/searchplacebt'/>" method="post">
     business_type <br>
     <input type="text" id="business_type" name="business_type" required>
@@ -20,9 +25,10 @@
     <input type="text" id="basic_address" name="basic_address" required>
     <button type="submit">search by '%basic_address%'</button>
 </form>
-
-<c:if test="${not empty vendorList}">
-    <h3>검색 결과:</h3>
+--%>
+ 
+<c:if test="${not empty spList}">
+    <%--
     <table border="1">
         <thead>
             <tr>
@@ -32,27 +38,46 @@
                 <th>Business Type</th>
                 <th>Zipcode</th>
                 <th>Basic Address</th>
-                <th>Detail Address</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="vendor" items="${vendorList}">
+            <c:forEach var="place" items="${spList}">
                 <tr>
-                    <td>${vendor.email}</td>
-                    <td>${vendor.business_regi_num}</td>
+                    <td>${place.business_type}</td>
+                    <td>${place.business_name}</td>
                     <td>
-                        <a href="<c:url value='/member/businessplaceinfo?email=${vendor.email}&business_regi_num=${vendor.business_regi_num}'/>">
-                            ${vendor.business_name}
+                        <a href="<c:url value='/member/businessplaceinfo?email=${place.email}&business_regi_num=${place.business_regi_num}'/>">
+                            ${place.business_name}
                         </a>
                     </td>
-                    <td>${vendor.business_type}</td>
-                    <td>${vendor.zipcode}</td>
-                    <td>${vendor.basic_address}</td>
-                    <td>${vendor.detail_address}</td>
+                    <td>${place.place_info}</td>
+                    <td>${place.phone}</td>
+                    <td>${place.basic_address}${place.detail_address}</td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
+     --%>
+    <div class="container">
+    <div class="row">
+        <c:forEach var="place" items="${spList}">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${place.business_name}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${place.business_type}</h6>
+                        <p class="card-text">
+                            <i class="fa-solid fa-phone"></i> ${place.phone}<br>
+                            <i class="fa-solid fa-map-location-dot"></i> ${place.basic_address}${place.detail_address}<br>
+                        </p>
+                        <a href="<c:url value='/member/businessplaceinfo?email=${place.email}&business_regi_num=${place.business_regi_num}'/>" class="btn btn-primary">상세보기</a>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+    
 </c:if>
 <%--
 ${sessionScope.loginName}<br>
