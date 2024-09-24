@@ -22,7 +22,7 @@ body {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">공지사항</h5>
-                    <p class="card-text">ㅁ.</p>
+                    <p class="card-text">사업자회원들과 소통하는 공간입니다.</p>
                     <a href="${pageContext.request.contextPath}/board/listAll" class="btn btn-primary">이동하기</a>
                 </div>
             </div>
@@ -32,7 +32,7 @@ body {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">통계</h5>
-                    <p class="card-text">업체별, 시간대별, 품목별 통계</p>
+                    <p class="card-text">업체별, 시간대별, 품목별 통계를 볼 수 있습니다.</p>
                     <a href="${pageContext.request.contextPath}/manager/dashBoard" class="btn btn-primary">보러가기</a>
                 </div>
             </div>
@@ -42,7 +42,7 @@ body {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">회원 관리</h5>
-                    <p class="card-text">회원 권한 관리</p>
+                    <p class="card-text">회원 권한 관리페이지 입니다.</p>
                     <a href="${pageContext.request.contextPath}/manager/manageUsers" class="btn btn-primary">등록하기</a>
                 </div>
             </div>
