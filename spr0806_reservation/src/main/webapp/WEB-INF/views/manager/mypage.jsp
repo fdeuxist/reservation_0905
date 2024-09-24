@@ -21,8 +21,8 @@ body {
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">공지사항</h5>
-                    <p class="card-text">사업자회원들과 소통하는 공간입니다.</p>
+                    <h5 class="card-title">공지사항/자유게시판</h5>
+                    <p class="card-text">서비스 관련 공지와 자유로운 의견 교환을 위한 공간입니다.</p>
                     <a href="${pageContext.request.contextPath}/board/listAll" class="btn btn-primary">이동하기</a>
                 </div>
             </div>
