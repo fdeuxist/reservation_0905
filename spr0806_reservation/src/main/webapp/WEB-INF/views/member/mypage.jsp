@@ -106,7 +106,7 @@ body {
 $(document).ready(function() {
     $("#schBtn").click(function() {
     	$('.toast').toast('show');
-        $("#searchKeyword").focus(); // id="b"로 포커스 이동
+        $("#searchKeyword").focus();
     });
 });
 

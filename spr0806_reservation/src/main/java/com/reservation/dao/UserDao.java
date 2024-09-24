@@ -43,6 +43,8 @@ public interface UserDao {
 	public void updateEnable(
 			@Param("enable")Integer enable, 
 			@Param("email")String email) throws Exception;
+
+	public int disableAccount(String email) throws Exception;
 	
 	public void delete(String email) throws Exception;
 	

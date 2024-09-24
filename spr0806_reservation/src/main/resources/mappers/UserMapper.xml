@@ -26,6 +26,10 @@ password=#{password}
 where phone=#{phone} and name=#{name}
 </update>
 
+<update id="disableAccount" parameterType="com.reservation.dto.UserDto">
+update users set enable='0' where email = #{email}
+</update>
+
 <insert id="insert">
 insert into users (email,password,name,phone,enable)
 values (#{email}, #{password}, #{name}, #{phone}, #{enable})
@@ -64,6 +68,7 @@ update users set
 name=#{name}, phone=#{phone} where email=#{email}
 </update>
 
+<!-- 사용중지 -->
 <delete id="delete">
 delete users where email=#{email}
 </delete>

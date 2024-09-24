@@ -49,7 +49,7 @@ body {
 	</form>
 </div> --%>
 
-<div id="container282">
+<div id="container282" class="mb-5">
 	<div class="empty-space"></div>
 	<div>
 	<div><h3 class="text-center mt-3 mb-3">비밀번호 변경/탈퇴</h3></div>

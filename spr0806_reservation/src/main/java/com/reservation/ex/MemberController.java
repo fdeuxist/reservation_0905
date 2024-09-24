@@ -125,8 +125,11 @@ public class MemberController {
 //0903
 		@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
 		public String memberDelete(UserDto dto, HttpSession session, Model model) throws Exception {
-			System.out.println("MemberController - /member/delete");
-			uService.delete(dto.getEmail());
+			System.out.println("MemberController - /member/delete  " + dto);
+			
+			//uService.delete(dto.getEmail());
+			
+			uService.disableAccount(dto.getEmail());
 			session.invalidate();
 			return "redirect:/user/login?delete";
 		}

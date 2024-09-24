@@ -77,6 +77,12 @@ public class UserServiceImpl implements IUserService {
 		UserDao dao=sqlSession.getMapper(UserDao.class);
 		dao.updateEnable(enable, email);
 	}
+
+	@Override
+	public int disableAccount(String email) throws Exception {
+		UserDao dao=sqlSession.getMapper(UserDao.class);
+		return dao.disableAccount(email);
+	}
 	
 	@Override
 	public void delete(String email) throws Exception {

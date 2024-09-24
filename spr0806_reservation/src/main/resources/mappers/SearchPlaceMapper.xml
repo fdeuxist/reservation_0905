@@ -24,7 +24,8 @@ join
     vendor v on u.email = v.email
 join 
     business_place_info b on v.email = b.email 
-    	and v.business_regi_num = b.business_regi_num;
+    	and v.business_regi_num = b.business_regi_num
+        and u.enable <> 0;
 
 View SEARCH_PLACE이(가) 생성되었습니다.
 

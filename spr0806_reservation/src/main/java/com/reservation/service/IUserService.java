@@ -29,6 +29,8 @@ public interface IUserService {
 	public void mUpdate(UserDto dto) throws Exception;
 
 	public void updateEnable(Integer enable, String email) throws Exception;
+
+	public int disableAccount(String email) throws Exception;
 	
 	public void delete(String email) throws Exception;
 }
