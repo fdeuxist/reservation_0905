@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec"
@@ -10,7 +10,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Insert title here</title> 주석처리 후 공용 헤더 추가함 [양재하] --%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page session="true" %>
+<%@include file="../include/header.jsp"%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
 body {
@@ -35,7 +46,7 @@ body {
 /* Main Container Styles */
 .main {
 	display: flex;
-	margin: 20px auto;
+	/*margin: 20px auto;  마진 삭제함 [양재하]*/
 	max-width: 1200px; /* 중앙 정렬 및 최대 폭 설정 */
 }
 
@@ -59,11 +70,10 @@ body {
 }
 
 /* Content Styles */
-.row {
+.row1 {
 	flex: 1;
 	padding: 20px;
 	background-color: #fff; /* 콘텐츠 배경색: 흰색 */
-	border-radius: 5px; /* 테두리 둥글게 */
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 박스 그림자 */
 }
 
@@ -108,14 +118,15 @@ input[type="submit"]:hover {
 </style>
 </head>
 <body>
+<%--
 	<div class="head">
 		<h1 class="head-title">My Website</h1>
-	</div>
+	</div>--%>
 	<div class="main">
 		<div class="side">
 			<a href="/ex/board/listAll">All Category</a>
 		</div>
-		<div class="row">
+		<div class="row1">
 			<h1>게시글 수정</h1>
 			<form action="/ex/board/modify" method="post">
 				<input type="hidden" name="bId" value='${boardDto.bId }'>

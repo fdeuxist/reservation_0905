@@ -68,7 +68,7 @@ public class LoginRedirectHandler implements AuthenticationSuccessHandler {
 	        //session.setAttribute("loginName", loginName);
 	        session.setAttribute("loginAuthority", "매니저");
 	        System.out.println("매니저 " + email);
-			response.sendRedirect("/ex/manager/manager");
+			response.sendRedirect("/ex/manager/mypage");
 			return;
 		}
 		if(roleNames.contains("ROLE_VENDOR")) {

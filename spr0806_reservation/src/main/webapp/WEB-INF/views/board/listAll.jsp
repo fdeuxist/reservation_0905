@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec"
@@ -11,7 +11,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시판</title>
-<link rel="stylesheet" href="../resources/css/styles.css">
+<link rel="stylesheet" href="../resources/css/styles.css">--%><%-- ← 경로에 styles.css파일이 없어서 주석에 포함(삭제)함 이 하 공용 헤더 추가 [양재하]--%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page session="true" %>
+<%@include file="../include/header.jsp"%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <style>
 /* General Styles */
 body {
@@ -20,10 +32,10 @@ body {
 	background-color: #f4f4f4;
 }
 
-/* Header Styles */
-.header {
-	background-color: #333; /* Black background for the header */
-	color: #fff;
+/* Header Styles board     header용 css 주석처리함 [양재하]*/
+/*.header {
+	background-color: #333; *//* Black background for the header */
+/*	color: #fff;
 	padding: 10px 0;
 	position: fixed;
 	width: 100%;
@@ -39,7 +51,7 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 20px;
-}
+}*/
 
 .logo {
 	font-size: 24px;
@@ -58,8 +70,8 @@ body {
 /* Main Container Styles */
 .main-container {
 	display: flex;
-	margin-top: 60px; /* To avoid overlap with fixed header */
-}
+	margin-top: 0px; /* To avoid overlap with fixed header */
+}			/* 60에서 0으로 수정함 [양재하]*/
 
 .sidebar {
 	width: 250px;
@@ -187,6 +199,7 @@ footer {
 </script>
 </head>
 <body>
+<%--	board용 헤더 주석처리함
 	<header class="header">
 		<div class="header-content">
 			<div class="logo">MyWebSite</div>
@@ -199,7 +212,7 @@ footer {
 			</nav>
 		</div>
 	</header>
-
+--%>
 	<div class="main-container">
 		<div class="sidebar">
 			<div class="side-content">

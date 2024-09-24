@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
@@ -9,7 +9,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Insert title here</title> 주석처리 후 공용 헤더 추가함 [양재하] --%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page session="true" %>
+<%@include file="../include/header.jsp"%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -265,7 +277,7 @@ body {
 /* Main Container Styles */
 .main {
 	display: flex;
-	margin: 20px auto;
+	/*margin: 20px auto; 헤더와 갭이 생겨서 마진 삭제 [양재하] */
 	max-width: 1200px; /* 중앙 정렬 및 최대 폭 설정 */
 }
 
@@ -341,9 +353,11 @@ button:hover {
 </style>
 </head>
 <body>
+<%--
 	<div class="head">
 		<h1 class="head-title">my WebSite</h1>
 	</div>
+	--%>
 	<div class="main">
 	
 		<div class="side">
@@ -402,8 +416,9 @@ button:hover {
 			<h2>Reply</h2>
 			<div>
 				<div>
-					작성자: <input type="text" id="newReplyWriter" />
-				</div>
+					작성자: <input type="text" id="newReplyWriter" 
+						value="${sessionScope.loginName}(${sessionScope.loginAuthority})" readonly/>
+				</div>					<%--작성자 이름을 로그인 이름,권한으로 고정함 [양재하]--%>
 				<br>
 				<div>
 					내용: <input type="text" id="newReplyText" />
@@ -430,8 +445,9 @@ button:hover {
 			<div id='reReplyMod' style="display: none">
 				<div class="re-modal-title"></div>
 				<div>
-					작성자: <input type='text' id='reReplyName'>
-				</div>
+					작성자: <input type="text" id="reReplyName"
+						value="${sessionScope.loginName}(${sessionScope.loginAuthority})" readonly>
+				</div>					<%--작성자 이름을 로그인 이름,권한으로 고정함 [양재하]--%>
 				<div>
 					내용: <input type='text' id='reReplyText'>
 				</div>
