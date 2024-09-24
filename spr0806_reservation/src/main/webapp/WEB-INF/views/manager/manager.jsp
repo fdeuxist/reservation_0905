@@ -61,6 +61,7 @@
                 <li><a href="${pageContext.request.contextPath}/reports">보고서</a></li>
                 <li><a href="${pageContext.request.contextPath}/manager/dashBoard">대시보드</a></li>
                 <li><a href="${pageContext.request.contextPath}/settings">설정</a></li>
+                <li><a href="${pageContext.request.contextPath}/report/reportPage">고객센터로 이동</a></li>
             </ul>
         </aside>
         <div class="content">

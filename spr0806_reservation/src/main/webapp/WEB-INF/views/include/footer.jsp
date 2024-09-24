@@ -10,5 +10,7 @@
 	<p id="footerP">&copy; 2024  Every's Reservation.  All rights reserved.</p>
 </footer>
  --%>
+ <div style="height: 50px;"></div>
+ 
 </body>
 </html>

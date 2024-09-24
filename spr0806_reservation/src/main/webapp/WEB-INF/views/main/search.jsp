@@ -13,7 +13,7 @@
 <body>
 	<!-- Header -->
 	<div class="header">
-		<div class="logo">사이트 로고</div>
+		<div class="logo">모두의 예약</div>
 		<div class="search-container">
 			<input type="text" name="query" placeholder="검색어를 입력하세요">
 		</div>
