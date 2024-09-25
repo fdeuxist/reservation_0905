@@ -40,11 +40,17 @@ BUSINESS_TYPE        VARCHAR2(255)
 PLACE_INFO           VARCHAR2(4000) 
 -->
 
-<!-- search_place 로 이사가자 -->
+<select id="selectOnePlace" resultType="SearchPlaceDto">
+select * from search_place 
+	where email = #{email} 
+	and business_regi_num = #{business_regi_num}
+</select>
+
+<!-- vendor에서 이사옴 -->
 <select id="selectAllVendorByBusinessType" resultType="SearchPlaceDto">
 select * from search_place where business_type = #{business_type}
 </select>
-<!-- search_place 로 이사가자 -->
+<!-- vendor에서 이사옴 -->
 <select  id="selectAllVendorByBasicAddress" resultType="SearchPlaceDto">
 select * from search_place where basic_address like '%' || #{basic_address} || '%'
 </select>

@@ -8,6 +8,13 @@ import com.reservation.dto.BusinessPlaceImagePathDto;
 
 public interface BusinessPlaceImagePathDao {
 
+	public ArrayList<BusinessPlaceImagePathDto> selectAllMainAndNormalImage(
+			@Param("email") String email, @Param("business_regi_num") String business_regi_num)
+			throws Exception;
+	
+	public ArrayList<BusinessPlaceImagePathDto> selectAllNotMainImage(@Param("email") String email,
+			@Param("business_regi_num") String business_regi_num) throws Exception;
+	
 	// 0906 특정벤더의 모든 메인 이미지를 메인이미지가 아니게 변경
 	public void updateIsMainYToN(@Param("email") String email, @Param("business_regi_num") String business_regi_num)
 			throws Exception;

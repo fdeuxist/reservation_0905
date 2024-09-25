@@ -5,6 +5,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.reservation.dao.BusinessPlaceImagePathDao">
 
+
+
+
+<!-- 메인이미지인거select, 아닌거selectAll 해서 서비스에서 두개 합쳐서 넘기기  -->
+<!-- 메인이미지 아닌거 모두 조회 -->
+<select id="selectAllNotMainImage" resultType="com.reservation.dto.BusinessPlaceImagePathDto">
+    select * 
+    from business_place_image_path
+    where email = #{email}
+    and business_regi_num = #{business_regi_num}
+    and is_main = 'N'
+</select>
+
 <!-- 0906 특정벤더의 모든 메인 이미지를 메인이미지가 아니게 변경 -->
 <update id="updateIsMainYToN">
     update business_place_image_path

@@ -17,7 +17,29 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 	@Autowired
 	private SqlSession sqlSession;
 
-	
+	@Override
+	public ArrayList<BusinessPlaceImagePathDto> selectAllMainAndNormalImage(String email, String business_regi_num) {
+		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
+		ArrayList<BusinessPlaceImagePathDto> list = null;
+		try {
+			list = dao.selectAllNotMainImage(email, business_regi_num);
+			System.out.println("service impl  selectAllMainAndNormalImage list : " + list);
+			list.add(0, dao.selectMainImage(email, business_regi_num));
+			System.out.println("service impl  selectAllMainAndNormalImage list added : " + list );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public ArrayList<BusinessPlaceImagePathDto> selectAllNotMainImage(String email, String business_regi_num)
+			throws Exception {
+		BusinessPlaceImagePathDao dao = sqlSession.getMapper(BusinessPlaceImagePathDao.class);
+		return dao.selectAllNotMainImage(email, business_regi_num);
+	}
+
 	// 0906 특정벤더의 모든 메인 이미지를 메인이미지가 아니게 변경
 	@Override
 	public void updateIsMainYToN(String email, String business_regi_num) throws Exception {

@@ -26,7 +26,7 @@ public class BusinessPlaceImagePathDto {
 
 	@Override
 	public String toString() {
-		return "BusinessPlaceImagePathDto [email=" + email + ", business_regi_num=" + business_regi_num
+		return "\nBusinessPlaceImagePathDto [email=" + email + ", business_regi_num=" + business_regi_num
 				+ ", place_img_path=" + place_img_path + ", is_main=" + is_main + "]";
 	}
 

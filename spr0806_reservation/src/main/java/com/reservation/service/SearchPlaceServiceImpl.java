@@ -16,6 +16,12 @@ public class SearchPlaceServiceImpl implements ISearchPlaceService{
 	private SqlSession sqlSession;
 
 	@Override
+	public SearchPlaceDto selectOnePlace(String email, String business_regi_num) throws Exception {
+		SearchPlaceDao dao = sqlSession.getMapper(SearchPlaceDao.class);
+		return dao.selectOnePlace(email, business_regi_num);
+	}
+
+	@Override
 	public ArrayList<SearchPlaceDto> selectAllVendorByBusinessType(String business_type) throws Exception {
 		SearchPlaceDao dao = sqlSession.getMapper(SearchPlaceDao.class);
 		return dao.selectAllVendorByBusinessType(business_type);

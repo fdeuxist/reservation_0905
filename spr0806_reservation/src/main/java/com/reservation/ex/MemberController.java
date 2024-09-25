@@ -81,6 +81,7 @@ public class MemberController {
 	@Autowired
 	private ISearchPlaceService sPService;
 	
+	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@RequestMapping(value = "/member/member", method = RequestMethod.GET)
@@ -318,11 +319,20 @@ public class MemberController {
             @RequestParam("email") String email,
             @RequestParam("business_regi_num") String business_regi_num,
             Model model, HttpSession session) throws Exception {
+    	logger.info("===========place info=========");
         logger.info("MemberController - /member/businessplaceinfo: email=" + email + ", business_regi_num=" + business_regi_num);
-
-        BusinessPlaceInfoDto placeInfo = bPIService.selectOneBusinessPlaceInfo(email, business_regi_num);
+        SearchPlaceDto placeInfo = sPService.selectOnePlace(email, business_regi_num);
+        ArrayList<BusinessPlaceImagePathDto> list = 
+        		bPIPService.selectAllMainAndNormalImage(email, business_regi_num);
         model.addAttribute("placeInfo", placeInfo);
-
+        model.addAttribute("imgList", list);
+        
+        /*
+        BusinessPlaceInfoDto placeInfo = bPIService.selectOneBusinessPlaceInfo(email, business_regi_num);
+        model.addAttribute("placeInfo", placeInfo);	//벤더 정보
+        logger.info("model added placeInfo dto : {}", placeInfo);
+        */
+        /*
         ArrayList<BusinessPlaceImagePathDto> placeImagePathDtos = bPIPService.selectAllMyBusinessPlaceImgPaths(email, business_regi_num);
         BusinessPlaceImagePathDto mainImg = bPIPService.selectMainImage(email, business_regi_num);
         if (placeImagePathDtos != null && !placeImagePathDtos.isEmpty()) {
@@ -338,7 +348,7 @@ public class MemberController {
             // 리스트가 비어있는 경우
             model.addAttribute("mainImg", "이미지가 없습니다"); // 메시지 설정         
         }
-        
+        */
         //벤더 정보 세션에 저장 주문성립시에 가져다 씀
         VendorUserDto vendorUserDto = vUService.selectOneVendorEmailBusinessRegiNum(email, business_regi_num);
         //VendorUserDto vendorUserDto = vUService.selectOne();
@@ -347,7 +357,7 @@ public class MemberController {
         
         List<ServiceItemsDto> serviceItems = sIService.selectAllYourItems(email, business_regi_num);
         model.addAttribute("serviceItems", serviceItems);
-        
+        logger.info("===========place info=========");
         return "member/businessplaceinfo";
     }
 	
