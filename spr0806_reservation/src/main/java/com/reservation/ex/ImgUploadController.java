@@ -135,6 +135,7 @@ public class ImgUploadController {
 					BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, imgPath,
 							"N");
 					bpiService.insertMyBusinessPlaceImagePath(imgDto);
+				
 				}
 			} catch (IllegalStateException e) {
 				System.out.println("업로드 실패");
@@ -150,6 +151,7 @@ public class ImgUploadController {
 
 		
 		// ...
+		
 		Map<String, Object> response = new HashMap<>();
 		response.put("success", true);
 		return ResponseEntity.ok(response);

@@ -424,6 +424,9 @@ public class VendorController {
         ArrayList<BusinessPlaceImagePathDto> imgList = bpiService.selectAllMyBusinessPlaceImgPaths(email,
                 business_regi_num);
         System.out.println(imgList);
+        for(BusinessPlaceImagePathDto dto:imgList) {
+        	System.out.println(dto.getIs_main());
+        }
         model.addAttribute("imageList", imgList);
 
     }
