@@ -28,13 +28,26 @@ document.addEventListener('DOMContentLoaded', function() {
                             addMarkerFromAddress(map, geocoder, markerData.basic_address, markerData.business_name, imageUrl, markers);
 
                             searchResults.innerHTML += `
-                                <li class="search-result-item">
+                                <li class="search-result-item"
+                                    data-email="${encodeHTML(markerData.email)}"
+                                    data-business-num="${encodeHTML(markerData.business_num)}"
+                                    data-address="${encodeHTML(markerData.basic_address)}"
+                                    data-name="${encodeHTML(markerData.business_name)}"
+                                    data-image-url="${encodeHTML(imageUrl)}">
+                                    
                                     <strong>${encodeHTML(markerData.business_name)}</strong><br>
-                                    ${encodeHTML(markerData.basic_address)}<br> 
+                                    ${encodeHTML(markerData.basic_address)}<br>
+                                    
                                     <img src="..${encodeHTML(imageUrl)}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
-                                    <button class="find-button" data-address="${encodeHTML(markerData.basic_address)}" data-name="${encodeHTML(markerData.business_name)}" data-image-url="${encodeHTML(imageUrl)}">위치보기</button>
+                                    
+                                    <button class="find-button"
+                                        data-address="${encodeHTML(markerData.basic_address)}"
+                                        data-name="${encodeHTML(markerData.business_name)}"
+                                        data-image-url="${encodeHTML(imageUrl)}">위치보기</button>
                                 </li>
                             `;
+                            console.log("Email:", encodeHTML(markerData.email));
+                            console.log("Business Number:", encodeHTML(markerData.business_num));
                         });
                         document.querySelectorAll('.find-button').forEach(button => {
                             button.style.display = 'block';
@@ -75,18 +88,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         clearMarkers(markers);
                         const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
                         markers.push(marker);
-
                         const infowindowContent = `
-                            <div style="padding:5px; font-size:12px;">
+                            <div style="padding:5px; font-size:12px; max-width:150px;">
                                 <div style="margin-bottom:5px;">
                                     <strong>${encodeHTML(name)}</strong>
                                 </div>
                                 <hr style="border:1px solid #ddd; margin:5px 0;">
                                 <div>
-                                    <img src="..${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                                    <img src="..${encodeHTML(imageUrl)}" style="max-width:100%; height:auto; display:block;">
                                 </div>
                             </div>
                         `;
+               
+
                         const infowindow = createInfoWindow(infowindowContent);
                         infowindow.open(map, marker);
                     } else {
