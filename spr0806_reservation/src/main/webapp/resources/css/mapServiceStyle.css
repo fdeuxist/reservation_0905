@@ -61,8 +61,17 @@ body {
 }
 
 .search-result-item {
-	padding: 10px;
-	border-bottom: 1px solid #ddd;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 부드러운 배경 색 변화 */
+}
+.search-result-item:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 변화 */
+}
+
+.search-result-item:active {
+    background-color: #e0e0e0; /* 클릭 시 배경색 변화 */
 }
 
 .search-result-item strong {
@@ -97,3 +106,4 @@ body {
 .search-result-item {
 	margin-bottom: 10px;
 }
+

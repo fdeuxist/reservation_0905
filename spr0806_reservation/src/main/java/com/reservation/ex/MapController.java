@@ -83,6 +83,10 @@ public class MapController {
 	        markerData.put("business_name", vendor.getBusiness_name());
 	        markerData.put("basic_address", vendor.getBasic_address());
 	        markerData.put("place_img_path", (image != null && image.getPlace_img_path() != null) ? image.getPlace_img_path() : defaultImageUrl);
+	        markerData.put("business_num",vendor.getBusiness_regi_num());
+	        System.out.println("Business Number: " + vendor.getBusiness_regi_num());
+	        System.out.println("Email: " + vendor.getEmail());
+	        markerData.put("email",vendor.getEmail());
 	        
 	        result.add(markerData);
 	    }
