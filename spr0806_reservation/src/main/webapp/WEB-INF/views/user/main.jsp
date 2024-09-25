@@ -65,9 +65,30 @@ body {
 
 </div>
 	<div class="text-center mt-5">
-	
+	<c:choose>
+			    <c:when test="${sessionScope.loginName == null}">
         <div class="m-3"><a href="/ex/user/login" class="text-decoration-none text-reset"><i class="fa-solid fa-right-to-bracket"></i>로그인</a></div>
         <div class="m-3"><a href="/ex/user/insert" class="text-decoration-none text-reset"><i class="fa-solid fa-users"></i>회원가입</a></div>
+        </c:when>
+    <c:otherwise>
+    	<c:choose>
+         <c:when test="${sessionScope.loginAuthority == '일반회원'}">
+             <a href="${pageContext.request.contextPath}/member/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
+         </c:when>
+         <c:when test="${sessionScope.loginAuthority == '사업자회원'}">
+             <a href="${pageContext.request.contextPath}/vendor/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
+         </c:when>
+         <c:when test="${sessionScope.loginAuthority == '매니저'}">
+             <a href="${pageContext.request.contextPath}/manager/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 매니저 페이지</a>
+         </c:when>
+         <c:when test="${sessionScope.loginAuthority == '관리자'}">
+             <a href="${pageContext.request.contextPath}/admin/selectAll" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 관리자 페이지 </a>
+         </c:when>
+     </c:choose>
+     <br>
+		<a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+     </c:otherwise>
+</c:choose>
     </div>
 
 
