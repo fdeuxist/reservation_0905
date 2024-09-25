@@ -109,8 +109,6 @@
     </main>
 
     <!-- 풋터 -->
-    <footer>
-        <p>reservation all everything everywhere © 2024 Q&A 게시판 | <a href="terms.jsp">이용 약관</a> | <a href="privacy.jsp">개인정보처리방침</a> | <a href="contact.jsp">연락처</a></p>
-    </footer>
+   
 </body>
 </html>

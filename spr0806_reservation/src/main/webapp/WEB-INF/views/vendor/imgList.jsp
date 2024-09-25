@@ -143,7 +143,7 @@ h2 {
 </style>
 
 <main>
-<h2>등록한 이미지 리스트</h2>
+<h2>등록한 이미지 리스트   </h2>
 <div id="image_list" class="thumbnail-container">
 	<!-- 이미지 목록이 여기에 동적으로 삽입됩니다. -->
 	<c:forEach var="image" items="${imageList}">
