@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- #{img_path0, jdbcType=VARCHAR}  jdbcType=VARCHAR  NULL 허용 한다는 뜻   -->
 
 <select id="selectAllMyBusinessPlaceImgPaths" resultType="com.reservation.dto.BusinessPlaceImagePathDto">
-select email, business_regi_num, place_img_path
+select email, business_regi_num, place_img_path,is_main
     from business_place_image_path 
     where email=#{email} and business_regi_num=#{business_regi_num}
 </select>

@@ -34,6 +34,7 @@
      --%>
     <form class="form-inline my-2 my-lg-0 mx-auto" id="searchForm">
       <select name="searchBy" id="searchBy" class="form-control">
+      	  <option value="business_name">업체명</option>
           <option value="business_type">업종</option>
           <option value="basic_address">주소</option>
       </select>
@@ -100,6 +101,7 @@ $(document).ready(function() {
 //	    }
 //business_type
 //basic_address
+		
 	    console.log("searchBy : " + searchBy + " \nsearchKeyword : " + searchKeyword);
     	$("#searchForm").attr("action", "/ex/member/searchp");
 	    //alert("searchBy : " + searchBy + "\n searchKeyword : " + searchKeyword);

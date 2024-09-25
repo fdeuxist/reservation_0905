@@ -39,13 +39,15 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ${encodeHTML(markerData.basic_address)}<br>
                                     
                                     <img src="..${encodeHTML(imageUrl)}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
-                                    
-                                    <button class="find-button"
-                                        data-address="${encodeHTML(markerData.basic_address)}"
-                                        data-name="${encodeHTML(markerData.business_name)}"
-                                        data-image-url="${encodeHTML(imageUrl)}">위치보기</button>
+                                   
                                 </li>
                             `;
+                            
+//                            <button class="find-button"
+//                                data-address="${encodeHTML(markerData.basic_address)}"
+//                                data-name="${encodeHTML(markerData.business_name)}"
+//                                data-image-url="${encodeHTML(imageUrl)}">위치보기</button>
+                            //위치보기 버튼 삭제
                             console.log("Email:", encodeHTML(markerData.email));
                             console.log("Business Number:", encodeHTML(markerData.business_num));
                         });
