@@ -1,5 +1,6 @@
 
 $(document).ready(function() {
+	const images = document.querySelectorAll('.thumbnail-container img');
     const modal = $('#imageModal');
     const modalImage = $('#modalImage');
     const modalClose = $('.modal-close');
@@ -7,7 +8,13 @@ $(document).ready(function() {
    
 
     modal.hide();
-
+    images.forEach((img) => {
+        // 데이터 속성에서 is_main 값을 확인
+        const isMain = img.dataset.isMain; // 데이터 속성에서 가져온다고 가정
+        if (isMain === 'Y') {
+            img.classList.add('main-image'); // 주황색 테두리 추가
+        }
+    });
     // 1. 이미지 썸네일 클릭 시 모달로 이미지 확대
     $('#image_list').on('click', 'img', function() {
         const src = contextPath + $(this).data('image-src');

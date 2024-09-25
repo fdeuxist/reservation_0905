@@ -1,5 +1,6 @@
 package com.reservation.ex;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -282,6 +283,9 @@ public class MemberController {
         			spList = sPService.selectAllVendorByBusinessType(searchKeyword);
                 }else if(searchBy.equals("basic_address")) {
                 	spList = sPService.selectAllVendorByBasicAddress(searchKeyword);
+                }else if(searchBy.equals("business_name")) {
+                	String encodedQuery = URLEncoder.encode(searchKeyword, "UTF-8");
+                	return "redirect:/my/search?query=" + encodedQuery;
                 }
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
