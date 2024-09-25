@@ -111,7 +111,7 @@ main {
         </c:if>
     </div>
 --%>
-	<div class="container m-5">
+	<div class="container">
     <div class="card">
         <div class="card-header bg-primary text-white">
             <h3 class="mb-0">주문 상세 정보</h3>
@@ -205,6 +205,9 @@ main {
                     </tr>
                 </tbody>
             </table>
+            <input type="hidden" id="loginEmail" value="${myOrder.user_email}">
+            <input type="hidden" id="reservationNumber" value="${myOrder.reservation_number}">
+        	<input type="hidden" id="status" value="${myOrder.status}">
         <div class="card-footer">
 	        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
 	        	<input type="button" class="btn btn-danger" id="tryCancel" value="취소요청하기">
@@ -263,7 +266,7 @@ $("#orderCompleted").click(function() {
 	        var email = $("#loginEmail").val();
 	        var reservationNumber = $("#reservationNumber").val();
 	        var status = $("#status").val();
-	        //console.log(email, reservationNumber, status);	//member 2024082613221338 1
+	        console.log(email, reservationNumber, status);	//member 2024082613221338 1
 	        $.ajax({
 	            url: '/ex/memberrest/tryCancel',
 	            method: 'POST',
@@ -287,7 +290,7 @@ $("#orderCompleted").click(function() {
     
     $("#reply").click(function() {
     	//
-    }
+    });
     
     
 });

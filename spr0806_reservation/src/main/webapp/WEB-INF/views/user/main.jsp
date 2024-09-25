@@ -33,7 +33,7 @@ body {
  
 <div class="container mt-3">
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
 
   
   <ul class="carousel-indicators">

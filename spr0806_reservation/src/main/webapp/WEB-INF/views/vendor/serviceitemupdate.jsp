@@ -54,7 +54,7 @@ if (result == 'success') {
 				        <form:option value="0">비공개</form:option>
 				    </form:select>
 				</div>
-                <button type="submit" class="btn btn-primary btn-block">등록</button>
+                <button type="submit" class="btn btn-primary btn-block">수정</button>
             </form:form>
         </div>
     </div>
