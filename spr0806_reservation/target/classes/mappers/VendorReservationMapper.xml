@@ -39,6 +39,7 @@ select * from vendor_reservation
 </select>
 
 <!-- 멤버가 특정 벤더 특정달 조회 (멤버가 특정 벤더 조회. 신규 예약의 의도로) -->
+<!-- and open_date > sysdate 추가하면 지난날짜는 조회 안됨 -->
 <select id="selectAllOneVendorsYourOneMonthReservations" resultType="VendorReservationDto">
 select * from vendor_reservation
 where email = #{email} 
