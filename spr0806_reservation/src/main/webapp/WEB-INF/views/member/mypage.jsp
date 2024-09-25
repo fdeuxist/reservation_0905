@@ -50,7 +50,8 @@ body {
                     <h5 class="card-title">예약 장소 검색</h5>
                     <p class="card-text">원하는 서비스, 원하는 장소를 찾아보세요.</p>
                     <%--<a href="${pageContext.request.contextPath}/member/searchplace" class="btn btn-primary">검색하기</a> --%>
-                    <button id="schBtn" class="btn btn-primary">검색하기</a>
+                    <button id="schBtn" class="btn btn-primary">검색하기(삭제예정)</a>
+                    <a href="${pageContext.request.contextPath}/map/mapService" class="btn btn-primary">(mapservice)검색하기</a>
                 </div>
             </div>
         </div>
