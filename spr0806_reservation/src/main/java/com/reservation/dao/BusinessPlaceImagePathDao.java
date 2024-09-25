@@ -34,5 +34,8 @@ public interface BusinessPlaceImagePathDao {
 
 	public BusinessPlaceImagePathDto selectMainImage(@Param("email") String email,
 			@Param("business_regi_num") String business_regi_num) throws Exception;
+	
+	public BusinessPlaceImagePathDto selectImage(@Param("place_img_path")String place_img_path)throws Exception;
+	
 
 }

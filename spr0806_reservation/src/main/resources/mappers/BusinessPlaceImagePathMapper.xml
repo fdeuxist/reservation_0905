@@ -78,18 +78,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <insert id="insertMyBusinessPlaceImagePath">
     insert into business_place_image_path (
-    	email, business_regi_num, place_img_path
+    	email, business_regi_num, place_img_path,imageData
     ) values (
-        #{email}, #{business_regi_num}, #{place_img_path}
+        #{email}, #{business_regi_num}, #{place_img_path},#{imageData}
     )
 </insert>
 <!-- #{img_path0, jdbcType=VARCHAR}  jdbcType=VARCHAR  NULL 허용 한다는 뜻   -->
 
 <select id="selectAllMyBusinessPlaceImgPaths" resultType="com.reservation.dto.BusinessPlaceImagePathDto">
-select email, business_regi_num, place_img_path,is_main
+select email, business_regi_num, place_img_path,is_main,imageData
     from business_place_image_path 
     where email=#{email} and business_regi_num=#{business_regi_num}
 </select>
+<select id="selectImage" resultType="com.reservation.dto.BusinessPlaceImagePathDto">
+
+select *
+    from business_place_image_path 
+    where place_img_path=#{place_img_path} 
+</select>
+
 
 
 

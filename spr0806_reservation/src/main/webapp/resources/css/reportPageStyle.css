@@ -199,3 +199,22 @@ aside ul li a:hover {
     text-decoration: underline;
 }
 
+/* 풋터 스타일 */
+footer {
+    background-color: #000000; /* 검정색 */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

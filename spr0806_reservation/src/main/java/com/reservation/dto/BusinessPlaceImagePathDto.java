@@ -13,22 +13,35 @@ public class BusinessPlaceImagePathDto {
 	private String business_regi_num;
 	private String place_img_path;
 	private String is_main;	//0906 추가
+	private  byte[] imageData; //0925 추가
 
 	public BusinessPlaceImagePathDto() {}
 
-	public BusinessPlaceImagePathDto(String email, String business_regi_num, String place_img_path, String is_main) {
+	
+
+	public BusinessPlaceImagePathDto(String email, String business_regi_num, String place_img_path, String is_main,
+			byte[] imageData) {
 		super();
 		this.email = email;
 		this.business_regi_num = business_regi_num;
 		this.place_img_path = place_img_path;
 		this.is_main = is_main;
+		this.imageData = imageData;
 	}
 
-	@Override
-	public String toString() {
-		return "BusinessPlaceImagePathDto [email=" + email + ", business_regi_num=" + business_regi_num
-				+ ", place_img_path=" + place_img_path + ", is_main=" + is_main + "]";
+
+
+	public byte[] getImageData() {
+		return imageData;
 	}
+
+
+
+	public void setImageData(byte[] imageData) {
+		this.imageData = imageData;
+	}
+
+
 
 	public String getEmail() {
 		return email;

@@ -43,7 +43,7 @@ body {
                 <div class="card-body">
                     <h5 class="card-title">회원 관리</h5>
                     <p class="card-text">회원 권한 관리페이지 입니다.</p>
-                    <a href="${pageContext.request.contextPath}/manager/manageUsers" class="btn btn-primary">등록하기</a>
+                    <a href="${pageContext.request.contextPath}/manager/manageUsers" class="btn btn-primary">관리하기</a>
                 </div>
             </div>
         </div>

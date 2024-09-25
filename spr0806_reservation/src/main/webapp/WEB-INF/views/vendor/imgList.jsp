@@ -4,7 +4,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page session="true"%>
 <%@include file="../include/header.jsp"%>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<div class="header-placeholder"></div>
 <style>
 /* 전체 레이아웃 스타일 */
 main {
@@ -143,7 +147,7 @@ h2 {
 </style>
 
 <main>
-<h2>등록한 이미지 리스트   </h2>
+<h2>등록한 이미지 리스트  </h2>
 <div id="image_list" class="thumbnail-container">
 	<!-- 이미지 목록이 여기에 동적으로 삽입됩니다. -->
 	<c:forEach var="image" items="${imageList}">
@@ -165,7 +169,7 @@ h2 {
 </div>
 
 <section id="uploadSection">
-	<h3>이미지 등록</h3>
+	
 	<div id="dropArea" class="drop-area">
 		<p>여기에 이미지를 드래그 앤 드롭하세요</p>
 		<input type="file" id="fileInput" accept="image/*" multiple

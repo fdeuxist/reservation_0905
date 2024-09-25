@@ -1,114 +1,247 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page session="true"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Q&A 게시판</title>
-    <link rel="stylesheet" href="../resources/css/reportPageStyle.css"> <!-- 여기에 CSS 파일 링크 추가 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고객센터</title>
+<link rel="stylesheet" href="../resources/css/styles.css">
+<style>
+/* General Styles */
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background-color: #f4f9fd; /* 연한 파란색 배경 */
+	color: #333; /* 기본 글씨 색상 */
+}
+
+/* Header Styles */
+.header {
+	background-color: #2a4d69; /* 파란색 헤더 */
+	color: #fff;
+	padding: 20px 0;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	text-align: center;
+}
+
+.header-content {
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 20px;
+}
+
+.logo {
+	font-size: 26px;
+	font-weight: bold;
+}
+
+.nav-menu a {
+	color: #fff;
+	text-decoration: none;
+	margin: 0 15px;
+	font-size: 16px;
+}
+
+.nav-menu a:hover {
+	text-decoration: underline;
+}
+
+/* Main Container Styles */
+.main-container {
+	display: flex;
+	margin-top: 80px; /* 헤더와의 간격을 위해 여백 추가 */
+}
+
+/* Sidebar Styles */
+.sidebar {
+	width: 250px;
+	background-color: #2a4d69; /* 사이드바도 파란색으로 */
+	color: #fff;
+	padding: 15px;
+}
+
+.sidebar a {
+	color: #fff;
+	text-decoration: none;
+	display: block;
+	margin: 10px 0;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #3e6791;
+}
+
+.sidebar a:hover {
+	background-color: #1c3a57;
+}
+
+/* Content Styles */
+.content {
+	flex: 1;
+	padding: 30px;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content h1 {
+	color: #2a4d69;
+	margin-bottom: 20px;
+}
+
+.row {
+	margin-bottom: 20px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid #ddd;
+	padding: 12px;
+	text-align: left;
+	font-size: 14px;
+}
+
+th {
+	background-color: #e7eef2;
+	color: #333;
+	font-weight: bold;
+}
+
+td a {
+	color: #2a4d69;
+	text-decoration: none;
+}
+
+td a:hover {
+	text-decoration: underline;
+}
+
+button {
+	padding: 12px 20px;
+	background-color: #2a4d69;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+button:hover {
+	background-color: #1c3a57;
+}
+
+.btn-container {
+	text-align: right;
+	margin-top: 20px;
+}
+
+/* Footer Styles */
+footer {
+	background-color: #2a4d69;
+	color: #fff;
+	text-align: center;
+	padding: 15px 0;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+}
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	var result = '${msg}';
+	if (result == 'success') {
+		alert("요청이 정상적으로 처리되었습니다.");
+	}
+	$(document).ready(function(){
+		$(".btn").on("click", function(){
+			location.href="/ex/board/register"
+		});
+		$('#searchBtn').on("click",function(event){
+			  alert("검색 중: " + $('#keywordInput').val());
+			  window.location.href= "listAll"+'${boardVo.makePage(1)}'
+			  +'&searchType='+$("select option:selected").val()
+			  +"&keyword="+$('#keywordInput').val();
+	  });
+	  $('.writeBtn').on("click",function(event){
+		  location.href="/ex/board/register";
+	  });
+	});
+		  
+</script>
 </head>
 <body>
-    <!-- 헤더 -->
-    <header>
-        <div id="header-container">
-            <h1><a href="index.jsp">Q&A 게시판</a></h1>
-            <form action="search.jsp" method="get" id="search-form">
-                <input type="text" name="query" placeholder="검색...">
-                <button type="submit">검색</button>
-            </form>
-            <div id="user-menu">
-                <a href="login.jsp">로그인</a> | <a href="register.jsp">회원가입</a>
-            </div>
-        </div>
-    </header>
+	<header class="header">
+		<div class="header-content">
+			<div class="logo">고객센터</div>
+			<nav class="nav-menu">
+				<a href="/ex/board/listAll">게시판</a>
+				<!-- 필요한 경우 여기에 추가 메뉴를 넣을 수 있습니다 -->
+			</nav>
+		</div>
+	</header>
 
-    <!-- 네비게이션 바 -->
-    <nav>
-        <ul>
-            <li><a href="index.jsp">홈</a></li>
-            <li><a href="qa.jsp">Q&A</a></li>
-            <li><a href="recent.jsp">최근 질문</a></li>
-            <li><a href="popular.jsp">인기 질문</a></li>
-            <li><a href="categories.jsp">카테고리</a></li>
-            <li><a href="myquestions.jsp">내 질문</a></li>
-            <li><a href="myanswers.jsp">내 답변</a></li>
-        </ul>
-    </nav>
+	<div class="main-container"> 
+		<div class="sidebar">
+			<a href="/ex/board/listAll">게시판</a>
+			<!-- 사이드바에서 추가로 필요한 메뉴가 있으면 여기에 추가합니다 -->
+		</div>
 
-    <!-- 메인 콘텐츠 영역 -->
-    <main>
-        <!-- 질문 목록 -->
-        <section id="questions-list">
-            <h2>질문 목록</h2>
-            <ul>
-                <li>
-                    <a href="questionDetail.jsp?id=1">질문 제목 1</a>
-                    <span>작성자1 | 작성일1 | 답변 수 | 조회수</span>
-                    <button>추천</button>
-                </li>
-                <li>
-                    <a href="questionDetail.jsp?id=2">질문 제목 2</a>
-                    <span>작성자2 | 작성일2 | 답변 수 | 조회수</span>
-                    <button>추천</button>
-                </li>
-                <!-- 추가 질문 항목들 -->
-            </ul>
-        </section>
+		<div class="content">
+			<h1>고객 문의 목록</h1>
+			<div class="row">
+				<table>
+					<div>
+						<select name="searchType">
+							<option value="제목">제목</option>
++							<option value="작성자">작성자</option>
+						</select>
+						<input type="text" name="keyword" id="keywordInput" value="${boardVo.keyword}">
+						<button id="searchBtn">검색하기</button>
+					</div>
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성 시간</th>
+						<th>조회수</th>
+					</tr>
+					<c:forEach items="${list}" var="boardDto">
+						<tr>
+							<td>${boardDto.bId}</td>
+							<td><a href="/ex/board/read?bId=${boardDto.bId}">${boardDto.bTitle }</a></td>
+							<td>${boardDto.bName}</td>
+							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${boardDto.bWriteTime }"/></td>
+							<td>${boardDto.bHit}</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
 
-        <!-- 질문 작성 -->
-        <section id="ask-question">
-            <h2>질문 작성하기</h2>
-            <form action="submitQuestion.jsp" method="post">
-                <label for="title">제목:</label>
-                <input type="text" id="title" name="title" required><br>
-                <label for="content">내용:</label>
-                <textarea id="content" name="content" rows="5" required></textarea><br>
-                <label for="tags">태그:</label>
-                <input type="text" id="tags" name="tags"><br>
-                <button type="submit">제출</button>
-            </form>
-        </section>
+			<div class="btn-container">
+				<button id="btn-create" onclick="location.href='/ex/board/register'">글쓰기</button>
+			</div>
+		</div>
+	</div>
 
-        <!-- 사이드바 -->
-        <aside>
-            <section id="popular-questions">
-                <h2>인기 질문</h2>
-                <ul>
-                    <li><a href="questionDetail.jsp?id=3">인기 질문 제목 1</a></li>
-                    <li><a href="questionDetail.jsp?id=4">인기 질문 제목 2</a></li>
-                    <!-- 추가 인기 질문 항목들 -->
-                </ul>
-            </section>
-
-            <section id="recent-questions">
-                <h2>최근 질문</h2>
-                <ul>
-                    <li><a href="questionDetail.jsp?id=5">최근 질문 제목 1</a></li>
-                    <li><a href="questionDetail.jsp?id=6">최근 질문 제목 2</a></li>
-                    <!-- 추가 최근 질문 항목들 -->
-                </ul>
-            </section>
-
-            <section id="recommended-questions">
-                <h2>추천 질문</h2>
-                <ul>
-                    <li><a href="questionDetail.jsp?id=7">추천 질문 제목 1</a></li>
-                    <li><a href="questionDetail.jsp?id=8">추천 질문 제목 2</a></li>
-                    <!-- 추가 추천 질문 항목들 -->
-                </ul>
-            </section>
-
-            <section id="categories">
-                <h2>카테고리 목록</h2>
-                <ul>
-                    <li><a href="category.jsp?id=1">카테고리 1</a></li>
-                    <li><a href="category.jsp?id=2">카테고리 2</a></li>
-                    <!-- 추가 카테고리 항목들 -->
-                </ul>
-            </section>
-        </aside>
-    </main>
-
-    <!-- 풋터 -->
-   
+	<%@include file="../include/footer.jsp"%>
 </body>
 </html>
+
