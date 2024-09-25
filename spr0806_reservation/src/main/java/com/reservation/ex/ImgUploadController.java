@@ -11,12 +11,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,14 +76,15 @@ public class ImgUploadController {
 	@PostMapping("/uploadImages")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> uploadImages(HttpSession session,
-			@RequestParam("images") List<MultipartFile> multiFileList) throws Exception {
+			@RequestParam("images") List<MultipartFile> multiFileList, HttpServletRequest request) throws Exception {
 		// 이미지 파일 저장 로직
 		System.out.println("드래그 앤 드롭 컨트롤러 진입....");
 		String email = (String) session.getAttribute("loginEmail");
 		String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
 		List<Map<String, String>> fileList = new ArrayList<>();
 		String uploadDir = servletContext.getRealPath("/resources/imgs");
-		
+		//일단 경로만 저장해둠
+		//String uploadDir = "../reservation_0905/spr0806_reservation/src/main/webapp/resources/imgs";
 		
 		File directory = new File(uploadDir);
 		if (!directory.exists()) {

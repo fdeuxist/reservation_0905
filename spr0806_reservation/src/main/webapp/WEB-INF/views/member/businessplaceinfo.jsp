@@ -24,6 +24,8 @@ vendorInfo.basic_address : ${vendorInfo.basic_address } <br>
 vendorInfo.detail_address : ${vendorInfo.detail_address } <br>
 vendorInfo.business_type : ${vendorInfo.business_type } <br>
  --%>
+ <%-- --%>
+<%--
 장소 정보<br>
 <img src="${pageContext.request.contextPath}/${mainImg}" alt="메인 이미지"
 	style="max-width: 200px; max-height: 200px;" /> <c:if
@@ -60,7 +62,45 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 			</tr>
 		</c:if>
 	</table>
-</c:if> <!--  안씀 
+</c:if>
+  --%>
+
+<c:if test="${not empty imgList}">
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+  <ul class="carousel-indicators">
+	<c:forEach items="${imgList}" var="img" varStatus="status">
+    	<li data-target="#myCarousel" data-slide-to="${status.index}"></li>
+	</c:forEach>
+  </ul>
+  <div class="carousel-inner">
+	<c:forEach items="${imgList}" var="img" varStatus="status">
+		    <div class="carousel-item">
+		      <img src="${pageContext.request.contextPath}${img.place_img_path}" alt="${placeInfo.business_name}_${status.index}" width="1100" height="500">
+		    </div>
+	</c:forEach>
+  </div>
+  <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+</div>
+</c:if>
+
+<c:if test="${empty imgList}">
+</c:if>
+
+
+
+
+
+
+
+
+
+
+<!--  안씀 
         <a href="<c:url value='/member/scheduleselect?email=${placeInfo.email}&business_regi_num=${placeInfo.business_regi_num}'/>">예약하기</a>
          -->
 <div class="container mt-4">
@@ -126,6 +166,39 @@ ${sessionScope.loginAuthority}<br>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script>
 <script>
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // 첫 번째 <li> 요소 선택
+    const firstIndicator = document.querySelector(".carousel-indicators li:first-child");
+    
+    // 'active' 클래스 추가
+    if (firstIndicator) {
+        firstIndicator.classList.add("active");
+    }
+    
+	const firstCarouselItem = document.querySelector(".carousel-inner .carousel-item:first-child");
+    
+    // 'active' 클래스 추가
+    if (firstCarouselItem) {
+        firstCarouselItem.classList.add("active");
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	const vendorInfo = {
 		address : '${vendorInfo.basic_address}', // 업체의 기본 주소
 		businessName : '${vendorInfo.business_name}', // 업체명
