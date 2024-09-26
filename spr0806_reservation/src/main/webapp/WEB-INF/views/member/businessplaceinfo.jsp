@@ -67,17 +67,18 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 <input type="hidden" id="placeEmail" value="${placeInfo.email}">
 <input type="hidden" id="placeRegiNum" value="${placeInfo.business_regi_num}">
 
-<c:if test="${not empty imgList}">
-<div id="myCarousel" class="carousel slide" data-ride="false"><%-- data-ride="carousel" data-interval="3000"> --%>
+<c:if test="${not empty imageList}">
+<div id="myCarousel" class="carousel slide" data-ride="false" style="width: 80%; margin: auto;"><%-- data-ride="carousel" data-interval="3000"> --%>
   <ul class="carousel-indicators">
-	<c:forEach items="${imgList}" var="img" varStatus="status">
+	<c:forEach items="${imageList}" var="image" varStatus="status">
     	<li data-target="#myCarousel" data-slide-to="${status.index}"></li>
 	</c:forEach>
   </ul>
   <div class="carousel-inner">
-	<c:forEach items="${imgList}" var="img" varStatus="status">
+	<c:forEach items="${imageList}" var="image" varStatus="status">
 		    <div class="carousel-item">
-		      <img src="${pageContext.request.contextPath}${img.place_img_path}" alt="${placeInfo.business_name}_${status.index}" width="1100" height="500">
+		      <%--<img src="data:image/jpeg;base64,${image.encodedImage}" alt="${placeInfo.business_name}_${status.index}" width="1100" height="500">--%>
+		      <img src="data:image/jpeg;base64,${image.encodedImage}" alt="${placeInfo.business_name}_${status.index}" class="d-block w-100" style="max-height: 500px; object-fit: cover;">
 		    </div>
 	</c:forEach>
   </div>
@@ -90,7 +91,7 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 </div>
 </c:if>
 
-<c:if test="${empty imgList}">
+<c:if test="${empty imageList}">
 </c:if>
 
 

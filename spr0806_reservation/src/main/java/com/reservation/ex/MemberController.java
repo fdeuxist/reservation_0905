@@ -2,6 +2,7 @@ package com.reservation.ex;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -326,12 +327,28 @@ public class MemberController {
     	logger.info("===========place info=========");
         logger.info("MemberController - /member/businessplaceinfo: email=" + email + ", business_regi_num=" + business_regi_num);
         SearchPlaceDto placeInfo = sPService.selectOnePlace(email, business_regi_num);
-        ArrayList<BusinessPlaceImagePathDto> list = 
+        ArrayList<BusinessPlaceImagePathDto> imgList = 
         		bPIPService.selectAllMainAndNormalImage(email, business_regi_num);
         model.addAttribute("placeInfo", placeInfo);
         System.out.println("model add placeInfo : " + placeInfo);
-        model.addAttribute("imgList", list);
-        System.out.println("model add imgList : " + list);
+        
+
+	    ArrayList<Map<String, Object>> encodedImgList = new ArrayList<>();
+	    for (BusinessPlaceImagePathDto dto : imgList) {
+	        // 이진 데이터를 Base64로 인코딩
+	        String encodedImage = Base64.getEncoder().encodeToString(dto.getFile_data());
+	        
+	        // 필요한 데이터와 인코딩된 이미지를 맵으로 묶음
+	        Map<String, Object> imageMap = new HashMap<>();
+	        imageMap.put("place_img_path", dto.getPlace_img_path());
+	        imageMap.put("is_main", dto.getIs_main());
+	        imageMap.put("encodedImage", encodedImage);  // 인코딩된 이미지 추가
+	        
+	        encodedImgList.add(imageMap);
+	    }
+        
+        model.addAttribute("imageList", encodedImgList);
+        System.out.println("model add imageList : " + encodedImgList);
         
         /*
         BusinessPlaceInfoDto placeInfo = bPIService.selectOneBusinessPlaceInfo(email, business_regi_num);
