@@ -38,12 +38,7 @@
 <body>
     <main>
     <div class="container">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="ManageUser.jsp">유저 관리</a></li>
-                <!-- 추가적인 사이드바 항목들 -->
-            </ul>
-        </aside>
+   
         <section class="content">
             <h1>유저 목록</h1>
             <table>
