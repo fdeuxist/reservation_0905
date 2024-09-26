@@ -65,14 +65,27 @@ document.addEventListener('DOMContentLoaded', function() {
                                         const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
                                         markers.push(marker);
 
+                                        //const infowindowContent = `
+                                        //    <div style="padding:5px; font-size:12px; max-width:150px;">
+                                        //        <strong>${encodeHTML(name)}</strong><br>
+                                        //        <i class="fa-solid fa-phone"></i> ${encodeHTML(phone)}<br>
+                                        //        <i class="fa-solid fa-map-location-dot"></i> ${encodeHTML(address)}<br>
+                                        //        <img src="${base64Image}" style="width:100px; height:auto; display:block;">
+                                        //    </div>
+                                        //`;//★★★★★★★★★★★★★★★★★★★
+                                        
                                         const infowindowContent = `
-                                            <div style="padding:5px; font-size:12px; max-width:150px;">
-                                                <strong>${encodeHTML(name)}</strong><br>
-                                                <i class="fa-solid fa-phone"></i> ${encodeHTML(phone)}<br>
-                                                <i class="fa-solid fa-map-location-dot"></i> ${encodeHTML(address)}<br>
-                                               
-                                            </div>
-                                        `;
+                                        <div style="padding:5px; font-size:12px; max-width:150px;">
+                                        <strong>${encodeHTML(name)}</strong><br>
+                                        <i class="fa-solid fa-phone"></i> ${encodeHTML(phone)}<br>
+                                        <i class="fa-solid fa-map-location-dot"></i> ${encodeHTML(address)}<br>
+                                        <div class="d-flex justify-content-center">
+                                            <img src="${base64Image}" style="width:100px; height:auto; display:block;">
+                                        </div>
+                                    </div>`;
+
+                                        
+                                        
 
                                         const infowindow = createInfoWindow(infowindowContent);
                                         infowindow.open(map, marker);
