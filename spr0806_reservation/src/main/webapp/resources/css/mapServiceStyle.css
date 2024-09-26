@@ -20,6 +20,8 @@ body {
 .container {
 	display: flex;
 	flex: 1;
+    padding: 0;
+    margin: 0;
 }
 
 .search-section {
