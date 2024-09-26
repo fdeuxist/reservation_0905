@@ -1,8 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page session="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page session="true"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@include file="../include/header.jsp"%>
 <div class="header-placeholder"></div>
 <!DOCTYPE html>
@@ -62,11 +65,20 @@
 
 		<!-- Results -->
 		<div class="results">
-			<c:forEach var="item" items="${results}">
+			<c:forEach var="item" items="${results}" varStatus="status">
 				<a
 					href="/ex/member/businessplaceinfo?email=${item.email}&business_regi_num=${item.business_regi_num}"
-					class="result-item"> <img src="../resources/imgs/image1.jpg"
-					alt="${item.business_name}">
+					class="result-item"> <c:set var="index" value="${status.index}" />
+					<c:choose>
+						<c:when test="${not empty img[index].encodedImage}">
+							<img src="data:image/jpeg;base64,${img[index].encodedImage}"
+								alt="${item.business_name}">
+						</c:when>
+						<c:otherwise>
+							<img src="../resources/imgs/noimage.jpg" alt="기본 이미지">
+							<!-- 기본 이미지 경로 -->
+						</c:otherwise>
+					</c:choose>
 					<div class="info">
 						<h4>${item.business_name}</h4>
 						<p>${item.basic_address}</p>
@@ -74,6 +86,9 @@
 				</a>
 			</c:forEach>
 		</div>
+
+
+
 	</div>
 
 	<!-- JavaScript -->

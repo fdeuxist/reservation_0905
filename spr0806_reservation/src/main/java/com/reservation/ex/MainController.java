@@ -9,7 +9,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import java.util.Base64;
+import org.apache.ibatis.executor.ReuseExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.MainDto;
 import com.reservation.dto.VendorDto;
+import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IMainService;
 import com.reservation.service.IMapService;
 import com.reservation.service.IVendorService;
@@ -43,7 +45,8 @@ public class MainController {
 
 	@Autowired
 	private IMapService mapService;
-
+	@Autowired
+	private IBusinessPlaceImagePathService ibpService;
 	// getMapping으로 변환 필요
 	@RequestMapping(value = "/my/myPage", method = RequestMethod.GET)
 	public void myPage() {
@@ -85,20 +88,37 @@ public class MainController {
 	// 검색폼 처리 관련 메서드
 	@RequestMapping(value = "/my/search", method = RequestMethod.GET)
 	public String search(@RequestParam("query") String query, Model model) throws Exception {
-		System.out.println("검색어는  " + query);
-		// 검색 폼에서 입력받은 쿼리로 게시판 관련 db에서 검색키워드가 포함된 글들을 추출해냄
-		ArrayList<VendorDto> results = mapService.selectPlace(query);
-		// userService.selectSearch(query);와 같은 로직으로 db에 접속해 해당 쿼리를 포함한 글들을 추출
-		// board 관련 기능이 완료됐을때 구현
-		for (VendorDto dto : results) {
-			System.out.println(dto.getBusiness_name());
+	    System.out.println("검색어는  " + query);
+	    
+	    // 검색어에 해당하는 업체 목록을 가져옴
+	    ArrayList<VendorDto> results = mapService.selectPlace(query);
+	    ArrayList<String> encodedImages = new ArrayList<>(); // 인코딩된 이미지 리스트 초기화
 
-		}
-
-		model.addAttribute("results", results);
-		return "/main/search";
+	    // 각 업체의 메인 이미지를 가져와서 인코딩
+	    for (VendorDto dto : results) {
+	        BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
+	        if (img != null && img.getFile_data() != null) {
+	            // 이진 데이터를 Base64로 인코딩
+	            String base64Image = Base64.getEncoder().encodeToString(img.getFile_data());
+	            System.out.println(base64Image);
+	            encodedImages.add(base64Image);
+	        } else {
+	            // 기본 이미지나 에러 이미지 처리
+	            encodedImages.add(null);
+	        }
+	    }
+	  
+	    for (VendorDto dto : results) {
+	        System.out.println(dto.getBusiness_name());
+	    }
+	    
+	    model.addAttribute("query", query);
+	    model.addAttribute("results", results);
+	    model.addAttribute("encodedImages", encodedImages); // 인코딩된 이미지 리스트 추가
+	    
+	    return "/main/search";
 	}
-	
+
 	@GetMapping("/miniSearch")
 	@ResponseBody
 	public ArrayList<VendorDto> miniSearch(@RequestParam("query") String query) throws Exception {
