@@ -38,6 +38,19 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
                 const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
                 markers.push(marker);
 
+                // Base64 이미지와 경로 이미지를 구분
+                let imgSrc;
+                if (imageUrl && imageUrl.startsWith('data:image/')) {
+                    // Base64 인코딩된 이미지 그대로 사용
+                    imgSrc = imageUrl;
+                } else if (imageUrl) {
+                    // 경로 이미지에만 경로 추가
+                    imgSrc = `../resources/imgs/${encodeHTML(imageUrl)}`;
+                } else {
+                    // 이미지가 없을 때 기본 이미지 설정
+                    imgSrc = "../resources/imgs/noimage.jpg";
+                }
+
                 const infowindowContent = `
                     <div style="padding:5px; font-size:12px;">
                         <div style="margin-bottom:5px;">
@@ -45,7 +58,7 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
                         </div>
                         <hr style="border:1px solid #ddd; margin:5px 0;">
                         <div>
-                            <img src="${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                            <img src="${imgSrc}" style="width:100px; height:auto; display:block;">
                         </div>
                     </div>
                 `;
@@ -68,6 +81,9 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
         console.error('Geocoder instance is not available');
     }
 }
+
+
+
 
 function clearMarkers(markers) {
     markers.forEach(function(marker) {

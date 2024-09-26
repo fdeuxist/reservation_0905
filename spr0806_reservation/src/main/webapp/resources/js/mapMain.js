@@ -33,15 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
                                     data-business-num="${encodeHTML(markerData.business_num)}"
                                     data-address="${encodeHTML(markerData.basic_address)}"
                                     data-name="${encodeHTML(markerData.business_name)}"
-                                    data-image-url="${encodeHTML(imageUrl)}">
+                                    data-image-url="${encodeHTML(markerData.place_img_path)}"> <!-- imageUrl 대신 place_img_path 사용 -->
                                     
                                     <strong>${encodeHTML(markerData.business_name)}</strong><br>
                                     ${encodeHTML(markerData.basic_address)}<br>
                                     
-                                    <img src="..${encodeHTML(imageUrl)}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
-                                   
+                                    <img src="${encodeHTML(markerData.place_img_path)}" alt="${encodeHTML(markerData.business_name)}" style="width:100px; height:auto; margin-top:5px;">
                                 </li>
                             `;
+
                             
 //                            <button class="find-button"
 //                                data-address="${encodeHTML(markerData.basic_address)}"
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (event.target.classList.contains('find-button')) {
                 const address = event.target.dataset.address;
                 const name = event.target.dataset.name;
-                const imageUrl = event.target.dataset.imageUrl;
+                const base64Image = event.target.dataset.imageUrl; // 이진 데이터가 포함된 Base64 URL
 
                 geocoder.addressSearch(address, function(result, status) {
                     if (status === kakao.maps.services.Status.OK) {
@@ -90,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         clearMarkers(markers);
                         const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
                         markers.push(marker);
+
+                        // 이진 데이터를 이미지로 사용
                         const infowindowContent = `
                             <div style="padding:5px; font-size:12px; max-width:150px;">
                                 <div style="margin-bottom:5px;">
@@ -97,11 +99,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <hr style="border:1px solid #ddd; margin:5px 0;">
                                 <div>
-                                    <img src="..${encodeHTML(imageUrl)}" style="max-width:100%; height:auto; display:block;">
+                                    <img src="${base64Image}" style="max-width:100%; height:auto; display:block;">
                                 </div>
                             </div>
                         `;
-               
 
                         const infowindow = createInfoWindow(infowindowContent);
                         infowindow.open(map, marker);
@@ -112,7 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
+
+
+        function addMarkerFromAddress(map, geocoder, address, name, base64Image, markers) {
             if (geocoder) {
                 geocoder.addressSearch(address, function(result, status) {
                     if (status === kakao.maps.services.Status.OK) {
@@ -127,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <hr style="border:1px solid #ddd; margin:5px 0;">
                                 <div>
-                                    <img src="..${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                                    <img src="${base64Image}" style="width:100px; height:auto; display:block;">
                                 </div>
                             </div>
                         `;

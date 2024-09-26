@@ -2,6 +2,7 @@ package com.reservation.ex;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -66,10 +67,18 @@ public class MapController {
 	    List<BusinessPlaceImagePathDto> mainImageList = new ArrayList<>();
 
 	    for (VendorDto vendor : vendorList) {
-	        // Ensure this method returns a valid BusinessPlaceImagePathDto object
+	        // 메인 이미지를 가져옴
 	        BusinessPlaceImagePathDto mainImg = biService.selectMainImage(vendor.getEmail(), vendor.getBusiness_regi_num());
-	        mainImageList.add(mainImg);
-	        System.out.println(mainImg);
+
+	        // null 체크 추가
+	        if (mainImg != null && mainImg.getFile_data() != null) {
+	            mainImageList.add(mainImg);
+	            System.out.println("메인 file data: " + mainImg.getFile_data());
+	        } else {
+	            // null 처리: 기본 이미지를 추가하거나 로그로 출력
+	            System.out.println("메인 이미지가 없습니다: " + vendor.getBusiness_name());
+	            mainImageList.add(null); // 필요한 경우 기본값을 추가할 수 있음
+	        }
 	    }
 
 	    List<Map<String, String>> result = new ArrayList<>();
@@ -77,22 +86,31 @@ public class MapController {
 
 	    for (int i = 0; i < vendorList.size(); i++) {
 	        VendorDto vendor = vendorList.get(i);
-	        BusinessPlaceImagePathDto image = mainImageList.get(i);
+	        BusinessPlaceImagePathDto imageDto = mainImageList.get(i);
+
+	        // 이미지 파일 데이터 null 체크
+	        byte[] image = null;
+	        if (imageDto != null && imageDto.getFile_data() != null) {
+	            image = imageDto.getFile_data();
+	        }
 
 	        Map<String, String> markerData = new HashMap<>();
 	        markerData.put("business_name", vendor.getBusiness_name());
 	        markerData.put("basic_address", vendor.getBasic_address());
-	        markerData.put("place_img_path", (image != null && image.getPlace_img_path() != null) ? image.getPlace_img_path() : defaultImageUrl);
-	        markerData.put("business_num",vendor.getBusiness_regi_num());
-	        System.out.println("Business Number: " + vendor.getBusiness_regi_num());
-	        System.out.println("Email: " + vendor.getEmail());
-	        markerData.put("email",vendor.getEmail());
 	        
+	        // 이미지 경로 처리 (null일 경우 기본 이미지 사용)
+	        String imageUrl = (image != null) ? "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(image) : defaultImageUrl;
+	        markerData.put("place_img_path", imageUrl);
+	        
+	        markerData.put("business_num", vendor.getBusiness_regi_num());
+	        markerData.put("email", vendor.getEmail());
+
 	        result.add(markerData);
 	    }
 
 	    return result;
 	}
+
 
 	
 	
