@@ -2,6 +2,7 @@ package com.reservation.ex;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.PlaceDetailDto;
+import com.reservation.dto.SearchPlaceDto;
 import com.reservation.dto.VendorAndImageListDto;
 import com.reservation.dto.VendorDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IMapService;
+import com.reservation.service.ISearchPlaceService;
 
 // 만든이 김하겸
 // 해당 컨트롤러는 카카오맵 api 관련 네비게이션 기능 처리에 관련된 컨트롤러이며 비동기 컨트롤러로 화면전환없이 데이터를 주고 받는 컨트롤러입니다.
@@ -35,6 +38,8 @@ public class MapController {
 
 	@Autowired
 	private IMapService service;
+	@Autowired
+	private ISearchPlaceService placeService;
 	
 	@Autowired
 	private IBusinessPlaceImagePathService biService;
@@ -64,12 +69,37 @@ public class MapController {
 
 	    List<VendorDto> vendorList = service.selectPlace(query);
 	    List<BusinessPlaceImagePathDto> mainImageList = new ArrayList<>();
+	    List<SearchPlaceDto> searchPlace = new ArrayList<>();
 
 	    for (VendorDto vendor : vendorList) {
-	        // Ensure this method returns a valid BusinessPlaceImagePathDto object
+	        // 메인 이미지를 가져옴
 	        BusinessPlaceImagePathDto mainImg = biService.selectMainImage(vendor.getEmail(), vendor.getBusiness_regi_num());
-	        mainImageList.add(mainImg);
-	        System.out.println(mainImg);
+	        System.out.println("벤더 이메일" +vendor.getEmail());
+	        System.out.println("벤더 기본주소" +vendor.getBusiness_regi_num() );
+	        SearchPlaceDto place = placeService.selectOnePlace(vendor.getEmail(), vendor.getBusiness_regi_num());
+	        
+	        // null 체크 추가
+	        if (mainImg != null && mainImg.getFile_data() != null) {
+	            mainImageList.add(mainImg);
+	            System.out.println("메인 file data: " + mainImg.getFile_data());
+	        } else {
+	            System.out.println("메인 이미지가 없습니다: " + vendor.getBusiness_name());
+	            mainImageList.add(null); // 필요한 경우 기본값을 추가할 수 있음
+	        }
+
+	        // place가 null인지 체크
+	        if (place != null) {
+	            searchPlace.add(place);
+	            // 전화번호가 null인지 체크
+	            if (place.getPhone() != null) {
+	                System.out.println("핸드폰 번호: " + place.getPhone());
+	            } else {
+	                System.out.println("저장된 전화번호가 없습니다: " + vendor.getBusiness_name());
+	            }
+	        } else {
+	            System.out.println("place 객체가 null입니다. 업체명: " + vendor.getBusiness_name());
+	            searchPlace.add(null);
+	        }
 	    }
 
 	    List<Map<String, String>> result = new ArrayList<>();
@@ -77,22 +107,33 @@ public class MapController {
 
 	    for (int i = 0; i < vendorList.size(); i++) {
 	        VendorDto vendor = vendorList.get(i);
-	        BusinessPlaceImagePathDto image = mainImageList.get(i);
+	        BusinessPlaceImagePathDto imageDto = mainImageList.get(i);
+	        SearchPlaceDto place = searchPlace.get(i);
+
+	        // 이미지 파일 데이터 null 체크
+	        byte[] image = null;
+	        if (imageDto != null && imageDto.getFile_data() != null) {
+	            image = imageDto.getFile_data();
+	        }
 
 	        Map<String, String> markerData = new HashMap<>();
 	        markerData.put("business_name", vendor.getBusiness_name());
 	        markerData.put("basic_address", vendor.getBasic_address());
-	        markerData.put("place_img_path", (image != null && image.getPlace_img_path() != null) ? image.getPlace_img_path() : defaultImageUrl);
-	        markerData.put("business_num",vendor.getBusiness_regi_num());
-	        System.out.println("Business Number: " + vendor.getBusiness_regi_num());
-	        System.out.println("Email: " + vendor.getEmail());
-	        markerData.put("email",vendor.getEmail());
-	        
+
+	        // 이미지 경로 처리 (null일 경우 기본 이미지 사용)
+	        String imageUrl = (image != null) ? "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(image) : defaultImageUrl;
+	        markerData.put("place_img_path", imageUrl);
+
+	        markerData.put("business_num", vendor.getBusiness_regi_num());
+	        markerData.put("email", vendor.getEmail());
+	        markerData.put("detail", vendor.getDetail_address());
+	        markerData.put("phone", (place != null) ? place.getPhone() : null); // place가 null일 경우 null 처리
 	        result.add(markerData);
 	    }
 
 	    return result;
 	}
+
 
 	
 	

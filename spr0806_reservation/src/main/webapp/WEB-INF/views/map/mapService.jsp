@@ -17,6 +17,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page session="true"%>
 <%@include file="../include/header.jsp"%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -62,30 +64,33 @@
 </body>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 이벤트 위임: 부모 요소에 이벤트 리스너를 등록
+    // 검색 결과 컨테이너를 선택
     const searchResultContainer = document.querySelector('.search-results');
 
+    // 리스트 항목 클릭 이벤트
     searchResultContainer.addEventListener('click', function(event) {
         const item = event.target.closest('.search-result-item');
-        
-        if (item) {
-            // li 요소의 data-* 속성에서 데이터를 가져옴
-           const business_num = item.getAttribute('data-business-num');
-            const businessName = item.getAttribute('data-name');
-            const businessAddress = item.getAttribute('data-address');
-            const imageUrl = item.getAttribute('data-image-url');
-            const email = item.getAttribute('data-email');
-            console.log("Email2:",email);
-            console.log("Business Number2:", business_num);
-            // 예시: URL에 데이터 포함하여 페이지 이동 (GET 파라미터 사용)
-            const url = "/ex/member/businessplaceinfo?business_regi_num=" + escape(business_num) + "&email=" + escape(email);
 
+        // 리스트 항목 클릭 시의 동작
+        if (item && !event.target.closest('.btn')) { // 버튼 클릭이 아닐 때만 동작
+            const business_num = item.getAttribute('data-business-num');
+            const email = item.getAttribute('data-email');
+
+            // URL에 데이터 포함하여 페이지 이동
+            const url = "/ex/member/businessplaceinfo?business_regi_num=" + escape(business_num) + "&email=" + escape(email);
             // 해당 URL로 페이지 이동
             window.location.href = url;
         }
     });
-});
 
+   
+    });
 
+    
 </script>
+
+
+
+
+
 </html>

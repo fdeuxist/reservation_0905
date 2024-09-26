@@ -34,7 +34,7 @@ public class BusinessPlaceInfoServiceImpl implements IBusinessPlaceInfoService {
         BusinessPlaceInfoDao dao = sqlSession.getMapper(BusinessPlaceInfoDao.class);
         dao.updateMyBusinessPlaceInfo(dto);
     }
-	
+   
 //	@Override
 //	public BusinessPlaceInfoDto selectVendorBusinessPlaceInfo(BusinessPlaceInfoDto dto) throws Exception {
 //

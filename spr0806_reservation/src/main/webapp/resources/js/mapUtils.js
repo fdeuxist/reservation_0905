@@ -30,7 +30,7 @@ function createInfoWindow(content) {
     });
 }
 
-function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
+function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers,detail,phone) {
     if (geocoder) {
         geocoder.addressSearch(address, function(result, status) {
             if (status === kakao.maps.services.Status.OK) {
@@ -38,14 +38,32 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
                 const marker = createMarker(map, { lat: result[0].y, lng: result[0].x });
                 markers.push(marker);
 
+                // Base64 이미지와 경로 이미지를 구분
+                let imgSrc;
+                if (imageUrl && imageUrl.startsWith('data:image/')) {
+                    // Base64 인코딩된 이미지 그대로 사용
+                    imgSrc = imageUrl;
+                } else if (imageUrl) {
+                    // 경로 이미지에만 경로 추가
+                    imgSrc = `../resources/imgs/${encodeHTML(imageUrl)}`;
+                } else {
+                    // 이미지가 없을 때 기본 이미지 설정
+                    imgSrc = "../resources/imgs/noimage.jpg";
+                }
+
                 const infowindowContent = `
-                    <div style="padding:5px; font-size:12px;">
+                    <div style="padding:5px; font-size:12px; max-width:150px;">
                         <div style="margin-bottom:5px;">
                             <strong>${encodeHTML(name)}</strong>
                         </div>
+                        
+                        <p class="card-text">
+                            <i class="fa-solid fa-phone"></i> ${encodeHTML(phone)}<br>
+                            <i class="fa-solid fa-map-location-dot"></i> ${encodeHTML(address)}${encodeHTML(detail)}<br>
+                        </p>
                         <hr style="border:1px solid #ddd; margin:5px 0;">
                         <div>
-                            <img src="${encodeHTML(imageUrl)}" style="width:100px; height:auto; display:block;">
+                            <img src="${base64Image}" style="width:100px; height:auto; display:block;">
                         </div>
                     </div>
                 `;
@@ -68,6 +86,9 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
         console.error('Geocoder instance is not available');
     }
 }
+
+
+
 
 function clearMarkers(markers) {
     markers.forEach(function(marker) {
