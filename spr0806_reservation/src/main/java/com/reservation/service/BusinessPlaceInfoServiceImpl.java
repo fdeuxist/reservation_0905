@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reservation.dao.BusinessPlaceInfoDao;
+import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
 
 @Service
@@ -33,7 +34,10 @@ public class BusinessPlaceInfoServiceImpl implements IBusinessPlaceInfoService {
         BusinessPlaceInfoDao dao = sqlSession.getMapper(BusinessPlaceInfoDao.class);
         dao.updateMyBusinessPlaceInfo(dto);
     }
-	
+    public BusinessPlaceImagePathDto selectImage(String place_img_path) throws Exception{
+    	BusinessPlaceInfoDao dao = sqlSession.getMapper(BusinessPlaceInfoDao.class);
+    	
+    }
 	
 //	@Override
 //	public BusinessPlaceInfoDto selectVendorBusinessPlaceInfo(BusinessPlaceInfoDto dto) throws Exception {

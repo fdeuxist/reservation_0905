@@ -1,5 +1,11 @@
 package com.reservation.dto;
 
+import java.util.Arrays;
+
+
+
+import java.util.Arrays;
+
 public class BusinessPlaceImagePathDto {
 /*
  * create table business_place_image_path (
@@ -13,22 +19,48 @@ public class BusinessPlaceImagePathDto {
 	private String business_regi_num;
 	private String place_img_path;
 	private String is_main;	//0906 추가
-
+    private  byte[] file_data; //0925 추가
 	public BusinessPlaceImagePathDto() {}
 
-	public BusinessPlaceImagePathDto(String email, String business_regi_num, String place_img_path, String is_main) {
+	
+
+	
+	@Override
+	public String toString() {
+		return "BusinessPlaceImagePathDto [email=" + email + ", business_regi_num=" + business_regi_num
+				+ ", place_img_path=" + place_img_path + ", is_main=" + is_main + ", file_data="
+				+ Arrays.toString(file_data) + "]";
+	}
+
+
+
+
+	public byte[] getFile_data() {
+		return file_data;
+	}
+
+
+
+
+	public void setFile_data(byte[] file_data) {
+		this.file_data = file_data;
+	}
+
+
+
+
+	public BusinessPlaceImagePathDto(String email, String business_regi_num, String place_img_path, String is_main,
+			byte[] file_data) {
 		super();
 		this.email = email;
 		this.business_regi_num = business_regi_num;
 		this.place_img_path = place_img_path;
 		this.is_main = is_main;
+		this.file_data = file_data;
 	}
 
-	@Override
-	public String toString() {
-		return "\nBusinessPlaceImagePathDto [email=" + email + ", business_regi_num=" + business_regi_num
-				+ ", place_img_path=" + place_img_path + ", is_main=" + is_main + "]";
-	}
+
+
 
 	public String getEmail() {
 		return email;

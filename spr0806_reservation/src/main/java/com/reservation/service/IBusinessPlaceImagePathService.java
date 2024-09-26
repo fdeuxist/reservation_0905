@@ -42,5 +42,7 @@ public interface IBusinessPlaceImagePathService {
 
 	public void insertMyBusinessPlaceImagePath(BusinessPlaceImagePathDto dto) throws Exception;
 
+	public BusinessPlaceImagePathDto selectImage(String place_img_path) throws Exception;
+
 
 }
