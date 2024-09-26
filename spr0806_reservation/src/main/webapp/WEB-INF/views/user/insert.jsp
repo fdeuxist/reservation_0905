@@ -218,3 +218,5 @@ function checkVerificationStatus() {
 </script>
 		
 
+
+<%@include file="../include/footer.jsp"%>

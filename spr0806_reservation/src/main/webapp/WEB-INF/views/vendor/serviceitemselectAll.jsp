@@ -53,10 +53,5 @@ if (result == 'success') {
 	</table>
     <a href="${pageContext.request.contextPath}/vendor/serviceiteminsert" class="btn btn-primary">등록하기</a>
 </div>
-</body>
-</html>
-
-
-
-
-
+</main>
+<%@include file="../include/footer.jsp"%>

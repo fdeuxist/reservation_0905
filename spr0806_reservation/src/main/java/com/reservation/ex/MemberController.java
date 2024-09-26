@@ -329,7 +329,9 @@ public class MemberController {
         ArrayList<BusinessPlaceImagePathDto> list = 
         		bPIPService.selectAllMainAndNormalImage(email, business_regi_num);
         model.addAttribute("placeInfo", placeInfo);
+        System.out.println("model add placeInfo : " + placeInfo);
         model.addAttribute("imgList", list);
+        System.out.println("model add imgList : " + list);
         
         /*
         BusinessPlaceInfoDto placeInfo = bPIService.selectOneBusinessPlaceInfo(email, business_regi_num);

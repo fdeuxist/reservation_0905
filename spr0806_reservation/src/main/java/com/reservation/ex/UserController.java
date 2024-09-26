@@ -120,6 +120,22 @@ public class UserController {
 		System.out.println(dto);
 		return "redirect:/user/login?member";
 	}
+
+	@RequestMapping(value = "/user/insert_free", method = RequestMethod.GET)
+	public String userInsertFree(Locale locale, Model model) {
+		System.out.println("UserController - /user/insert_free(get)");
+		return "/user/insert_free";
+	}
+	
+	@RequestMapping(value = "/user/insert_free", method = RequestMethod.POST)
+	public String insertDBFree(UserDto dto, RedirectAttributes rttr) throws Exception{
+		System.out.println("UserController - /user/insert_free(post)");
+		String encPassword = passwordEncoder.encode(dto.getPassword());
+		dto.setPassword(encPassword);
+		uService.insert(dto); // 일반user 가입시 authorities role 자동으로 member 들어감 UserServiceImpl구현부. 트렌젝션 처리 o
+		System.out.println(dto);
+		return "redirect:/user/login?member";
+	}
 	
 	
 /*

@@ -16,7 +16,7 @@ body {
 </style>
 <div class="header-placeholder"></div>
 <main>
-    <div class="container m-5">
+    <div class="container">
     <div class="card">
         <div class="card-header bg-primary text-white">
             <h3 class="mb-0">주문 상세 정보</h3>

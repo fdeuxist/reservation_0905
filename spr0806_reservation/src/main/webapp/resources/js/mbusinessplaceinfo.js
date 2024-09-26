@@ -11,7 +11,6 @@ $(function() {
     
     for(let i=0;i<chks.length;i++){
     	chks[i].addEventListener('click', () => {
-    		// 체크박스의 값
     		var itemid = cards[i].dataset.serviceitemid; 
     		var time = parseInt(cards[i].dataset.requiredtime);
     		var prices = parseInt(cards[i].dataset.serviceprice);
@@ -26,7 +25,6 @@ $(function() {
     		}
     		console.log("cardObj : ",cardObj)
             //alert(value)
-            // 체크박스가 체크되었는지 여부 확인
             if (chks[i].checked) {
             	totalRequiredTime += time;
             	totalServicePrices += prices;
@@ -36,7 +34,7 @@ $(function() {
             	totalRequiredTime -= time;
             	totalServicePrices -= prices;
             	//selectedItemIdsAry = selectedItemIdsAry.filter(id => id !== chks[i].value);
-                selectedItemIdsAry = selectedItemIdsAry.filter(id => id !== cardObj);
+                selectedItemIdsAry = selectedItemIdsAry.filter(id => id.itemid !== cardObj.itemid);
             }
             
             if(totalRequiredTime>0){
@@ -46,9 +44,10 @@ $(function() {
             }
             
             //nextBtn.disabled = totalRequiredTime <= 0;
-            // 결과를 알림으로 표시
-            var email = document.getElementById('placeEmail').innerText;
-            var businessRegiNum = document.getElementById('placeRegiNum').innerText;
+            //var email = document.getElementById('placeEmail').innerText;
+            //var businessRegiNum = document.getElementById('placeRegiNum').innerText;
+            var email = $('#placeEmail').val();
+            var businessRegiNum = $('#placeRegiNum').val();
             //let openDate = $("#datepicker").val();
             data = {	//SelectedItemsDto
                     email: email,
@@ -63,9 +62,7 @@ $(function() {
     	})
     }
 
-    // nextBtn 버튼 클릭 이벤트
     $("#nextBtn").click(function() {
-
         console.log("data : " , data);
 
         $.ajax({
@@ -88,5 +85,7 @@ $(function() {
 
     //////////////////////////////////////////////////////////////////////
     
-    
 });
+
+
+
