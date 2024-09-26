@@ -61,28 +61,26 @@
 			            <a href="/ex/user/insert" class="text-decoration-none text-reset"><i class="fa-solid fa-users"></i>회원가입</a>
 			        </div>
 			    </c:when>
-			    <c:otherwise>
-			        <div class="text-right">
-			            <%--${sessionScope.loginName}님 반갑습니다! <br> --%>
-			            <c:choose>
-			                <c:when test="${sessionScope.loginAuthority == '일반회원'}">
-			                    <a href="${pageContext.request.contextPath}/member/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
-			                </c:when>
-			                <c:when test="${sessionScope.loginAuthority == '사업자회원'}">
-			                    <a href="${pageContext.request.contextPath}/vendor/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
-			                </c:when>
-			                <c:when test="${sessionScope.loginAuthority == '매니저'}">
-			                    <a href="${pageContext.request.contextPath}/manager/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 매니저 페이지</a>
-			                </c:when>
-			                <c:when test="${sessionScope.loginAuthority == '관리자'}">
-			                    <a href="${pageContext.request.contextPath}/admin/selectAll" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 관리자 페이지 </a>
-			                </c:when>
-			            </c:choose>
-			            <br>
-			            <a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
-			        </div>
-			    </c:otherwise>
 			</c:choose>
+			        <div class="text-right">
+						    <sec:authorize access="hasRole('ROLE_MEMBER')">
+						        <a href="${pageContext.request.contextPath}/member/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+						    <sec:authorize access="hasRole('ROLE_VENDOR')">
+						        <a href="${pageContext.request.contextPath}/vendor/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+						    <sec:authorize access="hasRole('ROLE_MANAGER')">
+						        <a href="${pageContext.request.contextPath}/manager/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 매니저 페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+						    <sec:authorize access="hasRole('ROLE_ADMIN')">
+						        <a href="${pageContext.request.contextPath}/admin/selectAll" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 관리자 페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+			        </div>
+			<%--</c:choose>--%>
         <%--</li> --%>
   </div>
 </nav>
