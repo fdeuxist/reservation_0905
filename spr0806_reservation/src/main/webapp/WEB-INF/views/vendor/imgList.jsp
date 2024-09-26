@@ -147,17 +147,18 @@ h2 {
 </style>
 
 <main>
-<h2>등록한 이미지 리스트  </h2>
+<h2>등록한 이미지 리스트</h2>
 <div id="image_list" class="thumbnail-container">
 	<!-- 이미지 목록이 여기에 동적으로 삽입됩니다. -->
 	<c:forEach var="image" items="${imageList}">
     <div class="image-item">
-        <img src="${pageContext.request.contextPath}${image.place_img_path}"
+        <!-- Base64로 인코딩된 이진 데이터를 이미지로 표시 -->
+        <img src="data:image/jpeg;base64,${image.encodedImage}"
              alt="등록 이미지" data-image-src="${image.place_img_path}"
              class="${image.is_main == 'Y' ? 'main-image' : ''}" /> <!-- 주황색 테두리 적용 -->
         <button class="set-main-btn" data-image-src="${image.place_img_path}">메인 이미지로 설정</button>
     </div>
-</c:forEach>
+	</c:forEach>
 </div>
 </main>
 

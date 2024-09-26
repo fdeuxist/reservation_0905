@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -379,23 +380,32 @@ public class VendorController {
     // rest처리예정
 
     // 이미지 리스트 출력
-    @RequestMapping(value = "/vendor/imgList", method = RequestMethod.GET)
-    public void imgList(HttpSession session, Model model) throws Exception {
-        System.out.println("VendorController - /vendor/scheduleinsert");
-        String email = (String) session.getAttribute("loginEmail");
-
-        String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
-        System.out.println(business_regi_num);
-        System.out.println(email);
-        ArrayList<BusinessPlaceImagePathDto> imgList = bpiService.selectAllMyBusinessPlaceImgPaths(email,
-                business_regi_num);
-        System.out.println(imgList);
-        for(BusinessPlaceImagePathDto dto:imgList) {
-        	System.out.println(dto.getIs_main());
-        }
-        model.addAttribute("imageList", imgList);
-
-    }
+	@RequestMapping(value = "/vendor/imgList", method = RequestMethod.GET)
+	public void imgList(HttpSession session, Model model) throws Exception {
+	    System.out.println("VendorController - /vendor/scheduleinsert");
+	    String email = (String) session.getAttribute("loginEmail");
+	    String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
+	    
+	    ArrayList<BusinessPlaceImagePathDto> imgList = bpiService.selectAllMyBusinessPlaceImgPaths(email, business_regi_num);
+	    
+	    // Base64로 인코딩된 이미지 데이터를 저장할 리스트 생성
+	    ArrayList<Map<String, Object>> encodedImgList = new ArrayList<>();
+	    
+	    for (BusinessPlaceImagePathDto dto : imgList) {
+	        // 이진 데이터를 Base64로 인코딩
+	        String encodedImage = Base64.getEncoder().encodeToString(dto.getFile_data());
+	        
+	        // 필요한 데이터와 인코딩된 이미지를 맵으로 묶음
+	        Map<String, Object> imageMap = new HashMap<>();
+	        imageMap.put("place_img_path", dto.getPlace_img_path());
+	        imageMap.put("is_main", dto.getIs_main());
+	        imageMap.put("encodedImage", encodedImage);  // 인코딩된 이미지 추가
+	        
+	        encodedImgList.add(imageMap);
+	    }
+	    
+	    model.addAttribute("imageList", encodedImgList);
+	}
 
     // 이미지 삭제 0919 김하겸
     @GetMapping("/deleteImage")
@@ -405,13 +415,35 @@ public class VendorController {
         boolean flag = bpiService.deleteImage(imagePath);// 이미지 삭제 메소드 호출
         Map<String, Object> response = new HashMap<>();
         response.put("success", flag);
-
+        System.out.println(imagePath);
         if (!flag) {
             response.put("message", "이미지 삭제에 실패했습니다.");
         }
 
         return ResponseEntity.ok(response); // JSON 형태로 반환
 
+    }
+    
+ // 이미지 삭제 0919 김하겸
+    @GetMapping("/getImageData")
+    @ResponseBody
+    public Map<String, Object> getImageData(@RequestParam("imageId") String imageId) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            BusinessPlaceImagePathDto image = bpiService.selectImage(imageId);
+            if (image != null) {
+                String base64ImageData = Base64.getEncoder().encodeToString(image.getFile_data());
+                response.put("success", true);
+                response.put("base64ImageData", base64ImageData);
+            } else {
+                response.put("success", false);
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+        }
+        
+        return response;
     }
 
 

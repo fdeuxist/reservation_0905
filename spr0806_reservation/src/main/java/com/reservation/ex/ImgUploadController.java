@@ -110,10 +110,10 @@ public class ImgUploadController {
 	                System.out.println("Generated unique file name: " + uniqueFileName);
 
 	                // 파일을 이진 데이터로 변환
-	                byte[] imageData = file.getBytes();
+	                byte[] file_data = file.getBytes();
 
 	                // DTO 생성 (UUID 기반 파일명과 이진 데이터 저장)
-	                BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, uniqueFileName, "N", imageData);
+	                BusinessPlaceImagePathDto imgDto = new BusinessPlaceImagePathDto(email, business_regi_num, uniqueFileName, "N", file_data);
 
 	                // DB에 파일명 및 이진 데이터 저장
 	                bpiService.insertMyBusinessPlaceImagePath(imgDto);
@@ -144,7 +144,7 @@ public class ImgUploadController {
 		String email = (String) session.getAttribute("loginEmail");
 		String business_regi_num = (String) session.getAttribute("loginBusiness_regi_num");
 		BusinessPlaceImagePathDto dto = bpiService.selectImage(imagePath);
-		byte[] imgData = dto.getImageData();
+		byte[] imgData = dto.getFile_data();
 		BusinessPlaceImagePathDto mainDto = new BusinessPlaceImagePathDto(email, business_regi_num, imagePath, "Y",imgData);
 		if (mainDto.getPlace_img_path().contains("noimage")) {
             System.out.println("기본 이미지임으로 업로드 및 저장 취소 ...");
