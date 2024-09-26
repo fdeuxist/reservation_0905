@@ -30,7 +30,7 @@ function createInfoWindow(content) {
     });
 }
 
-function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
+function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers,detail,phone) {
     if (geocoder) {
         geocoder.addressSearch(address, function(result, status) {
             if (status === kakao.maps.services.Status.OK) {
@@ -52,13 +52,18 @@ function addMarkerFromAddress(map, geocoder, address, name, imageUrl, markers) {
                 }
 
                 const infowindowContent = `
-                    <div style="padding:5px; font-size:12px;">
+                    <div style="padding:5px; font-size:12px; max-width:150px;">
                         <div style="margin-bottom:5px;">
                             <strong>${encodeHTML(name)}</strong>
                         </div>
+                        
+                        <p class="card-text">
+                            <i class="fa-solid fa-phone"></i> ${encodeHTML(phone)}<br>
+                            <i class="fa-solid fa-map-location-dot"></i> ${encodeHTML(address)}${encodeHTML(detail)}<br>
+                        </p>
                         <hr style="border:1px solid #ddd; margin:5px 0;">
                         <div>
-                            <img src="${imgSrc}" style="width:100px; height:auto; display:block;">
+                            <img src="${base64Image}" style="width:100px; height:auto; display:block;">
                         </div>
                     </div>
                 `;
