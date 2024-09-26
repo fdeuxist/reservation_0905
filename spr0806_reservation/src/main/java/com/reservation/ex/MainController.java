@@ -99,15 +99,17 @@ public class MainController {
 	        BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
 	        if (img != null && img.getFile_data() != null) {
 	            // 이진 데이터를 Base64로 인코딩
-	            String base64Image = Base64.getEncoder().encodeToString(img.getFile_data());
-	            System.out.println(base64Image);
-	            encodedImages.add(base64Image);
+	            String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
+	            System.out.println(encodedImage);
+	            encodedImages.add(encodedImage);
 	        } else {
 	            // 기본 이미지나 에러 이미지 처리
 	            encodedImages.add(null);
 	        }
 	    }
-	  
+	    for(String dto:encodedImages) {
+	    	System.out.println(dto);
+	    }
 	    for (VendorDto dto : results) {
 	        System.out.println(dto.getBusiness_name());
 	    }

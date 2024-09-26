@@ -66,13 +66,16 @@
 		<!-- Results -->
 		<div class="results">
 			<c:forEach var="item" items="${results}" varStatus="status">
+				
 				<a
 					href="/ex/member/businessplaceinfo?email=${item.email}&business_regi_num=${item.business_regi_num}"
 					class="result-item"> <c:set var="index" value="${status.index}" />
 					<c:choose>
-						<c:when test="${not empty img[index].encodedImage}">
-							<img src="data:image/jpeg;base64,${img[index].encodedImage}"
+						<c:when
+							test="${not empty encodedImages[index] && encodedImages[index] != 'null'}">
+							<img src="data:image/jpeg;base64,${encodedImages[index]}"
 								alt="${item.business_name}">
+
 						</c:when>
 						<c:otherwise>
 							<img src="../resources/imgs/noimage.jpg" alt="기본 이미지">
@@ -86,8 +89,6 @@
 				</a>
 			</c:forEach>
 		</div>
-
-
 
 	</div>
 
