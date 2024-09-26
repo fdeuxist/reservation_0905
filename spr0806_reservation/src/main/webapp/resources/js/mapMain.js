@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 <strong>${encodeHTML(name)}</strong><br>
                                                 <i class="fa-solid fa-phone"></i> ${encodeHTML(phone)}<br>
                                                 <i class="fa-solid fa-map-location-dot"></i> ${encodeHTML(address)}<br>
-                                                <img src="${base64Image}" style="width:100px; height:auto; display:block;">
+                                               
                                             </div>
                                         `;
 
