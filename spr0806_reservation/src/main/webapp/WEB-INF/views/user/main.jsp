@@ -44,13 +44,13 @@ body {
   
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="../resources/imgs/noimage.jpg" alt="noimage" width="1100" height="500">
+      <img src="../resources/imgs/main1.jpg" alt="noimage" width="1100" height="500">
     </div>
     <div class="carousel-item">
-      <img src="../resources/imgs/fwr.jpg" alt="fwr" width="1100" height="500">
+      <img src="../resources/imgs/main2.jpg" alt="fwr" width="1100" height="500">
     </div>
     <div class="carousel-item">
-      <img src="../resources/imgs/main1.jpg" alt="hair shop" width="1100" height="500">
+      <img src="../resources/imgs/main3.jpg" alt="hair shop" width="1100" height="500">
     </div>
   </div>
   
