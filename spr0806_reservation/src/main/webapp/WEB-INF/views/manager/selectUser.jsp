@@ -181,7 +181,7 @@ nav.sidebar ul li a:hover {
 		
 			<ul>
 				<li><a href="#" data-action="editProfile">유저 정보 수정</a></li>
-				<li><a href="#" data-action="deleteUser">유저 탈퇴</a></li>
+				<li><a href="#" data-action="deleteUser">유저 계정 정지</a></li>
 				<li><a href="#" data-action="userPosts">유저가 쓴 글 목록 보기</a></li>
 				
 			</ul>
