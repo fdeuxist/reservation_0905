@@ -82,34 +82,34 @@ create table user_reservation (
     zipcode varchar2(10),                       --예약 당시 이용 예정 장소 우편번호(vendor)
     basic_address varchar2(255),                --예약 당시 이용 예정 장소 기본주소(vendor)
     detail_address varchar2(255),               --예약 당시 이용 예정 장소 상세주소(vendor)
-    reservation_date date,                      --예약 발생 년월일 (reservation_number 의 YYYYMMDD부분을 YYYY-MM-DD 형식으로로 저장)
-    reservation_use_date date,                  --이용 예정 년월일 (예약이기때문에 reservation_date 보다 며칠정도 이후인 임의의 날, reservation_date보다 앞선날일 수 없음)
-    times varchar2(50),                         --이용 예정 시간 48개단위 (1과47개의0이면 00:00, 47개의 0과 48번째의1이면 23:30, 1마다 30분차이)
-    times_hhmm varchar2(20),                    --이용 예정 시간 HH:mm (00:00 00:30 01:00 01:30 02:00 02:30 이런식으로 30분단위 위의 times와 연계)  --0829추가
+    reservation_date date,                      --예약 발생 년월일
+    reservation_use_date date,                  --이용 예정 년월일
+    times varchar2(50),                         --이용 예정 시간 48개단위
+    times_hhmm varchar2(20),                    --이용 예정 시간 HH:mm   --0829추가
     total_service_name varchar2(4000),          --예약 당시 이용 예정 서비스 이름들(service_items)
     total_service_price number,                 --예약 당시 이용 예정 서비스 가격 총 합 (service_items)
     total_required_time number,                 --예약 당시 이용 예정 제공(필요)시간 총 합 (service_items)
     user_request_memo varchar2(4000),           --유저 요청사항 메모. 주문자와 방문자가 다를때 연락처를 적는다거나 기타 요청사항 등
     status varchar2(50)                         --주문 상태. 1입금대기/2입금완료/3이용완료/
-                                                --       4이용자취소(회원요청,사업자승인필요)/
-                                                --       5사업자취소(사업자요청,회원승인불필요)/6환불대기/7환불완료 등 상태
+                                                --       4(취소요청)이용자취소(회원요청,사업자승인필요)/
+                                                --       5(취소완료)사업자취소(사업자요청,회원승인불필요)/6환불대기/7환불완료 등 상태
     );
 
 
 -- 주문시 주문번호와 주문한 아이템의 id와 주문당시 아이템들의 데이터들이 복사저장되어 
 -- 이후 아이템들이 수정되어도 주문내역에는 영향이 없음
 -- 3개 예약했으면 3행 insert에 reservation_number 3개 다 같고 이하 내용은 각각 다름
-drop table reservation_items;
-create table reservation_items (
-    reservation_number varchar2(20) not null,   --주문번호 user_reservation fk
-    item_id number not null,                    --service_items              복사저장
-    email varchar2(255) not null,               --주문당시 사업자의 이메일         복사저장
-    business_regi_num varchar2(20) not null,    --주문당시 사업자의 사업자번호       복사저장
-    service_name varchar2(255),                 --주문당시 서비스 이름(service_items)      복사저장
-    service_description varchar2(255),          --주문당시 설명 (service_items)           복사저장
-    required_time number,                       --주문당시 제공(필요)시간 (몇칸짜리인지)  복사저장
-    service_price number                       --주문당시 서비스 가격(service_items)               복사저장
-);
+--drop table reservation_items;
+--create table reservation_items (
+--    reservation_number varchar2(20) not null,   --주문번호 user_reservation fk
+--    item_id number not null,                    --service_items              복사저장
+--    email varchar2(255) not null,               --주문당시 사업자의 이메일         복사저장
+--    business_regi_num varchar2(20) not null,    --주문당시 사업자의 사업자번호       복사저장
+--    service_name varchar2(255),                 --주문당시 서비스 이름(service_items)      복사저장
+--    service_description varchar2(255),          --주문당시 설명 (service_items)           복사저장
+--    required_time number,                       --주문당시 제공(필요)시간 (몇칸짜리인지)  복사저장
+--    service_price number                       --주문당시 서비스 가격(service_items)               복사저장
+--);
 
 
 drop sequence item_id;
@@ -138,15 +138,76 @@ create table business_place_image_path (
     email varchar2(255) not null,   --사업자이메일 ┐
     business_regi_num varchar2(20), --사업자번호　 ┴ 복합키
     place_img_path  varchar2(255),
-    is_main char(1) default 'N'         -- 대표 이미지 여부 (Y/N)
+    is_main char(1) default 'N',         -- 대표 이미지 여부 (Y/N)
+    file_data BLOB
     );
-    
+
+drop view search_place;
+create view search_place as
+select 
+    u.email, u.phone, v.business_regi_num, v.business_name, 
+    v.basic_address, v.detail_address, v.business_type, b.place_info
+from users u
+join vendor v on u.email = v.email
+join business_place_info b on v.email = b.email 
+    and v.business_regi_num = b.business_regi_num
+    and u.enable <> 0;
+
+drop sequence bId;
+create sequence bId;
+drop table board;
+CREATE TABLE board (
+	bGroupKind VARCHAR2(255),
+	bId NUMBER PRIMARY KEY,
+	bName VARCHAR2(255) NOT NULL,
+	bTitle VARCHAR2(255) NOT NULL,
+	bContent VARCHAR2(4000) NOT NULL,
+	bEtc VARCHAR2(4000) NULL,
+	bWriteTime DATE DEFAULT sysdate,
+	bUpdateTime DATE DEFAULT null,
+	bHit NUMBER DEFAULT 0,
+	bGroup NUMBER ,
+	bStep NUMBER DEFAULT 0,
+	bIndent NUMBER DEFAULT 0,
+	bDelete VARCHAR2(1) DEFAULT 'Y',
+	bLike NUMBER DEFAULT 0,
+	bDislike NUMBER DEFAULT 0
+);
+
+drop sequence rId;
+create sequence rId;
+drop table reply;
+CREATE TABLE reply (
+	rId NUMBER PRIMARY KEY,
+	bId NUMBER NOT NULL,
+	rContent VARCHAR2(1000) NOT NULL,
+	rName VARCHAR2(100) NOT NULL,
+	rWriteTime date DEFAULT sysdate,
+	rUpdateTime date,
+	rEtc VARCHAR2(1000),
+	rGroup NUMBER NOT NULL,
+	rStep NUMBER DEFAULT 0,
+	rIndent NUMBER DEFAULT 0,
+	rDelete CHAR(1) DEFAULT 'N'
+);
+
+
+--desc image_storage;
+--select * from image_storage;
+--commit;
+--delete from image_storage;
+--create table image_storage (
+    --id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    --file_name VARCHAR2(255),
+    --file_data BLOB
+--);
+
 --=================================================================================================================
 --=================================================================================================================
 --=======위 내용 먼저 작업 후 이하 진행===============================================================================
 --=================================================================================================================
 --=================================================================================================================
---여기까지 하고 sts로 구동 후 http://localhost:자기포트/ex/user/insert 에서 
+--여기까지 하고 sts로 구동 후 http://localhost:자기포트/ex/user/insert_free 에서 
 --아래 기본 4가지 계정 가입 (비밀번호 1111 통일)
 -- (이메일/비밀번호/이름/전화번호)
 -- admin/1111/1/1
@@ -195,12 +256,11 @@ insert into service_items values(item_id.nextval, 'vendor5', '55555', '5노출금지
 insert into service_items values(item_id.nextval, 'vendor5', '55555', '5병원메뉴제목2', '5병원메뉴설명2', 1, 20000, '1' );
 insert into service_items values(item_id.nextval, 'vendor5', '55555', '5병원메뉴제목3', '5병원메뉴설명3', 2, 30000, '1' );
 insert into service_items values(item_id.nextval, 'vendor5', '55555', '5병원메뉴제목4', '5병원메뉴설명4', 3, 40000, '1' );
-insert into business_place_image_path values('vendor5','55555','imgpath111','N');
-insert into business_place_image_path values('vendor5','55555','imgpath222','N');
 select * from business_place_image_path;
 select * from business_place_info;
 select * from service_items;
 commit;
+--=================================================================================================================
 --=================================================================================================================
 --=================================================================================================================
 --=================================================================================================================
