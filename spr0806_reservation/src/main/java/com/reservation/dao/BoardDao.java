@@ -25,4 +25,7 @@ public interface BoardDao {
 //	게시물 페이지 나누기
 	public List<BoardDto> listSearch(BoardVo vo)throws Exception;
 	public int listSearchCount(BoardVo vo) throws Exception;
+	public List<BoardDto> selectPerson(String bName) throws Exception;
+	
+	public void updateName(@Param("oldName") String oldName, @Param("newName") String newName) throws Exception;
 }

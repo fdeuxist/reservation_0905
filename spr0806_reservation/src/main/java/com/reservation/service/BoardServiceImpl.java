@@ -114,4 +114,10 @@ public class BoardServiceImpl implements IBoardService {
 		return dao.listSearchCount(vo);
 	}
 
+	@Override
+	public List<BoardDto> selectPerson(String bName) throws Exception {
+		BoardDao dao= sqlSession.getMapper(BoardDao.class);
+		return dao.selectPerson(bName);
+	}
+
 }

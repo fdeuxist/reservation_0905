@@ -29,7 +29,14 @@ update board set bHit=bHit+1 where bId=#{bId}
 <select id="menuKind" resultType="String">
 <![CDATA[select distinct bGroupKind from board]]>
 </select>
-
+<select id="selectPerson" resultType="com.reservation.dto.BoardDto">
+ SELECT * FROM board WHERE bName LIKE '%' || #{bName} || '%'
+</select>
+<update id="updateNmae">
+ UPDATE board
+    SET bName = #{newName}
+    WHERE bName = #{oldName}
+</update>
 <insert id="reply">
     INSERT INTO board (
         bGroupKind, bId, bName, bTitle, bContent, bGroup,bStep,bIndent

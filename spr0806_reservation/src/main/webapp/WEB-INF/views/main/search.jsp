@@ -22,46 +22,46 @@
 	<!-- Main Content -->
 	<div class="content">
 		<!-- Filters -->
-		<div class="filters">
-			<h3>필터 섹션</h3>
-			<!-- 키워드 버튼들 -->
-			<div>
-				<input type="checkbox" id="filter1"> <label for="filter1">필터
-					1</label>
-			</div>
-			<div>
-				<input type="checkbox" id="filter2"> <label for="filter2">필터
-					2</label>
-			</div>
-			<div>
-				<input type="radio" name="radio-filter" id="radio1"> <label
-					for="radio1">라디오 1</label>
-			</div>
-			<div>
-				<input type="radio" name="radio-filter" id="radio2"> <label
-					for="radio2">라디오 2</label>
-			</div>
-			<div class="keyword-buttons">
-				<button type="button" data-query="GS">#GS</button>
-				<button type="button" data-query="의원">#동내의원</button>
-				<button type="button" data-query="GS">#1+1</button>
-				<button type="button" data-query="CU">#see u 캠페인</button>
-				<button type="button" data-query="이마트">#장보기</button>
-				<button type="button" data-query="이마트">#ㅇㅇ</button>
-				<!-- 추가 버튼들... -->
-			</div>
-			<div class="container">
-				<div class="slider-wrapper">
-					<div class="min-value" id="minValue">0원</div>
-					<input type="range" id="priceSlider" min="0" max="50000"
-						value="20000" step="1000">
-					<div class="max-value" id="maxValue">50,000원</div>
-				</div>
-				<div class="value-display">
-					<span>가격 설정하기:</span> <span id="currentValue">20,000원</span>
-				</div>
-			</div>
-		</div>
+<!-- 		<div class="filters"> -->
+<!-- 			<h3>필터 섹션</h3> -->
+<!-- 			<!-- 키워드 버튼들 --> -->
+<!-- 			<div> -->
+<!-- 				<input type="checkbox" id="filter1"> <label for="filter1">필터 -->
+<!-- 					1</label> -->
+<!-- 			</div> -->
+<!-- 			<div> -->
+<!-- 				<input type="checkbox" id="filter2"> <label for="filter2">필터 -->
+<!-- 					2</label> -->
+<!-- 			</div> -->
+<!-- 			<div> -->
+<!-- 				<input type="radio" name="radio-filter" id="radio1"> <label -->
+<!-- 					for="radio1">라디오 1</label> -->
+<!-- 			</div> -->
+<!-- 			<div> -->
+<!-- 				<input type="radio" name="radio-filter" id="radio2"> <label -->
+<!-- 					for="radio2">라디오 2</label> -->
+<!-- 			</div> -->
+<!-- 			<div class="keyword-buttons"> -->
+<!-- 				<button type="button" data-query="GS">#GS</button> -->
+<!-- 				<button type="button" data-query="의원">#동내의원</button> -->
+<!-- 				<button type="button" data-query="GS">#1+1</button> -->
+<!-- 				<button type="button" data-query="CU">#see u 캠페인</button> -->
+<!-- 				<button type="button" data-query="이마트">#장보기</button> -->
+<!-- 				<button type="button" data-query="이마트">#ㅇㅇ</button> -->
+<!-- 				추가 버튼들... -->
+<!-- 			</div> -->
+<!-- 			<div class="container"> -->
+<!-- 				<div class="slider-wrapper"> -->
+<!-- 					<div class="min-value" id="minValue">0원</div> -->
+<!-- 					<input type="range" id="priceSlider" min="0" max="50000" -->
+<!-- 						value="20000" step="1000"> -->
+<!-- 					<div class="max-value" id="maxValue">50,000원</div> -->
+<!-- 				</div> -->
+<!-- 				<div class="value-display"> -->
+<!-- 					<span>가격 설정하기:</span> <span id="currentValue">20,000원</span> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 
 		<!-- Results -->
 		<div class="results">
