@@ -1,5 +1,6 @@
 package com.reservation.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -22,9 +23,12 @@ public interface IBoardService {
 	
 	public void updateReply(BoardDto dto) throws Exception;
 	public void reply(BoardDto dto) throws Exception;
-	
+
 	public List<BoardDto> listSearchCriteria(BoardVo vo) throws Exception;
 	public void replyUpdate(BoardDto dto)throws Exception;
 	public int listSearchCount(BoardVo vo)throws Exception;
+	
+	
+	public List<BoardDto> selectPerson(String bName) throws Exception;
 
 }

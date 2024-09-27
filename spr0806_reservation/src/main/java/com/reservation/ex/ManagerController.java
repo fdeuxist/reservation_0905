@@ -1,5 +1,6 @@
 package com.reservation.ex;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,12 +24,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.reservation.dto.AuthoritiesDto;
+import com.reservation.dto.BoardDto;
 import com.reservation.dto.BusinessPlaceInfoDto;
 import com.reservation.dto.UserDto;
 import com.reservation.service.IAuthoritiesService;
+import com.reservation.service.IBoardService;
 import com.reservation.service.IBusinessPlaceInfoService;
 import com.reservation.service.IUserReservationService;
 import com.reservation.service.IUserService;
+import com.reservation.service.IVendorService;
 
 @Controller
 public class ManagerController {
@@ -42,7 +46,11 @@ public class ManagerController {
 	private IUserService uService;
 
 	@Autowired
+	private IVendorService vendorService;
+	@Autowired
 	private IBusinessPlaceInfoService bPIService;
+	@Autowired
+	private IBoardService BoardService;
 
 	// 대시보드 기능 추가 만든이:오규원 추가일자:0906
 	@Autowired
@@ -143,6 +151,14 @@ public class ManagerController {
 		String userEmail = request.getParameter("userEmail");
 		System.out.println(userEmail);
 		UserDto userDto = uService.selectEmail(userEmail);
+		String bName = userDto.getName();
+		System.out.println(bName);
+		bName += "(";
+		List<BoardDto> dtos = BoardService.selectPerson(bName);
+		for(BoardDto dto : dtos){
+		System.out.println(dto.getbId());
+		}
+		
 		String content = "";
 		switch (action) {
 		case "editProfile":
@@ -168,24 +184,32 @@ public class ManagerController {
 					+ "</div>";
 			break;
 
+			
 		case "userPosts":
-			// 유저의 글 목록을 가져오는 방법을 추가로 구현해야 합니다.
-			// 아래는 예시 데이터입니다.
-			content = "<div id='userPostsContent'>" + "<h3>유저가 쓴 글 목록</h3>"
-					+ "<table><thead><tr><th>제목</th><th>작성일</th><th>상태</th></tr></thead>"
-					+ "<tbody><tr><td>첫 번째 글 제목</td><td>2024-09-01</td><td>게시됨</td></tr>"
-					+ "<tr><td>두 번째 글 제목</td><td>2024-08-15</td><td>게시됨</td></tr></tbody></table></div>";
-			break;
 
-		case "userInquiries":
-			// 유저의 문의 사항을 가져오는 방법을 추가로 구현해야 합니다.
-			// 아래는 예시 데이터입니다.
-			content = "<div id='userInquiriesContent'>" + "<h3>문의 사항</h3>"
-					+ "<table><thead><tr><th>제목</th><th>내용</th><th>상태</th><th>날짜</th></tr></thead>"
-					+ "<tbody><tr><td>첫 번째 문의 제목</td><td>문의 내용 요약...</td><td>처리 완료</td><td>2024-09-01</td></tr>"
-					+ "<tr><td>두 번째 문의 제목</td><td>문의 내용 요약...</td><td>대기 중</td><td>2024-08-20</td></tr></tbody></table></div>";
-			break;
+		    StringBuilder contentBuilder = new StringBuilder();
+		    contentBuilder.append("<div id='userPostsContent'>")
+		                  .append("<h3>유저가 쓴 글 목록</h3>")
+		                  .append("<table><thead><tr><th>제목</th><th>작성자</th><th>작성일</th></tr></thead>")
+		                  .append("<tbody>");
 
+		    for (BoardDto dto : dtos) {
+		        contentBuilder.append("<tr>")
+		                      .append("<td><a href='/ex/board/read?bId=" + dto.getbId() + "'>")
+		                      .append(dto.getbTitle()) // 글 제목
+		                      .append("</a></td>")
+		                      .append("<td>")
+		                      .append(dto.getbName()) // 작성자 이름
+		                      .append("</td>")
+		                      .append("<td>")
+		                      .append(new SimpleDateFormat("yyyy-MM-dd").format(dto.getbWriteTime())) // 작성일 포맷
+		                      .append("</td>")
+		                      .append("</tr>");
+		    }
+
+		    contentBuilder.append("</tbody></table></div>");
+		    content = contentBuilder.toString(); // StringBuilder를 문자열로 변환
+		    break;
 		default:
 			content = "<p>잘못된 요청입니다.</p>";
 			break;
