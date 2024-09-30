@@ -217,7 +217,14 @@ main {
 	        </c:if>
 	        <c:if test="${myOrder.status == 3}">
 	        	<input type="button" class="btn btn-info" id="reply" value="후기작성하기">
+	        <br>
 	        </c:if>
+	        <script>
+   				 document.getElementById("reply").addEventListener("click", function() {
+        			window.location.href = "reviewsWrite";  // 이동할 페이지 경로
+    			});
+			</script>
+	        
         </div>
     </div>
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.ReplyDAOs">
+
+	<!-- 댓글 작성, rContent 또는 content의 타입과 관련하여 발생하는 문제를 해결하기 위해, SQL 매핑에서 사용하는 인자 타입을 확인하고, 필요할 경우 JDBC 타입을 명시적으로 지정 -->
+	<insert id="boardReplyWrite">
+		insert into tbl_reply(rId,
+		writer, content,rGroup)
+		values(rId.nextval, #{writer}, #{content, jdbcType=VARCHAR},rId.currval)
+	</insert>
+
+	<!-- 대댓글 작성 -->
+	<insert id="reReplyWrite">
+		insert into tbl_reply(rId, content, writer, rGroup,rStep, rIndent)
+		values (rId.nextval, #{content}, #{writer},#{rGroup}, #{rStep}, #{rIndent})
+	</insert>
+	
+	<!-- 댓글 달기 전 부모의 step보다 높은 글들의 step 하나씩 증가시킴(중간에 댓글을 삽입하기 위함) -->
+	<update id="boardReplyStep">
+		update tbl_reply set rStep=rStep+1 where rGroup=#{rGroup} and rStep>#{rStep}
+	</update>
+
+	<!-- 댓글 수정 -->
+	<update id="boardReplyUpdate">
+		update tbl_reply set
+		content =
+		#{content} 
+		where rId = #{rId}
+	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="boardReplyDelete">
+		delete from tbl_reply
+		where rId = #{rId}
+	</delete>
+
+	<!-- 부모 댓글 정보 가져오기 -->
+	<select id="readParent" resultType="ReplyDtos">
+		select * from tbl_reply where rId=#{rId}
+	</select>
+
+	<!-- 해당 글의 댓글 페이징 처리 -->
+	<select id="replyList" resultType="ReplyDtos">
+	<![CDATA[select * from tbl_reply
+		order by rGroup asc, rStep asc 
+		offset (#{pm.page}-1)*#{pm.perPageNum} rows fetch next #{pm.perPageNum} rows only
+	]]>
+	</select>
+
+	<!-- 해당 글의 댓글 count -->
+	<select id="replyCount" resultType="int">
+<![CDATA[select count(rId) from tbl_reply]]>
+	</select>
+
+
+
+
+
+
+
+	<!-- <insert id="reply"> insert into board( bGroupKind,bId) </insert> -->
+	<!-- <select id="read" resultType="BoardDto"> select * from board where 
+		bId = #{bId} </select> <update id="update"> update board set bGroupKind=#{bGroupKind},bTitle 
+		=#{bTitle}, bContent =#{bContent} where bId = #{bId} </update> <update id="bHitUpdate">update 
+		board set bHit=bHit+1 where bId=#{bId}</update> <update id="bLike">update 
+		board set bLike=bLike+1 where bId=#{bId}</update> <delete id="delete"> delete 
+		from board where bId = #{bId} </delete> <select id="listAll" resultType="com.human.dto.BoardDto"> 
+		<![CDATA[ select * from board where bId > 0 order by bGroup desc,bStep asc 
+		]]> </select> <select id="listMenu" resultType="com.human.dto.BoardDto"> 
+		<![CDATA[ select * from board where bId > 0 and bGroupKind=#{bGroupKind} 
+		order by bGroup desc,bStep asc]]> </select> <select id="menuKind" resultType="String"> 
+		<![CDATA[ select distinct bGroupKind from board]]> </select> -->
+</mapper>
+
+
+
+
+
+
+
