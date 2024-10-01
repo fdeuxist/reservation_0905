@@ -11,7 +11,6 @@
 <head>
 <meta charset="UTF-8">
 <title>유저 관리</title>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 /* 사이드바 스타일 */
