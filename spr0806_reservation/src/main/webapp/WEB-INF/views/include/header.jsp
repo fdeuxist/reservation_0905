@@ -12,18 +12,12 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/header.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <style>
 .search-suggestions {
@@ -78,6 +72,45 @@
 
                 <button class="btn btn-info my-2 my-sm-0" type="button" id="searchBtn">검색</button>
             </form>
+            
+            
+            
+            <c:choose>
+			    <c:when test="${sessionScope.loginName == null}">
+			        <div class="text-right">
+			            <a href="/ex/user/login" class="text-decoration-none text-reset"><i class="fa-solid fa-right-to-bracket"></i>로그인</a>
+			            <br>
+			            <a href="/ex/user/insert" class="text-decoration-none text-reset"><i class="fa-solid fa-users"></i>회원가입</a>
+			        </div>
+			    </c:when>
+			</c:choose>
+			        <div class="text-right">
+						    <sec:authorize access="hasRole('ROLE_MEMBER')">
+						        <a href="${pageContext.request.contextPath}/member/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+						    <sec:authorize access="hasRole('ROLE_VENDOR')">
+						        <a href="${pageContext.request.contextPath}/vendor/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 마이페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+						    <sec:authorize access="hasRole('ROLE_MANAGER')">
+						        <a href="${pageContext.request.contextPath}/manager/mypage" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 매니저 페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+						    <sec:authorize access="hasRole('ROLE_ADMIN')">
+						        <a href="${pageContext.request.contextPath}/admin/selectAll" class="text-decoration-none text-reset"><i class="fas fa-user"></i> 관리자 페이지</a>
+						        <br><a href="/ex/user/logout" class="text-decoration-none text-reset"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+						    </sec:authorize>
+			        </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
         </div>
     </nav>
 

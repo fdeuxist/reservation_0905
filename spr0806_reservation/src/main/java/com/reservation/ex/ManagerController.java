@@ -175,11 +175,11 @@ public class ManagerController {
 			break;
 
 		case "deleteUser":
-			content = "<div id='deleteUserContent'>" + "<h3>유저 탈퇴</h3>"
-					+ "<p>이 작업을 수행하면 유저의 모든 데이터가 삭제됩니다. 계속 진행하시겠습니까?</p>"
+			content = "<div id='deleteUserContent'>" + "<h3>유저 계정 정지</h3>"
+					+ "<p>이 작업을 수행하면 유저의 계정이 비활성화 됩니다. 계속 진행하시겠습니까?</p>"
 					+ "<form id='deleteUserForm' action='/ex/manager/delete' method='post'>"
 					+ "<input type='hidden' name='email' value='" + userDto.getEmail() + "'>"
-					+ "<button type='submit'>유저 탈퇴</button>" + "</form>"
+					+ "<button type='submit'>유저 계정 정지</button>" + "</form>"
 					+ "<button id='cancelDelete' onclick='document.getElementById(\"deleteUserContent\").style.display=\"none\";'>취소</button>"
 					+ "</div>";
 			break;
