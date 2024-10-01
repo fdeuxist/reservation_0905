@@ -3,6 +3,7 @@ package com.reservation.ex;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.MainDto;
+import com.reservation.dto.ServiceItemsDto;
 import com.reservation.dto.VendorDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IMainService;
 import com.reservation.service.IMapService;
+import com.reservation.service.IServiceItemsService;
 import com.reservation.service.IVendorService;
 
 //created by 김하겸
@@ -47,6 +50,12 @@ public class MainController {
 	private IMapService mapService;
 	@Autowired
 	private IBusinessPlaceImagePathService ibpService;
+	
+	@Autowired
+	private IServiceItemsService itemService;
+	
+	@Autowired
+	private IVendorService vendorService;
 	// getMapping으로 변환 필요
 	@RequestMapping(value = "/my/myPage", method = RequestMethod.GET)
 	public void myPage() {
@@ -83,6 +92,47 @@ public class MainController {
 		// 유저테이블을 타고 보유쿠폰 테이블에가서 쿠폰목록 받아오기
 		System.out.println("장바구니 페이지로 이동합니다.");
 
+	}
+	
+	@GetMapping("/radio1")
+	@ResponseBody
+	public Map<String, Object> radio(@RequestParam("time") int time, Model model) throws Exception {
+	    System.out.println("필터입력값은 :" + time);
+
+	    ArrayList<ServiceItemsDto> dtos = itemService.selectItemByTime(time);
+	    HashSet<String> uniqueRegiNums = new HashSet<>();
+	    ArrayList<VendorDto> vendorList = new ArrayList<>();
+	    ArrayList<String> encodedImages = new ArrayList<>();
+	    
+	    for (ServiceItemsDto dto : dtos) {
+	        String businessRegiNum = dto.getBusiness_regi_num();
+	        
+	        if (uniqueRegiNums.add(businessRegiNum)) {
+	            VendorDto vendor = new VendorDto(dto.getEmail(), businessRegiNum, null, null, null, null, null);
+	            System.out.println("등록된 사업자 번호: " + vendor.getBusiness_regi_num());
+	            VendorDto vendorDto = vendorService.selectBusiness_regi_num(vendor.getBusiness_regi_num());
+	            vendorList.add(vendorDto);
+	        } else {
+	            System.out.println("중복된 사업자 번호: " + businessRegiNum + "는 건너뜀");
+	        }
+	    }
+	    
+	    for (VendorDto dto : vendorList) {
+	        BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
+	        if (img != null && img.getFile_data() != null) {
+	            String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
+	            encodedImages.add(encodedImage);
+	        } else {
+	            encodedImages.add(null); // 기본 이미지나 에러 이미지 처리
+	        }
+	    }
+	    
+	    // 응답 데이터로 Map 사용
+	    Map<String, Object> responseMap = new HashMap<>();
+	    responseMap.put("results", vendorList);
+	    responseMap.put("encodedImages", encodedImages);
+	    
+	    return responseMap; // Map 반환
 	}
 
 	// 검색폼 처리 관련 메서드
@@ -143,29 +193,7 @@ public class MainController {
 		return dtos;
 	}
 
-	// 공지사항 노출 폼
-	@GetMapping("/ex/notices")
-	public ArrayList<String> getNotices() {
-		// 예시 공지사항 (실제 응용 프로그램에서는 데이터베이스에서 공지사항을 불러옴)
-		ArrayList<String> notices = new ArrayList<>();
-		notices.add("공지사항 1: 시스템 점검 안내");
-		notices.add("공지사항 2: 신규 기능 업데이트");
-		notices.add("공지사항 3: 서비스 이용 안내");
-
-		return notices;
-	}
-
-	// 회원정보 노출 폼
-	@GetMapping("/ex/userInfo")
-	public Map<String, String> getUserInfo() {
-		// 예시 사용자 정보 (실제 응용 프로그램에서는 사용자 정보를 데이터베이스에서 가져옴)
-		Map<String, String> userInfo = new HashMap<>();
-		userInfo.put("name", "홍길동");
-		userInfo.put("email", "hong@example.com");
-		userInfo.put("joinDate", "2023-01-01");
-
-		return userInfo;
-	}
+	
 
 	@GetMapping("/searchSuggestions")
 	public ResponseEntity<List<String>> searchSuggestions(@RequestParam("query") String query) throws Exception {

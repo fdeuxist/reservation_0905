@@ -58,5 +58,11 @@ public class ServiceItemsImpl implements IServiceItemsService {
 		dao.insertItemImg(dto);
 	}
 
+	@Override
+	public ArrayList<ServiceItemsDto> selectItemByTime(int time) throws Exception {
+		ServiceItemsDao dao = sqlSession.getMapper(ServiceItemsDao.class);
+		return dao.selectItemByTime(time);
+	}
+
 
 }

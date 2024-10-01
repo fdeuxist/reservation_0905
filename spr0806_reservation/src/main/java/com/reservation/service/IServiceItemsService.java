@@ -19,7 +19,7 @@ public interface IServiceItemsService {
 	
 	public void deleteMyItem(String email, String business_regi_num) throws Exception;
 	public void insertItemImg(ImageDto dto) throws Exception;
-	
+	public ArrayList<ServiceItemsDto> selectItemByTime(int time) throws Exception;
 }
 
 

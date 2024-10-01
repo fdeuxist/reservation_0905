@@ -21,7 +21,7 @@
 
 	<!-- Main Content -->
 	<div class="content">
-		Filters
+
 		<div class="filters">
 			<h3>필터 섹션</h3>
 			<!-- 키워드 버튼들 -->
@@ -50,7 +50,7 @@
 				<button type="button" data-query="CU">#see u 캠페인</button>
 				<button type="button" data-query="이마트">#장보기</button>
 				<button type="button" data-query="이마트">#ㅇㅇ</button>
-				추가 버튼들...
+				
 			</div>
 			<div class="container">
 				<div class="slider-wrapper">
@@ -97,5 +97,52 @@
 	<!-- JavaScript -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="../resources/js/mainSearch.js"></script>
+	<script>
+	$(document).ready(function() {
+	    $('#radio1').on("click", function() {
+	        var time = 1; // 보내고자 하는 time 값 설정
+
+	        $.ajax({
+	            url: '/ex/radio1', // 컨트롤러 URL
+	            method: 'GET',
+	            data: { time: time }, // 전송할 데이터
+	            success: function(response) {
+	                var resultsContainer = $('.results');
+	                resultsContainer.empty(); // 이전 결과 삭제
+
+	                if (response.results.length > 0) {
+	                    // 검색 결과 출력
+	                    response.results.forEach(function(item, index) {
+	                        var encodedImage = response.encodedImages[index];
+	                        var resultHtml =
+	                            '<a href="/ex/member/businessplaceinfo?email=' + encodeURIComponent(item.email) +
+	                            '&business_regi_num=' + encodeURIComponent(item.business_regi_num) +
+	                            '" class="result-item">' +
+	                            '<div class="info">' +
+	                            '<h4>' + item.business_name + '</h4>' +
+	                            '<p><i class="fas fa-map-marker-alt"></i> ' + item.basic_address + '</p>' + // 주소 추가
+	                            '<p><i class="fas fa-phone"></i> ' + item.email + '</p>' + // 전화번호 추가
+	                            '</div>';
+
+	                        if (encodedImage) {
+	                            resultHtml += '<img src="data:image/jpeg;base64,' + encodedImage + '" alt="' + item.business_name + '">';
+	                        } else {
+	                            resultHtml += '<img src="../resources/imgs/noimage.jpg" alt="기본 이미지">';
+	                        }
+
+	                        resultHtml += '</a>';
+	                        resultsContainer.append(resultHtml);
+	                    });
+	                } else {
+	                    resultsContainer.html('<p>검색 결과가 없습니다.</p>');
+	                }
+	            },
+	            error: function() {
+	                alert('검색에 실패했습니다.');
+	            }
+	        });
+	    });
+	});
+	</script>
 </body>
 </html>
