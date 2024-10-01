@@ -221,7 +221,7 @@ main {
 	        </c:if>
 	        <script>
    				 document.getElementById("reply").addEventListener("click", function() {
-        			window.location.href = "reviewsWrite";  // 이동할 페이지 경로
+        			window.location.href = "reviewsWrite?reservationNumber=${myOrder.reservation_number}";  // 이동할 페이지 경로
     			});
 			</script>
 	        
