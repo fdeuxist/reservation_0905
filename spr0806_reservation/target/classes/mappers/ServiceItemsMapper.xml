@@ -62,8 +62,15 @@ update service_items set item_status='0' where email=#{email} and business_regi_
 		#{image_data})
 	</insert>
 	
-<!--   필터링:요구시간 필터 기능을 위한 sql  -->
+<!-- 만든이:김하겸, 필터링:요구시간 필터 기능을 위한 sql  -->
 <select id="selectItemByTime" resultType="com.reservation.dto.ServiceItemsDto">
-	select * from service_items where required_time = #{time}
+	<!-- select * from service_items where required_time = #{time}  -->
+	select si.*
+    from service_items si join users u
+        on si.email = u.email
+    where u.enable <> '0'
+        and si.item_status <> '0'
+        and required_time = #{time}
+        <!-- 수정:양재하 비활동사업자 제외,숨김아이템 제외 -->
 </select>
 </mapper>
