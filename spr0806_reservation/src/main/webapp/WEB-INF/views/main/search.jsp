@@ -190,7 +190,42 @@
 	            success: function(response) {
 	                // 서버에서 받은 데이터를 처리
 	                console.log('검색 결과:', response);
+	                var resultsContainer = $('.results');
+	                resultsContainer.empty(); // 이전 결과 삭제
+
+	                if (response.results.length > 0) {
+	                    // 검색 결과 출력
+	                    response.results.forEach(function(item, index) {
+	                        var encodedImage = response.encodedImages[index];
+	                        var menuName = response.menuNames[index];
+	                        var lowestPrice = response.lowestPrices[index];
+	                        
+	                        var resultHtml = '<a href="/ex/member/businessplaceinfo?email=' + 
+	                            encodeURIComponent(item.email) + 
+	                            '&business_regi_num=' + 
+	                            encodeURIComponent(item.business_regi_num) + 
+	                            '" class="result-item">' + 
+	                            '<div class="info">' + 
+	                            '<h4>' + item.business_name + '</h4>' + 
+	                            '<p><i class="fas fa-map-marker-alt"></i> ' + item.basic_address + '</p>' + 
+	                            '<p><i class="fas fa-phone"></i> ' + item.email + '</p>' + 
+	                            '<p><i class="fas fa-money-bill-wave"></i> ' + menuName + ' - ' + lowestPrice.toLocaleString() + '원부터~</p>' + // 메뉴 이름과 가격 추가
+	                            '</div>';
+	                        
+	                        if (encodedImage) {
+	                            resultHtml += '<img src="data:image/jpeg;base64,' + encodedImage + '" alt="' + item.business_name + '">';
+	                        } else {
+	                            resultHtml += '<img src="../resources/imgs/noimage.jpg" alt="기본 이미지">';
+	                        }
+
+	                        resultHtml += '</a>';
+	                        resultsContainer.append(resultHtml);
+	                    });
+	                } else {
+	                    resultsContainer.html('<p>검색 결과가 없습니다.</p>');
+	                }
 	            },
+	            
 	            error: function() {
 	                alert('가격 설정에 실패했습니다.');
 	            }

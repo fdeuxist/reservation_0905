@@ -50,12 +50,13 @@ public class MainController {
 	private IMapService mapService;
 	@Autowired
 	private IBusinessPlaceImagePathService ibpService;
-	
+
 	@Autowired
 	private IServiceItemsService itemService;
-	
+
 	@Autowired
 	private IVendorService vendorService;
+
 	// getMapping으로 변환 필요
 	@RequestMapping(value = "/my/myPage", method = RequestMethod.GET)
 	public void myPage() {
@@ -93,89 +94,149 @@ public class MainController {
 		System.out.println("장바구니 페이지로 이동합니다.");
 
 	}
-	
+
 	@GetMapping("/radio1")
 	@ResponseBody
 	public Map<String, Object> radio(@RequestParam("time") int time, Model model) throws Exception {
-	    System.out.println("필터입력값은 :" + time);
+		System.out.println("필터입력값은 :" + time);
 
-	    ArrayList<ServiceItemsDto> dtos = itemService.selectItemByTime(time);
-	    HashSet<String> uniqueRegiNums = new HashSet<>();
-	    ArrayList<VendorDto> vendorList = new ArrayList<>();
-	    ArrayList<String> encodedImages = new ArrayList<>();
-	    
-	    for (ServiceItemsDto dto : dtos) {
-	        String businessRegiNum = dto.getBusiness_regi_num();
-	        
-	        if (uniqueRegiNums.add(businessRegiNum)) {
-	            VendorDto vendor = new VendorDto(dto.getEmail(), businessRegiNum, null, null, null, null, null);
-	            System.out.println("등록된 사업자 번호: " + vendor.getBusiness_regi_num());
-	            VendorDto vendorDto = vendorService.selectBusiness_regi_num(vendor.getBusiness_regi_num());
-	            vendorList.add(vendorDto);
-	        } else {
-	            System.out.println("중복된 사업자 번호: " + businessRegiNum + "는 건너뜀");
-	        }
-	    }
-	    
-	    for (VendorDto dto : vendorList) {
-	        BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
-	        if (img != null && img.getFile_data() != null) {
-	            String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
-	            encodedImages.add(encodedImage);
-	        } else {
-	            encodedImages.add(null); // 기본 이미지나 에러 이미지 처리
-	        }
-	    }
-	    
-	    // 응답 데이터로 Map 사용
-	    Map<String, Object> responseMap = new HashMap<>();
-	    responseMap.put("results", vendorList);
-	    responseMap.put("encodedImages", encodedImages);
-	    
-	    return responseMap; // Map 반환
+		ArrayList<ServiceItemsDto> dtos = itemService.selectItemByTime(time);
+		HashSet<String> uniqueRegiNums = new HashSet<>();
+		ArrayList<VendorDto> vendorList = new ArrayList<>();
+		ArrayList<String> encodedImages = new ArrayList<>();
+
+		for (ServiceItemsDto dto : dtos) {
+			String businessRegiNum = dto.getBusiness_regi_num();
+
+			if (uniqueRegiNums.add(businessRegiNum)) {
+				VendorDto vendor = new VendorDto(dto.getEmail(), businessRegiNum, null, null, null, null, null);
+				System.out.println("등록된 사업자 번호: " + vendor.getBusiness_regi_num());
+				VendorDto vendorDto = vendorService.selectBusiness_regi_num(vendor.getBusiness_regi_num());
+				vendorList.add(vendorDto);
+			} else {
+				System.out.println("중복된 사업자 번호: " + businessRegiNum + "는 건너뜀");
+			}
+		}
+
+		for (VendorDto dto : vendorList) {
+			BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
+			if (img != null && img.getFile_data() != null) {
+				String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
+				encodedImages.add(encodedImage);
+			} else {
+				encodedImages.add(null); // 기본 이미지나 에러 이미지 처리
+			}
+		}
+
+		// 응답 데이터로 Map 사용
+		Map<String, Object> responseMap = new HashMap<>();
+		responseMap.put("results", vendorList);
+		responseMap.put("encodedImages", encodedImages);
+
+		return responseMap; // Map 반환
 	}
 
 	@GetMapping("/setPrice")
-	public Map<String,Object> setPrice(@RequestParam("minPrice")double minPrice,@RequestParam("maxPrice")double maxPrice,Model model) throws Exception{
-		System.out.println("필터 가격설정값은 "+ minPrice+maxPrice);
-		itemService.
-		Map<String,Object> responseMap = new HashMap<>(); 
-		return responseMap;
+	@ResponseBody
+	public Map<String, Object> setPrice(@RequestParam("minPrice") double minPrice,
+	        @RequestParam("maxPrice") double maxPrice, Model model) throws Exception {
+	    System.out.println("필터 가격설정값은 " + minPrice + " ~ " + maxPrice);
+
+	    // ServiceItemsDto에서 중복된 업장의 최저가를 저장하기 위한 Map (key: Business_regi_num, value: ServiceItemsDto)
+	    Map<String, ServiceItemsDto> lowestPriceMap = new HashMap<>();
+	    ArrayList<ServiceItemsDto> dtos = itemService.selectAll();
+	    
+	    // 중복 업장의 최저가와 메뉴 이름 저장
+	    for (ServiceItemsDto dto : dtos) {
+	        if (dto.getService_price() >= minPrice && dto.getService_price() <= maxPrice) {
+	            String busNum = dto.getBusiness_regi_num();
+	            
+	            // 해당 업장이 이미 Map에 저장되어 있는지 확인
+	            if (lowestPriceMap.containsKey(busNum)) {
+	                // 저장된 값과 현재 가격 비교, 더 낮은 가격으로 갱신
+	                if (dto.getService_price() < lowestPriceMap.get(busNum).getService_price()) {
+	                    lowestPriceMap.put(busNum, dto);
+	                }
+	            } else {
+	                // 처음 들어온 업장은 Map에 저장
+	                lowestPriceMap.put(busNum, dto);
+	            }
+	        }
+	    }
+
+	    // 최종적으로 추출된 VendorDto와 이미지 목록, 최저가와 메뉴 이름을 위한 리스트
+	    ArrayList<VendorDto> vendorList = new ArrayList<>();
+	    ArrayList<String> encodedImages = new ArrayList<>();
+	    ArrayList<Integer> lowestPrices = new ArrayList<>();
+	    ArrayList<String> menuNames = new ArrayList<>();
+
+	    // 중복 제거 및 최저가 추출 후, 해당 업장의 정보를 vendorList에 추가
+	    for (ServiceItemsDto lowestDto : lowestPriceMap.values()) {
+	        VendorDto vendorDto = vendorService.selectBusiness_regi_num(lowestDto.getBusiness_regi_num());
+	        if (vendorDto != null) {
+	            vendorList.add(vendorDto);
+	            
+	            // 최저가와 메뉴 이름 저장
+	            lowestPrices.add(lowestDto.getService_price());
+	            menuNames.add(lowestDto.getService_name());
+
+	            // 이미지 처리
+	            BusinessPlaceImagePathDto img = ibpService.selectMainImage(vendorDto.getEmail(), vendorDto.getBusiness_regi_num());
+	            if (img != null && img.getFile_data() != null) {
+	                String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
+	                encodedImages.add(encodedImage);
+	            } else {
+	                encodedImages.add(null); // 기본 이미지나 에러 이미지 처리
+	            }
+	        }
+	    }
+
+	    Map<String, Object> responseMap = new HashMap<>();
+	    responseMap.put("results", vendorList);
+	    responseMap.put("encodedImages", encodedImages);
+	    responseMap.put("lowestPrices", lowestPrices);
+	    responseMap.put("menuNames", menuNames);
+
+	    System.out.println("컨트롤러 작업 완료");
+	    return responseMap;
+
 	}
+
+
 	// 검색폼 처리 관련 메서드
 	@RequestMapping(value = "/my/search", method = RequestMethod.GET)
 	public String search(@RequestParam("query") String query, Model model) throws Exception {
-	    System.out.println("검색어는  " + query);
-	    
-	    // 검색어에 해당하는 업체 목록을 가져옴
-	    ArrayList<VendorDto> results = mapService.selectPlace(query);
-	    ArrayList<String> encodedImages = new ArrayList<>(); // 인코딩된 이미지 리스트 초기화
+		System.out.println("검색어는  " + query);
 
-	    // 각 업체의 메인 이미지를 가져와서 인코딩
-	    for (VendorDto dto : results) {
-	        BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
-	        if (img != null && img.getFile_data() != null) {
-	            // 이진 데이터를 Base64로 인코딩
-	            String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
-	            System.out.println(encodedImage);
-	            encodedImages.add(encodedImage);
-	        } else {
-	            // 기본 이미지나 에러 이미지 처리
-	            encodedImages.add(null);
-	        }
-	    }
-	    for(String dto:encodedImages) {
-	    	System.out.println(dto);
-	    }
-	    for (VendorDto dto : results) {
-	        System.out.println(dto.getBusiness_name());
-	    }
-	    
-	    model.addAttribute("query", query);
-	    model.addAttribute("results", results);
-	    model.addAttribute("encodedImages", encodedImages); // 인코딩된 이미지 리스트 추가
-	    
-	    return "/main/search";
+		// 검색어에 해당하는 업체 목록을 가져옴
+		ArrayList<VendorDto> results = mapService.selectPlace(query);
+		ArrayList<String> encodedImages = new ArrayList<>(); // 인코딩된 이미지 리스트 초기화
+
+		// 각 업체의 메인 이미지를 가져와서 인코딩
+		for (VendorDto dto : results) {
+			BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
+			if (img != null && img.getFile_data() != null) {
+				// 이진 데이터를 Base64로 인코딩
+				String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
+				System.out.println(encodedImage);
+				encodedImages.add(encodedImage);
+			} else {
+				// 기본 이미지나 에러 이미지 처리
+				encodedImages.add(null);
+			}
+		}
+		for (String dto : encodedImages) {
+			System.out.println(dto);
+		}
+		for (VendorDto dto : results) {
+			System.out.println(dto.getBusiness_name());
+		}
+
+		model.addAttribute("query", query);
+		model.addAttribute("results", results);
+		model.addAttribute("encodedImages", encodedImages); // 인코딩된 이미지 리스트 추가
+
+		return "/main/search";
 	}
 
 	@GetMapping("/miniSearch")
@@ -199,8 +260,6 @@ public class MainController {
 		}
 		return dtos;
 	}
-
-	
 
 	@GetMapping("/searchSuggestions")
 	public ResponseEntity<List<String>> searchSuggestions(@RequestParam("query") String query) throws Exception {

@@ -25,6 +25,8 @@ public interface ServiceItemsDao {
 	
 	public void insertItemImg(ImageDto dto) throws Exception;
 	
+	public ArrayList<ServiceItemsDto> selectAll() throws Exception;
+	
 	
 	//메뉴 소요시간에 따른 리스트 출력
 	public ArrayList<ServiceItemsDto> selectItemByTime(int time) throws Exception;

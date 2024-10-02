@@ -64,5 +64,11 @@ public class ServiceItemsImpl implements IServiceItemsService {
 		return dao.selectItemByTime(time);
 	}
 
+	@Override
+	public ArrayList<ServiceItemsDto> selectAll() throws Exception {
+		ServiceItemsDao dao = sqlSession.getMapper(ServiceItemsDao.class);
+		return dao.selectAll();
+	}
+
 
 }

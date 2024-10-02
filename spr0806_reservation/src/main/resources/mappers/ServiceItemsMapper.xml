@@ -75,4 +75,10 @@ update service_items set item_status='0' where email=#{email} and business_regi_
 ]]>
 <!-- 수정:양재하 비활동사업자 제외,숨김아이템 제외 -->
 </select>
+
+
+<!--  가격을 전부 불러와 필터링 하기 위한 작업 -->
+<select id = "selectAll" resultType="com.reservation.dto.ServiceItemsDto">
+	select * from service_items
+</select>
 </mapper>
