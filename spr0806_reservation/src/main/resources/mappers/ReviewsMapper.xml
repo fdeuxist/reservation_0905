@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reservation.dao.ReviewsDao">
+
+<select id="selectOne" resultType="ReviewsDto">
+select * from reviews where reservation_number = #{reservation_number}
+</select>
+
+<!-- 멤버가 후기 작성, 벤더가 후기 작성할 자리는 null로 insert -->
+<insert id="insert">
+    insert into reviews (reservation_number, review_date, star_point, member_content, vendor_content)
+    values (#{reservation_number}, to_char(sysdate, 'YYYY-MM-DD'), #{star_point}, #{member_content}, '')
+</insert>
+
+<update id="update" parameterType="map">
+	update reviews 
+	set
+		review_date = to_char(sysdate, 'YYYY-MM-DD'),
+		star_point = #{star_point},
+		member_content = #{member_content} 
+	where
+		reservation_number = #{reservation_number}
+</update>
+
+<!--멤버시점) 리턴이 null이면 댓글 작성 , dto면 수정창 보여주기-->
+<select id="isReviewExist" resultType="ReviewsDto">
+select r.reservation_number, r.review_date, r.star_point, r.member_content, r.vendor_content 
+    from reviews r join user_reservation u 
+        on r.reservation_number = u.reservation_number 
+        where r.reservation_number=#{reservation_number} and u.status='3'
+</select>
+
+<!--벤더 시점) vendor 가 답글 달아줘야 될 목록. 
+user_reservation 테이블에서 사업자email,사업자번호로 이용완료(3)인 주문번호 리스트를 먼저 찾고 
+reviews테이블에서 주문번호가 겹치는것 중 자기코멘트가 없는것을 찾음-->
+<select id="vendorMustCommentList" resultType="ReviewsDto">
+select * from reviews 
+    where reservation_number in 
+        (select reservation_number 
+            from user_reservation 
+                where vendor_email=#{vendor_email}
+                and business_regi_num=#{business_regi_num}
+                and status='3')
+    and vendor_content is null;
+</select>
+
+<!--벤더가 update로 답글 달아주기. 위에서 null인(자기가 코멘트를 달지 않은) 후기에 자기 글을 update함-->
+<update id="vendorUpdateComment">
+update reviews set vendor_content=#{vendor_content} 
+	where reservation_number=#{reservation_number}
+</update>
+
+
+</mapper>

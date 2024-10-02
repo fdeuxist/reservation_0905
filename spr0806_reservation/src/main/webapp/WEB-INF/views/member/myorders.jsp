@@ -36,7 +36,7 @@
 				<div class="card-text">
 				<a class="btn btn-primary" href="${pageContext.request.contextPath}/member/orderinfo?reservationNumber=${order.reservation_number}">상세보기</a>
 				<c:choose><c:when test="${order.status == 3}">
-				<a class="btn btn-info" href="${pageContext.request.contextPath}/member/reviewsWrite?reservationNumber=${order.reservation_number}">이용후기작성하기</a>
+				<a class="btn btn-success" href="${pageContext.request.contextPath}/member/orderinfo?reservationNumber=${order.reservation_number}#card-footer">이용후기작성하기</a>
 				</c:when></c:choose>
 				</div>
 			</div>
