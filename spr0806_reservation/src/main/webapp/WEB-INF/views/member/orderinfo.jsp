@@ -391,13 +391,12 @@ $(function() {
                 member_content: memberContent
             }),
             success: function(response) {
-                alert("수정 완료: " + response);
-                // 필요한 추가 작업
+                //alert("수정 완료: " + response);
                 onload();
             },
             error: function(xhr, status, error) {
                 console.error("Error updating review:", error);
-                alert("수정 실패: " + xhr.responseText);
+                //alert("수정 실패: " + xhr.responseText);
                 onload();
             }
         });
