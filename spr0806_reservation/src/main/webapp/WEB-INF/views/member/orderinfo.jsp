@@ -214,17 +214,33 @@ main {
             <input type="hidden" id="business_regi_num" value="${myOrder.business_regi_num}">
             <input type="hidden" id="vendor_email" value="${myOrder.vendor_email}">
         	<input type="hidden" id="status" value="${myOrder.status}">
-        <div class="card-footer" id="card-footer">
+        <div class="card-footer">
 	        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
 	        	<input type="button" class="btn btn-danger" id="tryCancel" value="취소요청하기">
 	        </c:if>
 	        <c:if test="${myOrder.status == 2 || myOrder.status == 4 || myOrder.status == 6}">
 		        <input type="button" class="btn btn-success" id="orderCompleted" value="이용완료확정하기">
 	        </c:if>
-	        <%--
 	        <c:if test="${myOrder.status == 3}">
-	        	<input type="button" class="btn btn-info" id="reply" value="후기작성하기">
-	        </c:if>--%>
+	        	<div class="row comment-form" id="reply">
+    	        <div class="col text-left">
+    	            <div>별점 : <span id="star">
+    	            	<input type="text" class="hidden" id="s_point"/>	<!--몇번째 별이 클릭되었는지(별점) 기록해두는 곳-->
+    	                <i class="fa-regular fa-star hidden"></i>	<!--index가 0부터 시작하므로 0번째 별은 숨겨둔다-->
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	            </span></div>
+    	        </div>
+    	        <div class="col text-right">
+    	            <div>작성일 : <span id="r_date"></span></div>
+    	        </div>
+    	    </div>
+    	    <textarea id="m_content" class="form-control mt-2" rows="3" placeholder="이용후기를 작성해주세요!"></textarea>
+    	    <button id="reviewSubmit" class="btn btn-primary mt-2 submit-comment">작성/수정완료</button>
+	        </c:if>
 	    <%--    <script>
    				 document.getElementById("reply").addEventListener("click", function() {
         			window.location.href = "reviewsWrite?reservationNumber=${myOrder.reservation_number}";  // 이동할 페이지 경로
@@ -257,6 +273,7 @@ $(function() {
 		            } else {
 		                $(stars[j]).removeClass('fa-solid').addClass('fa-regular'); // 선택되지 않은 별
 		            }
+		            //console.log("i : " + i + " j : " + j);
 		        }
 
 				//alert("별점 : " + $('#s_point').val() );
@@ -277,9 +294,8 @@ $(function() {
 	
 	//========================================================================
 	function onload(){
-
-    	var cardFooter = $("#card-footer");
-    	
+	    var reviewForm = $("#reply").parent();	//id reply 의 부모속성을 선택. 
+	    
     	var commentForm = `
     	    <div class="row comment-form">
     	        <div class="col text-left">
@@ -301,7 +317,8 @@ $(function() {
     	    <button id="reviewSubmit" class="btn btn-primary mt-2 submit-comment">작성/수정완료</button>
     	`;	//후기작성하는 칸 tag
 
-        cardFooter.html(commentForm);
+        reviewForm.html(commentForm);
+    	
 //        {reservation_number: '20240906130915938', 
 //        	review_date: '2024-10-01 00:00:00', 
 //        	member_content: '첫번째 리뷰~~~~', 
@@ -374,13 +391,12 @@ $(function() {
                 member_content: memberContent
             }),
             success: function(response) {
-                alert("수정 완료: " + response);
-                // 필요한 추가 작업
+                //alert("수정 완료: " + response);
                 onload();
             },
             error: function(xhr, status, error) {
                 console.error("Error updating review:", error);
-                alert("수정 실패: " + xhr.responseText);
+                //alert("수정 실패: " + xhr.responseText);
                 onload();
             }
         });

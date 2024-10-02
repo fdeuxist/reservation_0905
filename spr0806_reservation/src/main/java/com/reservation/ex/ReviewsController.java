@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.reservation.dto.ReviewsDto;
@@ -50,7 +51,19 @@ public class ReviewsController {
 		
 		return entity;
     }
-	
+
+	@RequestMapping(value = "/reviews/selectOne", method = RequestMethod.GET)
+	@ResponseBody
+    public ResponseEntity<Map<String, Object>>  selectOne(@RequestParam String reservation_number) throws Exception {
+		logger.info("ReviewsController - /reviews/selectOne   ");
+		Map<String, Object> response = new HashMap<>();
+		ReviewsDto dto = null;
+		dto = iRServies.selectOne(reservation_number);
+		response.put("dto", dto);
+
+        logger.info("ReviewsController - /reviews/selectOne    dto : {} " , dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 	
 	@RequestMapping(value = "/reviews/insert", method = RequestMethod.POST)
 	@ResponseBody
@@ -104,8 +117,8 @@ public class ReviewsController {
 	@RequestMapping(value = "/reviews/vendorMustCommentList", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> vendorMustCommentList(
-			@Param("vendor_email") String vendor_email, 
-			@Param("business_regi_num") String business_regi_num) throws Exception{
+			@RequestParam("vendor_email") String vendor_email, 
+			@RequestParam("business_regi_num") String business_regi_num) throws Exception{
 		logger.info("ReviewsController - /reviews/vendorMustCommentList    " + 
 			"vendor_email : {} , business_regi_num : {} " , vendor_email , business_regi_num);
         Map<String, Object> response = new HashMap<>();
@@ -118,15 +131,14 @@ public class ReviewsController {
 
 	@RequestMapping(value = "/reviews/vendorUpdateComment", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> vendorUpdateComment(
-			@Param("vendor_content") String vendor_content, 
-			@Param("reservation_number") String reservation_number) throws Exception{
+	public ResponseEntity<Map<String, Object>> vendorUpdateComment(@RequestBody Map<String, Object> requestBody) throws Exception {
+	    String vendor_content = (String) requestBody.get("vendor_content");
+	    String reservation_number = (String) requestBody.get("reservation_number");
 		logger.info("ReviewsController - /reviews/vendorUpdateComment    " + 
 			"vendor_content : {} , reservation_number : {} " , vendor_content , reservation_number);
         Map<String, Object> response = new HashMap<>();
         iRServies.vendorUpdateComment(vendor_content, reservation_number);
         ReviewsDto dto = iRServies.selectOne(reservation_number);
-        //selectOne해서보여주고넘어가기
         response.put("dto", dto);
         logger.info("ReviewsController - /reviews/vendorUpdateComment    dto : {}" , dto);
         return new ResponseEntity<>(response, HttpStatus.OK);

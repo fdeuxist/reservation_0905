@@ -71,7 +71,13 @@ public class VendorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
-	
+    @RequestMapping(value = "/vendor/reviews", method = RequestMethod.GET)
+    public String vendorReviews(HttpSession session, Model model) throws Exception {
+        System.out.println("VendorController - /vendor/reviews");
+        return "/vendor/reviews";
+    }
+    
+    
 	@RequestMapping(value = "/vendor/serviceitemupdate", method = RequestMethod.GET)
 	public String serviceitemupdate(String item_id, Model model) throws Exception {
 		logger.info("/vendor/serviceitemupdate   item_id : " + item_id);
