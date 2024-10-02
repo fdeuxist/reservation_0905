@@ -138,7 +138,7 @@ public class MainController {
 	@GetMapping("/setPrice")
 	public Map<String,Object> setPrice(@RequestParam("minPrice")double minPrice,@RequestParam("maxPrice")double maxPrice,Model model) throws Exception{
 		System.out.println("필터 가격설정값은 "+ minPrice+maxPrice);
-		
+		itemService.
 		Map<String,Object> responseMap = new HashMap<>(); 
 		return responseMap;
 	}
