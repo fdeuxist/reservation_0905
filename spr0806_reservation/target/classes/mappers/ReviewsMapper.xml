@@ -44,7 +44,7 @@ select * from reviews
                 where vendor_email=#{vendor_email}
                 and business_regi_num=#{business_regi_num}
                 and status='3')
-    and vendor_content is null;
+    and vendor_content is null
 </select>
 
 <!--벤더가 update로 답글 달아주기. 위에서 null인(자기가 코멘트를 달지 않은) 후기에 자기 글을 update함-->

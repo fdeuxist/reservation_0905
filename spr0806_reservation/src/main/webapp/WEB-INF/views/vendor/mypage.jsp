@@ -88,6 +88,15 @@ body {
                 </div>
             </div>
         </div>
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">이용후기 관리</h5>
+                    <p class="card-text">고객님이 남겨주신 후기에 대한 답글을 작성할 수 있습니다.</p>
+                    <a href="${pageContext.request.contextPath}/vendor/reviews" class="btn btn-primary">확인하기</a>
+                </div>
+            </div>
+        </div>
 
 
     

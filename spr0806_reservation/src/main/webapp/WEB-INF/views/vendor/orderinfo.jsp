@@ -10,9 +10,71 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <style>
+.hidden {
+    display: none;
+}
+<%--
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* 메인 컨텐츠 영역 스타일 */
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 주문 상세 정보 카드 스타일 */
+.order-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 카드 제목 스타일 */
+.order-card h3 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+/* 카드 내 항목 스타일 */
+.order-card p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* 레이블 스타일 */
+.order-card .label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* 주소 항목의 추가 스타일 */
+.order-card p span:not(.label) {
+    display: block;
+    margin-top: 4px;
+}
+
+/* 공백 스타일 */
+.order-card br {
+    content: "\A";
+    white-space: pre;
+}
+ --%>
+
 body {
     background-color: #f4f4f4;
 }
+
 </style>
 <div class="header-placeholder"></div>
 <main>
@@ -110,6 +172,7 @@ body {
                     </tr>
                 </tbody>
             </table>
+
             <input type="hidden" id="reservationNumber" value="${myOrder.reservation_number}">
             <input type="hidden" id="status" value="${myOrder.status}">
         </div>
@@ -120,12 +183,131 @@ body {
             <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
                 <button class="btn btn-danger" id="confirmCancel">강제취소/환불하기</button>
             </c:if>
+            <c:if test="${myOrder.status == 3}">
+	        	<div class="row comment-form" id="reply">
+    	        <div class="col text-left">
+    	            <div>별점 : <span id="star">
+    	            	<input type="text" class="hidden" id="s_point"/>	<!--몇번째 별이 클릭되었는지(별점) 기록해두는 곳-->
+    	                <i class="fa-regular fa-star hidden"></i>	<!--index가 0부터 시작하므로 0번째 별은 숨겨둔다-->
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	            </span></div>
+    	        </div>
+    	        <div class="col text-left">
+    	            <div>작성일 : <span id="r_date"></span></div>
+    	        </div>
+    	    </div>
+    	    <textarea id="m_content" class="form-control mt-2 text-left" rows="3" placeholder="이용후기가 아직 작성되지 않았습니다." readonly></textarea>
+    	    <textarea id="v_content" class="form-control mt-2 text-right" rows="3"  placeholder="소중한 후기에 대한 답글을 작성해주세요!"></textarea>
+    	    <button id="answerSubmit" class="btn btn-primary mt-2 submit-comment">작성/수정완료</button>
+	        </c:if>
         </div>
     </div>
 </div>
 <script>
 $(function() {
 
+	var reservationNumber = $("#reservationNumber").val();	//이 페이지 주문번호
+
+	var stars = $('.fa-star'); // 별 요소들
+
+	onload();
+	
+	//========================================================================
+	function paintStars(starPoint) {
+	    console.log("paintStars() , starPoint : " + starPoint);
+	    for (let j = 0; j < stars.length; j++) {
+	        if (j <= starPoint) {
+	            $(stars[j]).removeClass('fa-regular').addClass('fa-solid'); // 선택된 별
+	        } else {
+	            $(stars[j]).removeClass('fa-solid').addClass('fa-regular'); // 선택되지 않은 별
+	        }
+	    }
+	}
+	
+
+	//========================================================================
+	function onload(){
+		
+		$.ajax({
+            url: '/ex/reviews/selectOne',
+            method: 'GET',
+            data: { reservation_number: reservationNumber },
+            success: function(response) {
+            	console.log("response.dto : ", response.dto);
+            	if (response.dto == null) {
+            		console.log("null임");
+            	}else{
+            		console.log("null이 아님")
+                	console.log("response.dto.review_date : ", response.dto.review_date);
+                	console.log("response.dto.star_point : ", response.dto.star_point);
+                	console.log("response.dto.member_content : ", response.dto.member_content);
+                	console.log("response.dto.vendor_content : ", response.dto.vendor_content);
+                	
+            		var rDate = $("#r_date");
+            		var mContent = $("#m_content");
+            		var vContent = $("#v_content");
+            		var sPoint = $("#s_point");
+            		rDate.html(response.dto.review_date);
+            		sPoint.val(response.dto.star_point);
+            		mContent.val(response.dto.member_content);
+            		vContent.val(response.dto.vendor_content);
+            		
+            		paintStars(response.dto.star_point);
+            	}
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to fetch data:', error);
+            }
+        });
+	}
+
+	//========================================================================
+	
+	
+	$("#answerSubmit").click(function() {
+		submitAnswer();
+	});
+
+	//========================================================================
+	function submitAnswer(){
+        var vendorContent = $("#v_content").val(); // 답글 내용
+        
+        //console.log('Reservation Number:', reservationNumber);
+        //console.log('Vendor Content:', vendorContent);
+
+		$.ajax({
+            url: "/ex/reviews/vendorUpdateComment",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                reservation_number: reservationNumber,
+                vendor_content: vendorContent
+            }),
+            success: function(response) {
+                alert("수정 완료: " + response);
+                onload();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating review:", error);
+                alert("수정 실패: " + xhr.responseText);
+                onload();
+            }
+        });
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//========================================================================
     $("#confirmCancel").click(function() {
     	
     	var userConfirmed = confirm("예약의 취소를 승인합니다.");

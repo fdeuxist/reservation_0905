@@ -192,12 +192,14 @@
 	<input type="hidden" id="loginEmail" value="${sessionScope.loginEmail}">
 	<input type="hidden" id="loginName" value="${sessionScope.loginName}">
 	<input type="hidden" id="loginPhone" value="${sessionScope.loginPhone}">
-	<c:choose>
-		<c:when test="${sessionScope.loginAuthority == '사업자회원'}">
-			<input type="hidden" id="loginBusiness_regi_num"
-				value="${sessionScope.loginBusiness_regi_num}">
-		</c:when>
-	</c:choose>
+<%--<c:choose>
+    <c:when test="${sessionScope.loginAuthority == '사업자회원'}">
+        <input type="hidden" id="loginBusiness_regi_num" value="${sessionScope.loginBusiness_regi_num}">
+    </c:when>
+</c:choose>--%>
+    <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="loginBusiness_regi_num" value="${sessionScope.loginBusiness_regi_num}">
+    </sec:authorize>
 	</div>
 	</header>
 	<!-- <img src="../resources/imgs/fwr.jpg"></img> -->

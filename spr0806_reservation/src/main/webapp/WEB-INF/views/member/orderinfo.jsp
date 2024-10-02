@@ -222,7 +222,24 @@ main {
 		        <input type="button" class="btn btn-success" id="orderCompleted" value="이용완료확정하기">
 	        </c:if>
 	        <c:if test="${myOrder.status == 3}">
-	        	<input type="button" class="btn btn-info" id="reply" value="후기작성하기버튼">
+	        	<div class="row comment-form" id="reply">
+    	        <div class="col text-left">
+    	            <div>별점 : <span id="star">
+    	            	<input type="text" class="hidden" id="s_point"/>	<!--몇번째 별이 클릭되었는지(별점) 기록해두는 곳-->
+    	                <i class="fa-regular fa-star hidden"></i>	<!--index가 0부터 시작하므로 0번째 별은 숨겨둔다-->
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	                <i class="fa-regular fa-star"></i>
+    	            </span></div>
+    	        </div>
+    	        <div class="col text-right">
+    	            <div>작성일 : <span id="r_date"></span></div>
+    	        </div>
+    	    </div>
+    	    <textarea id="m_content" class="form-control mt-2" rows="3" placeholder="이용후기를 작성해주세요!"></textarea>
+    	    <button id="reviewSubmit" class="btn btn-primary mt-2 submit-comment">작성/수정완료</button>
 	        </c:if>
 	    <%--    <script>
    				 document.getElementById("reply").addEventListener("click", function() {
@@ -256,6 +273,7 @@ $(function() {
 		            } else {
 		                $(stars[j]).removeClass('fa-solid').addClass('fa-regular'); // 선택되지 않은 별
 		            }
+		            //console.log("i : " + i + " j : " + j);
 		        }
 
 				//alert("별점 : " + $('#s_point').val() );
@@ -276,10 +294,8 @@ $(function() {
 	
 	//========================================================================
 	function onload(){
-	    var reviewForm = $("#reply").parent();	//reply버튼의 부모속성을 선택. 
-	    							//reply버튼은 status가 3일때(이용완료)만 보이기 때문에
-	    							//후기작성이동버튼대신에 후기작성폼을 그려넣기 위함 
-	    							
+	    var reviewForm = $("#reply").parent();	//id reply 의 부모속성을 선택. 
+	    
     	var commentForm = `
     	    <div class="row comment-form">
     	        <div class="col text-left">
