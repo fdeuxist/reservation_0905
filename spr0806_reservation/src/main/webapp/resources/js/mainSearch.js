@@ -1,16 +1,5 @@
 $(document).ready(function() {
-	 function updateProgress(value) {
-         var currentValue = document.getElementById('currentValue');
-         currentValue.textContent = value.toLocaleString() + '원';
-     }
-
-     // Event listener for the slider
-     document.getElementById('priceSlider').addEventListener('input', function() {
-         updateProgress(parseInt(this.value, 10));
-     });
-
-     // Initial call to set progress on page load
-     updateProgress(document.getElementById('priceSlider').value);
+	
     
     $('.keyword-buttons button').on('click', function() {
         var query = $(this).data('query'); // data-query 값을 가져옵니다

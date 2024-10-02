@@ -135,6 +135,13 @@ public class MainController {
 	    return responseMap; // Map 반환
 	}
 
+	@GetMapping("/setPrice")
+	public Map<String,Object> setPrice(@RequestParam("minPrice")double minPrice,@RequestParam("maxPrice")double maxPrice,Model model) throws Exception{
+		System.out.println("필터 가격설정값은 "+ minPrice+maxPrice);
+		
+		Map<String,Object> responseMap = new HashMap<>(); 
+		return responseMap;
+	}
 	// 검색폼 처리 관련 메서드
 	@RequestMapping(value = "/my/search", method = RequestMethod.GET)
 	public String search(@RequestParam("query") String query, Model model) throws Exception {

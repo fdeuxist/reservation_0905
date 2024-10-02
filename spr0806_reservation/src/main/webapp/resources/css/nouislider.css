@@ -1,0 +1,296 @@
+/* common */
+
+.bt-wrap {text-align: center; display: block;}
+.bt-wrap a {margin-right: 10px;}
+.bt-wrap a:last-child {margin-right: 0;}
+.bt-wrap button {margin-right: 3px;}
+.bt-wrap button:last-child {margin-right: 0;}
+
+.bt-01 {background: #0084f6; border: 1px solid #0084f6; border-radius: 5px; color: #fff; font-size: 14px; min-width: 115px; height: 40px;}
+.bt-02 {background: #fff; border: 1px solid #0084f6; border-radius: 5px; color: #0084f6; font-size: 14px; min-width: 115px; height: 40px;}
+.bt-03 {width: 80px; background: #7d96ab; border-radius: 5px; color: #fff; text-align: center; height: 40px; vertical-align: middle; margin-left: 4px;}
+
+.link {border-radius: 5px; line-height: 60px; text-align: center; color: #fff; background-color: #c8ced2; font-size: 17px;}
+.link.email {width: 180px; background: #c8ced2 url(../images/common/mail2.png) 30px center no-repeat; padding-left: 38px;}
+.link.email:hover {background: #217dbb url(../images/common/mail2.png) 30px center no-repeat;}
+.link.solution {background: #217dbb url(../images/common/link.png) right 25px center no-repeat; padding: 0 50px 0 30px;}
+
+
+a.underline {position: relative; padding-bottom: 2px;}
+a.underline:after {position: absolute; width: 100%; height: 1px; background: #333; bottom: 0; left: 0; display: inline-block; content: '';}
+
+/*.search-bg {background: url(../images/common/search_02.png) right 20px center no-repeat;}*/
+.search-bg.on {background: #f7fbff;}
+.search-bg.on input {color: #0084f6; background: #f7fbff;}
+
+.search-bg.destination {width: 280px;}
+.search-bg.destination input {width: 145px; height: 28px;}
+
+.search-pop {display: none; position: absolute; border: 2px solid #0084f6; padding: 20px; padding-bottom: 40px; border-radius: 10px; box-shadow: 5px 5px 5px #ebebeb; z-index: 999; background: #fff; text-align: left;}
+.search-pop .close-bt {position: absolute; bottom: 13px; right: 18px; background: url(../images/common/cancel_02.png) no-repeat; width: 15px; height: 15px; text-indent: -9999px; cursor: pointer;}
+.search-pop h4 {font-weight: 500; font-size: 16px; color: #3b4859; padding: 5px 0;}
+.search-pop .gps {width: 100%; border: 1px solid #b5bbca; color: #3b4859; background: #fafafa; text-align: center; border-radius: 5px;}
+.search-pop .gps i {background: url(../images/common/gps.png) no-repeat; width: 19px; height: 21px; margin-right: 8px;}
+.search-pop .gps span {color: #0084f6;}
+.search-pop .select-option {}
+.search-pop .select-option li {overflow: hidden;}
+.search-pop .select-option li .opt {float: left; vertical-align: middle; width: 80px;color: #3b4859;}
+.search-pop .dot {position: relative; font-size: 13px; color: #7f8895; line-height: 1.5em; font-weight: 100; padding-left: 7px; margin-bottom: 2px;}
+.search-pop .dot:first-of-type {border-top: 1px solid #e0e2e8; padding-top: 10px; margin-top: 15px;}
+.search-pop .dot:before {content: ''; display: inline-block; position: absolute; left: 0; top: 9px; width: 2px; height: 2px; background: #7f8895;}
+.search-pop .dot:first-of-type:before {top: 19px;}
+.destination { position: relative;}
+.destination .search {position: absolute; top: 14px; right: 20px; width: 14px; height: 14px; background: url(../images/common/search_02.png) no-repeat; cursor: pointer;}
+.destination .search.cancel {background: url(../images/common/cancel_01.png) no-repeat; top: 16px;}
+.destination .search-pop {width: 400px; overflow: hidden; margin-left: -20px; margin-top: 10px;}
+.people .search-pop {width: 250px; margin-left: -20px; margin-top: 10px;}
+.promotion .search-pop {width: 315px; margin-left: -100px; margin-top: 12px;}
+.promotion .search-pop .input input {width: 180px;}
+.promotion .search-pop .search-result {margin-top: 15px; padding-bottom: 35px;}
+.promotion .search-pop .search-result ul {background: #f6f7f8; padding: 3px 15px;}
+.promotion .search-pop .search-result ul li {line-height: 1.4em; color: #3b4859;}
+.promotion .search-pop .search-result ul li.noData {line-height: 36px;}
+
+.place-list { padding: 15px 0; border-bottom: 1px solid #e0e2e8;}
+.place-list li {font-size: 14px; color: 3b4859; line-height: 1.3em; padding: 3px 0;}
+
+.tag {overflow: hidden; width: 100%;}
+.tag li {float: left; border: 1px solid #cad0dd; background: #f8fcfd; border-radius: 20px; color: #7682a0; font-size: 13px; text-align: center; line-height: 34px;}
+.tag.w3 li {width: 32.66%; margin-right: 1%; margin-bottom: 6px;}
+.tag.w3 li:nth-child(3n) {margin-right: 0;}
+
+.select-bg {background: url(../images/common/arrow_d_03.png) right 20px center no-repeat; text-align: center; padding: 0 50px 0 25px !important;}
+.select-bg.on {background: #f7fbff url(../images/common/arrow_d_03_on.png) right 20px center no-repeat; }
+.select-bg.on input {color: #0084f6; background: #f7fbff;}
+.select-bg.people {width: 260px;}
+.select-bg.people span {color: #0084f6;}
+.select-bg .calendar {background: url(../images/common/calendar.png) left center no-repeat; padding-left: 30px;}
+.select-bg .form-control-range {width: 80px;}
+.select-bg .stay-day {background: url(../images/common/dot_01.png) left center no-repeat; padding-left: 14px; margin-left: 10px;}
+
+
+/* header */
+
+#header {width:100%; border-bottom: 1px solid #d3d5d9; box-shadow: 0 3px 5px #d8d8d8; background: #fff;}
+#header .header-line {width:100%; border-bottom: 3px solid #0084f6;}
+#header .header-wrap {width: 1200px; margin: 0 auto; height: 90px;}
+#header h1 {float: left; margin-top: 18px;}
+#header .link {line-height: 40px; margin-left: 30px; font-size: 15px; margin-top: 6px;}
+#header .solution {padding: 0 40px 0 20px; background-position: right 20px center;}
+
+#header .nav {float:right; margin-top: 25px;}
+#header .nav > li {float: left; margin-right: 45px; line-height: 37px;}
+#header .nav > li:last-child {margin-right: 0;}
+#header .nav > li > a {font-size: 16px; -webkit-transition: 0.2s; transition: 0.2s; font-weight: 500;}
+#header .nav > li .nav-box {border: 1px solid #e0e2e8; border-radius: 3px; font-size: 12px; color: #7f8895; padding: 5px 10px; line-height: 2em;}
+#header .nav > li .nav-box .m {position: relative; padding-right: 30px; background: url(../images/common/arrow_d_01.png) right 10px no-repeat; cursor: pointer;}
+#header .nav > li .nav-box .m.currency {width: 60px; margin-right: 8px; background: url(../images/common/arrow_d_01.png) right 10px top 10px no-repeat;}
+#header .nav > li .nav-box .m.currency:after {display: inline-block; content:''; width: 1px; height: 12px; background: #e0e2e8; position: absolute; right: 0; top: 7px;}
+#header .nav > li .nav-box .m .select-box {position: absolute; min-width: 100px; border: 1px solid
+#b5bbca; border-radius: 3px; padding: 3px 0; background: #fff; top: 29px; display: none; z-index: 999;}
+#header .nav > li .nav-box .m.currency .select-box {width: 130px; left: -11px;}
+#header .nav > li .nav-box .m.currency .select-box li a span {font-weight: 500; color: #0084f6; width: 35px;}
+#header .nav > li .nav-box .m.global .select-box {width: 120px; left: -11px;}
+#header .nav > li .nav-box .m .select-box li {padding: 2px 11px;}
+#header .nav > li .nav-box .m .select-box li a {color: #3b4859;}
+#header .nav > li .nav-box .m .select-box li:hover {background: #eef1f3;}
+#header .nav > li .nav-box .global .ko {background: url(../images/common/global_01.jpg) left center no-repeat; padding-left: 34px;}
+#header .nav > li .nav-box .global .en {background: url(../images/common/global_02.jpg) left center no-repeat; padding-left: 34px;}
+#header .nav > li .nav-box .global .ch {background: url(../images/common/global_03.jpg) left center no-repeat; padding-left: 34px;}
+#header .nav > li .nav-box .global .ja {background: url(../images/common/global_04.jpg) left center no-repeat; padding-left: 34px;}
+
+#header .search-wrap {padding-top: 22px;}
+#header .search-form {float: left;}
+#header .search-form > li {border-radius: 30px; border: 1px solid #a8aebe; padding: 0 20px; float: left; height: 45px; line-height: 41px; margin-right: 10px;}
+#header .search-form > li .tit {font-size: 15px; padding-right: 17px; position: relative; margin-right: 10px;}
+#header .search-form > li .tit:after {content: ''; display: inline-block; position: absolute; right: 0; top: 14px; width: 1px; height: 13px; background: #b5bbca;}
+
+#header .promotion {margin: 0 8px; line-height: 40px;}
+#header .promotion > span {position: relative; padding-bottom: 5px; font-size: 13px; cursor: pointer; line-height: 1.2em; padding-right: 15px; background: url(../images/common/arrow_d_02.png) right top 5px no-repeat; font-weight: 500;}
+#header .promotion > span:after {content:''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; display: inline-block; background: #919191;}
+#header .top-search {background: #0084f6 url(../images/common/search_01.png) left 30px center no-repeat; border-radius: 30px; padding: 0 30px 0 50px; height: 45px; text-align: center; color: #fff; float: right;}
+
+/* container */
+
+#container {width: 1200px; min-width: 1024px; overflow: hidden; margin: 0 auto; padding: 60px 0; }
+
+#container .sideMenu {width: 283px; background: #fff; border: 1px solid #e0e2e8; border-radius: 5px; padding: 20px 22px; color: #3b4859;}
+#container .sideMenu .add-search {}
+#container .sideMenu .add-search p {padding-bottom: 10px; border-bottom: 1px solid #e0e2e8; margin-bottom: 15px;}
+#container .sideMenu > ul {}
+#container .sideMenu > ul > li {margin: 15px 0;}
+#container .sideMenu > ul > li h4 {margin-bottom: 10px; font-weight: 500; font-size: 16px;}
+
+
+/* FAQ */
+
+#container .boardList {margin-top: 50px;}
+#container .boardList.search {margin-top: 40px;}
+#container .boardList h4 {margin-bottom: 20px; font-size: 17px;}
+#container .boardList h4 span {font-weight: 500; color: #217dbb;}
+
+#container .boardList .title {background: #fafafa; border: 1px solid #ddd; padding: 35px 0; text-align: center; margin-bottom: 40px;}
+#container .boardList .title ul {overflow: hidden; width: 100%;}
+#container .boardList .title ul li {display: inline-block; vertical-align: middle; margin-right: 25px;}
+#container .boardList .title ul li:last-child {margin-right: 0;}
+#container .boardList .title ul li .tit {font-size: 18px; vertical-align: middle; margin-right: 15px;}
+#container .boardList .title ul li button {padding: 0 20px; height: 40px; font-size: 14px; margin-right: 5px;}
+#container .boardList .title ul li button:last-child {margin-right: 0;}
+#container .boardList .title ul li button.on {background: #217dbb; border: 1px solid #217dbb; color: #fff;}
+#container .boardList .title ul li button.search {background: #114669; color: #fff; height: 50px; font-size: 16px; padding: 0 30px; border: 0;}
+#container .boardList .title ul li.board-search {width: 45%; float: none; margin: 0;}
+#container .boardList .title ul li.board-search input, #container .boardList .title ul li.board-search .select select {height: 40px;}
+#container .boardList .title ul li.board-search .select {width: 25%;}
+#container .boardList .title ul li.board-search .input {width: 75%;}
+
+#container .boardList .list {border-top: 1px solid #838383;}
+#container .boardList .list li {font-size: 16px; width: 100%; overflow: hidden; line-height: 75px; border-bottom: 1px solid #dfdfdf; cursor: pointer; text-align: left; color: #323232;}
+#container .boardList .list li.keyword {background: #fafafa; padding: 0 20px; cursor: auto;}
+#container .boardList .list li.keyword a {font-size: 17px; margin-right: 10px;}
+#container .boardList .list li.keyword a:after {content: ''; display: inline-block; width: 1px; height: 17px; vertical-align: -2px; background: #a6a6a6; margin-left: 15px;}
+#container .boardList .list li.keyword a:last-child:after {display: none;}
+#container .boardList .list li.keyword a.on {font-weight: 500; color: #217dbb;}
+#container .boardList .list li .tit {padding: 0 10px; background: url(../images/common/down.png) right 20px center no-repeat; position: relative;}
+#container .boardList.search .list li .tit {color: #909090;}
+#container .boardList .list li.open .tit {font-weight: 500; background: url(../images/common/up.png) right 20px center no-repeat;}
+#container .boardList .list li .tit p span {color: #217dbb; margin-right: 7px;}
+#container .boardList.search .list li .tit p span {margin-right: 0;}
+#container .boardList .list li .tit p small {color: #ff0000; margin-left: 7px;}
+#container .boardList .list li .tit .date {position: absolute; top: 0; right: 70px; color: #b7b7b7; font-size: 17px; font-weight: 100;}
+#container .boardList .list li.open .tit p {font-weight: 700;}
+#container .boardList .list li.open .tit p span {font-weight: 700;}
+#container .boardList .list li.open .tit span:before {background: #26252b;}
+#container .boardList .answer {border-top: 1px solid #dfdfdf; display: none; line-height: 25px; background: #fafafa; color: #777; padding: 30px 30px 70px 70px; position: relative;}
+#container .boardList .answer:before {content: 'A'; width: 35px; height: 35px; border-radius: 18px; background: #217dbb; color: #fff; display: inline-block; line-height: 33px; font-size: 17px; text-align: center; position: absolute; left: 20px; margin-top: -4px;}
+
+#container .boardList .list th, #container .boardList .list td {text-align: center; border-bottom: 1px solid #d8d8d8;}
+#container .boardList .list thead th {background: #fafafa; padding: 15px;}
+#container .boardList .list tbody td {padding: 18px 15px; font-weight: 100;}
+#container .boardList .list tbody td * {font-weight: 100;}
+#container .boardList .list .l {text-align: left;}
+#container .boardList .list .con {text-align: left; color: #747474;}
+#container .boardList .list .d {width: 50%; position: relative;}
+#container .boardList .list .d:first-child:after {content: ''; width: 1px; height: 15px; background: #ddd; position: absolute; top: 5px; right: 0; display: inline-block;}
+#container .boardList .list .receipt {background: url(../images/common/receipt.png) no-repeat; width: 24px; height: 24px; vertical-align: middle;}
+#container .boardList .list .noData {color: #a0a0a0; padding: 50px 0;}
+
+.page_Num {text-align: center; margin: 50px 0;}
+.page_Num strong {margin: 0 5px; width: 25px; height: 25px; display: inline-block; text-indent: -9999px; cursor: pointer;}
+.page_Num strong.first {background: url(../images/common/page_first.png) no-repeat;}
+.page_Num strong.prev {background: url(../images/common/page_prev.png) no-repeat; margin-right: 20px;}
+.page_Num strong.next {background: url(../images/common/page_next.png) no-repeat; margin-left: 20px;}
+.page_Num strong.last {background: url(../images/common/page_last.png) no-repeat;}
+.page_Num a {width: 25px; display: inline-block; line-height: 25px; color: #9d9b9b; text-align: center;}
+.page_Num a.thisPage {color: #217dbb;}
+
+/* infomation */
+
+.infomation {min-height: 400px;}
+
+/* myMenu */
+
+.myMenu {display: block; position: relative; overflow: hidden;}
+.myMenu .link {position: absolute; right: 0; bottom: 35px;}
+
+/* footer */
+
+#footer {text-align: center; padding: 50px 0; font-size: 15px; border-top: 1px solid #ddd;}
+#footer h1 {text-indent: -9999px; background: url(../images/common/sanha_logo.png) no-repeat; width: 122px; height: 28px; display: inline-block; margin-bottom: 22px;}
+#footer ul li {color: #878787; line-height: 1.6em;}
+#footer ul li a {position: relative; color: #7c7b7b; font-weight: 700; padding-right: 10px; margin-right: 9px; line-height: 1.8em;}
+#footer ul li a:after {content: ''; width: 1px; height: 14px; position: absolute; right: 0; top: 5px; background: #ddd; display: inline-block;}
+#footer ul li a:last-child:after {display: none;}
+#footer ul li span {position: relative; padding-right: 10px; margin-right: 9px;}
+#footer ul li span:after {content: ''; width: 1px; height: 14px; position: absolute; right: 0; top: 5px; background: #ddd; display: inline-block;}
+#footer ul li span:last-child:after {display: none;}
+#footer .copyright {margin-top: 10px; color: #878787;}
+
+
+
+
+
+
+/*! nouislider - 11.1.0 - 2018-04-02 11:18:13 */
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+.noUi-target, .noUi-target * {-webkit-touch-callout: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-user-select: none; -ms-touch-action: none; touch-action: none; -ms-user-select: none; -moz-user-select: none; user-select: none; -moz-box-sizing: border-box; box-sizing: border-box;}
+.noUi-target {position: relative; direction: ltr;}
+.noUi-base, .noUi-connects {width: 100%; height: 100%; position: relative; z-index: 1;}
+/* Wrapper for all connect elements.
+ */
+.noUi-connects {overflow: hidden; z-index: 0;}
+.noUi-connect, .noUi-origin {will-change: transform; position: absolute; z-index: 1; top: 0; left: 0; height: 100%; width: 100%; -ms-transform-origin: 0 0; -webkit-transform-origin: 0 0; transform-origin: 0 0;}
+/* Offset direction
+ */
+html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {left: auto; right: 0;}
+/* Give origins 0 height/width so they don't interfere with clicking the
+ * connect elements.
+ */
+.noUi-vertical .noUi-origin {width: 0;}
+.noUi-horizontal .noUi-origin {height: 0;}
+.noUi-handle {position: absolute;}
+.noUi-state-tap .noUi-connect, .noUi-state-tap .noUi-origin {-webkit-transition: transform 0.3s; transition: transform 0.3s;}
+.noUi-state-drag * {cursor: inherit !important;}
+/* Slider size and handle placement;
+ */
+.noUi-horizontal {height: 6px;}
+.noUi-horizontal .noUi-handle {outline: none; width: 22px; height: 23px; left: -18px; top: -8px;}
+.noUi-horizontal .noUi-handle.noUi-handle-lower {background: url(../images/common/noUi-handle-lower.png) no-repeat; right: -10px; left: auto;}
+.noUi-horizontal .noUi-handle.noUi-handle-upper {right: -10px!important; left: auto; background: url(../images/common/noUi-handle-upper.png) no-repeat;}
+/* Styling;
+ * Giving the connect element a border radius causes issues with using transform: scale
+ */
+.price-range {color: #7f8895;}
+.price-range * {color: #7f8895;}
+.noUi-target {margin: 0 auto; margin-top: 16px; background: #FAFAFA; border-radius: 4px; border: 1px solid #D3D3D3; box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB; width: 220px;}
+.noUi-connects {border-radius: 3px;}
+.noUi-connect {background: url(../images/common/noUi-connect.png) right center no-repeat;}
+/* Handles and cursors;
+ */
+.noUi-draggable {cursor: ew-resize;}
+.noUi-vertical .noUi-draggable {cursor: ns-resize;}
+.noUi-handle {cursor: default;}
+.noUi-active {}
+/* Disabled state;
+ */
+[disabled] .noUi-connect {background: #B8B8B8;}
+[disabled].noUi-target, [disabled].noUi-handle, [disabled] .noUi-handle {cursor: not-allowed;}
+/* Base;
+ *
+ */
+.noUi-pips, .noUi-pips * {-moz-box-sizing: border-box; box-sizing: border-box;}
+.noUi-pips {position: absolute; color: #999;}
+/* Values;
+ *
+ */
+.noUi-value {position: absolute; white-space: nowrap; text-align: center;}
+.noUi-value-sub {color: #ccc; font-size: 10px;}
+/* Markings;
+ *
+ */
+.noUi-marker {position: absolute; background: #CCC;}
+.noUi-marker-sub {background: #AAA;}
+.noUi-marker-large {background: #AAA;}
+/* Horizontal layout;
+ *
+ */
+.noUi-pips-horizontal {padding: 10px 0; height: 80px; top: 100%; left: 0; width: 100%;}
+.noUi-value-horizontal {-webkit-transform: translate(-50%, 50%); transform: translate(-50%, 50%);}
+.noUi-rtl .noUi-value-horizontal {-webkit-transform: translate(50%, 50%); transform: translate(50%, 50%);}
+.noUi-marker-horizontal.noUi-marker {margin-left: -1px; width: 2px; height: 5px;}
+.noUi-marker-horizontal.noUi-marker-sub {height: 10px;}
+.noUi-marker-horizontal.noUi-marker-large {height: 15px;}
+/* Vertical layout;
+ *
+ */
+.noUi-pips-vertical {padding: 0 10px; height: 100%; top: 0; left: 100%;}
+.noUi-value-vertical {-webkit-transform: translate(0, -50%); transform: translate(0, -50%, 0); padding-left: 25px;}
+.noUi-rtl .noUi-value-vertical {-webkit-transform: translate(0, 50%); transform: translate(0, 50%);}
+.noUi-marker-vertical.noUi-marker {width: 5px; height: 2px; margin-top: -1px;}
+.noUi-marker-vertical.noUi-marker-sub {width: 10px;}
+.noUi-marker-vertical.noUi-marker-large {width: 15px;}
+.noUi-tooltip {display: block; position: absolute; border: 1px solid #D9D9D9; border-radius: 3px; background: #fff; color: #000; padding: 5px; text-align: center; white-space: nowrap;}
+.noUi-horizontal .noUi-tooltip {-webkit-transform: translate(-50%, 0); transform: translate(-50%, 0); left: 50%; bottom: 120%;}
+.noUi-vertical .noUi-tooltip {-webkit-transform: translate(0, -50%); transform: translate(0, -50%); top: 50%; right: 120%;}
