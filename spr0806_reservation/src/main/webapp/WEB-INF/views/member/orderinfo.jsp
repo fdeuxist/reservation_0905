@@ -214,34 +214,17 @@ main {
             <input type="hidden" id="business_regi_num" value="${myOrder.business_regi_num}">
             <input type="hidden" id="vendor_email" value="${myOrder.vendor_email}">
         	<input type="hidden" id="status" value="${myOrder.status}">
-        <div class="card-footer">
+        <div class="card-footer"><%--id reviewable의 부모요소--%>
 	        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
 	        	<input type="button" class="btn btn-danger" id="tryCancel" value="취소요청하기">
 	        </c:if>
 	        <c:if test="${myOrder.status == 2 || myOrder.status == 4 || myOrder.status == 6}">
 		        <input type="button" class="btn btn-success" id="orderCompleted" value="이용완료확정하기">
 	        </c:if>
-	        <c:if test="${myOrder.status == 3}">
-	        	<div class="row comment-form" id="reply">
-    	        <div class="col text-left">
-    	            <div>별점 : <span id="star">
-    	            	<input type="text" class="hidden" id="s_point"/>	<!--몇번째 별이 클릭되었는지(별점) 기록해두는 곳-->
-    	                <i class="fa-regular fa-star hidden"></i>	<!--index가 0부터 시작하므로 0번째 별은 숨겨둔다-->
-    	                <i class="fa-regular fa-star"></i>
-    	                <i class="fa-regular fa-star"></i>
-    	                <i class="fa-regular fa-star"></i>
-    	                <i class="fa-regular fa-star"></i>
-    	                <i class="fa-regular fa-star"></i>
-    	            </span></div>
-    	        </div>
-    	        <div class="col text-right">
-    	            <div>작성일 : <span id="r_date"></span></div>
-    	        </div>
-    	    </div>
-    	    <textarea id="m_content" class="form-control mt-2" rows="3" placeholder="이용후기를 작성해주세요!"></textarea>
-    	    <button id="reviewSubmit" class="btn btn-primary mt-2 submit-comment">작성/수정완료</button>
+	        <c:if test="${myOrder.status == 3}"><%--이용완료면 id reviewable div가 보임--%>
+        		<div id="reviewable"></div>
 	        </c:if>
-	    <%--    <script>
+	    <%-- 안씀   <script>
    				 document.getElementById("reply").addEventListener("click", function() {
         			window.location.href = "reviewsWrite?reservationNumber=${myOrder.reservation_number}";  // 이동할 페이지 경로
     			});
@@ -258,50 +241,47 @@ $(function() {
     const updateUrl = "/ex/reviews/update"; 	//ReviewsController
 	var submitUrl = "";
     
-	onload();	//이 이후에 후기폼이 생김. 후기폼 관련 요소 선택,작업은 이 이하로 기술
+	onload();	//이 이후에 후기폼이 생김. 후기폼 관련 요소 선택 등, 관련 작업은 이 이하로 기술
 	var stars = $('.fa-star'); // 별 요소들
+	
+
+	//$("#valid_starpoint").html(`<div class="alert-sm alert-danger alert-dismissible p-1" style="font-size: 0.75rem;">`+
+	//		`올바른 형식의 이메일을 입력해주세요.`+
+	//		  `</div>`);
 	
 	//========================================================================
 	
-	for(let i=0;i<stars.length;i++){
-			stars[i].addEventListener('click', () => {	//별 아이콘 클릭이벤트
-				//alert(i);
-				$('#s_point').val(i); // 몇번째 별이 클릭되었는지 s_point text박스에 기록해둠, 별점으로 사용
-				for (let j = 0; j < stars.length; j++) {
-		            if (j <= i) {
-		                $(stars[j]).removeClass('fa-regular').addClass('fa-solid'); // 선택된 별
-		            } else {
-		                $(stars[j]).removeClass('fa-solid').addClass('fa-regular'); // 선택되지 않은 별
-		            }
-		            //console.log("i : " + i + " j : " + j);
-		        }
-
-				//alert("별점 : " + $('#s_point').val() );
-			});
+	for(let i=0; i<stars.length; i++){
+		stars[i].addEventListener('click', () => {	//별 아이콘 클릭이벤트 등록
+			//alert(i);
+			$('#s_point').val(i); // 몇번째 별이 클릭되었는지 s_point text박스에 기록해둠, 별점으로 사용
+			paintStars(i);	//클릭된 별만큼 색칠
+			//alert("별점 : " + $('#s_point').val() );
+		});
 	}
 
 	//========================================================================
-	function paintStars(starPoint) {
+	function paintStars(starPoint) {	//별 색칠
 	    console.log("paintStars() , starPoint : " + starPoint);
-	    for (let j = 0; j < stars.length; j++) {
-	        if (j <= starPoint) {
-	            $(stars[j]).removeClass('fa-regular').addClass('fa-solid'); // 선택된 별
+	    for (let i=0; i<stars.length; i++) {	//stars.length는   $('.fa-star') 배열의 길이
+	        if (i <= starPoint) {
+	            $(stars[i]).removeClass('fa-regular').addClass('fa-solid'); // fa-regular ☆, fa-solid ★ 
 	        } else {
-	            $(stars[j]).removeClass('fa-solid').addClass('fa-regular'); // 선택되지 않은 별
+	            $(stars[i]).removeClass('fa-solid').addClass('fa-regular'); 
 	        }
 	    }
 	}
 	
 	//========================================================================
-	function onload(){
-	    var reviewForm = $("#reply").parent();	//id reply 의 부모속성을 선택. 
+	function onload(){	//이용완료 상태면 후기작성 폼 생성
+	    var reviewForm = $("#reviewable").parent();	//id reviewable 의 부모속성을 선택. id reviewable은 이용완료상태일떄만 보임.
 	    
     	var commentForm = `
     	    <div class="row comment-form">
     	        <div class="col text-left">
     	            <div>별점 : <span id="star">
-    	            	<input type="text" class="hidden" id="s_point"/>	<!--몇번째 별이 클릭되었는지(별점) 기록해두는 곳-->
-    	                <i class="fa-regular fa-star hidden"></i>	<!--index가 0부터 시작하므로 0번째 별은 숨겨둔다-->
+    	            	<input type="text" class="hidden" id="s_point"/>	<%--몇번째 별이 클릭되었는지(별점) 기록해두는 곳--%>
+    	                <i class="fa-regular fa-star hidden"></i>	<%--index가 0부터 시작하므로 0번째 별은 숨겨둔다--%>
     	                <i class="fa-regular fa-star"></i>
     	                <i class="fa-regular fa-star"></i>
     	                <i class="fa-regular fa-star"></i>
@@ -314,7 +294,9 @@ $(function() {
     	        </div>
     	    </div>
     	    <textarea id="m_content" class="form-control mt-2" rows="3" placeholder="이용후기를 작성해주세요!"></textarea>
-    	    <button id="reviewSubmit" class="btn btn-primary mt-2 submit-comment">작성/수정완료</button>
+    	    <textarea id="v_content" class="form-control mt-2 text-right hidden" rows="3" placeholder="이용후기에 대한 답변이 아직 작성되지 않았습니다!" readonly></textarea>
+    	    <div id="valid_review" class="" style="font-size: 0.75rem;"></div><%-- 유효성체크 메시지 보여주는곳 --%>
+    	    <button id="reviewSubmit" class="btn btn-primary mt-2 submit-comment">등록/수정완료</button>
     	`;	//후기작성하는 칸 tag
 
         reviewForm.html(commentForm);
@@ -329,11 +311,11 @@ $(function() {
             data: { reservation_number: reservationNumber },
             success: function(response) {
             	console.log("response.dto : ", response.dto);
-            	if (response.dto == null) {
+            	if (response.dto == null) {	//member가 작성한 후기가 없음
             		console.log("null임");
-            		//작성
+            		//작성가능한상태
             		submitUrl = insertUrl;
-            	}else{
+            	}else{	//member가 작성한 후기가 있음
             		console.log("null이 아님")
                 	console.log("response.dto.review_date : ", response.dto.review_date);
                 	console.log("response.dto.star_point : ", response.dto.star_point);
@@ -343,12 +325,23 @@ $(function() {
             		var rDate = $("#r_date");
             		var mContent = $("#m_content");
             		var sPoint = $("#s_point");
+
             		rDate.html(response.dto.review_date);
             		sPoint.val(response.dto.star_point);
             		mContent.val(response.dto.member_content);
+            		
             		//수정
             		submitUrl = updateUrl;
             		paintStars(response.dto.star_point);
+            		
+            		if(response.dto.vendor_content != ""){	//vendor가 작성한 답글이 있음
+            			//vendor 답글 보여주는 form 생성,삽입
+            			//alert(response.dto.vendor_content)
+            			var vContent = $("#v_content");
+            			vContent.val(response.dto.vendor_content);
+            			$("#v_content").removeClass("hidden");
+            		}
+            		
             	}
             },
             error: function(xhr, status, error) {
@@ -368,38 +361,39 @@ $(function() {
 	//========================================================================
 		
 	function submitReview(){
-		var rDate = $("#r_date").text(); // 작성일
 		var starPoint = $("#s_point").val();	//별점
         var memberContent = $("#m_content").val(); // 후기 내용
-        //var reviewDto = {
-        //	reservation_number : reservationNumber,
-        //    member_content: memberContent
-       // };
-        
-        console.log("rDate : ", rDate);
+
+        console.log("starPoint : ", starPoint);
         console.log("memberContent : ", memberContent);
-        //console.log("reviewDto : ", reviewDto);
         console.log("submitUrl : ", submitUrl);
         
-		$.ajax({
-            url: submitUrl,	//insert or update 선택적
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                reservation_number: reservationNumber,
-                star_point : starPoint,
-                member_content: memberContent
-            }),
-            success: function(response) {
-                //alert("수정 완료: " + response);
-                onload();
-            },
-            error: function(xhr, status, error) {
-                console.error("Error updating review:", error);
-                //alert("수정 실패: " + xhr.responseText);
-                onload();
-            }
-        });
+        if(starPoint=='' || memberContent.trim().length < 3 ){
+        	$("#valid_review").html(`<div class="alert-sm alert-danger alert-dismissible p-1" style="font-size: 0.75rem;">`+
+					`리뷰를 등록/수정하기 위해서는 별점과 후기(3자이상)를 작성해주어야 합니다.`+
+					  `</div>`);
+        }else{
+        	$("#valid_review").html("");
+        	$.ajax({
+                url: submitUrl,	//insert or update 선택적
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    reservation_number: reservationNumber,
+                    star_point : starPoint,
+                    member_content: memberContent
+                }),
+                success: function(response) {
+                    //alert("수정 완료: " + response);
+                    onload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating review:", error);
+                    //alert("수정 실패: " + xhr.responseText);
+                    onload();
+                }
+            });
+        }
 		
 	}
 	

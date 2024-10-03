@@ -187,8 +187,8 @@ body {
 	        	<div class="row comment-form" id="reply">
     	        <div class="col text-left">
     	            <div>별점 : <span id="star">
-    	            	<input type="text" class="hidden" id="s_point"/>	<!--몇번째 별이 클릭되었는지(별점) 기록해두는 곳-->
-    	                <i class="fa-regular fa-star hidden"></i>	<!--index가 0부터 시작하므로 0번째 별은 숨겨둔다-->
+    	            	<input type="text" class="hidden" id="s_point"/>	<%--몇번째 별이 클릭되었는지(별점) 기록해두는 곳--%>
+    	                <i class="fa-regular fa-star hidden"></i>	<%--index가 0부터 시작하므로 0번째 별은 숨겨둔다--%>
     	                <i class="fa-regular fa-star"></i>
     	                <i class="fa-regular fa-star"></i>
     	                <i class="fa-regular fa-star"></i>
@@ -196,13 +196,13 @@ body {
     	                <i class="fa-regular fa-star"></i>
     	            </span></div>
     	        </div>
-    	        <div class="col text-left">
+    	        <div class="col text-right">
     	            <div>작성일 : <span id="r_date"></span></div>
     	        </div>
-    	    </div>
-    	    <textarea id="m_content" class="form-control mt-2 text-left" rows="3" placeholder="이용후기가 아직 작성되지 않았습니다." readonly></textarea>
-    	    <textarea id="v_content" class="form-control mt-2 text-right" rows="3"  placeholder="소중한 후기에 대한 답글을 작성해주세요!"></textarea>
-    	    <button id="answerSubmit" class="btn btn-primary mt-2 submit-comment">작성/수정완료</button>
+	    	    </div>
+	    	    <textarea id="m_content" class="form-control mt-2 text-left" rows="3" placeholder="이용후기가 아직 작성되지 않았습니다." readonly></textarea>
+	    	    <textarea id="v_content" class="form-control mt-2 text-right" rows="3"  placeholder="소중한 후기에 대한 답글을 작성해주세요!"></textarea>
+	    	    <button id="answerSubmit" class="btn btn-primary mt-2 submit-comment">등록/수정완료</button>
 	        </c:if>
         </div>
     </div>
@@ -212,18 +212,17 @@ $(function() {
 
 	var reservationNumber = $("#reservationNumber").val();	//이 페이지 주문번호
 
+	onload();	//이 이후에 후기폼이 생김. 후기폼 관련 요소 선택 등, 관련 작업은 이 이하로 기술
 	var stars = $('.fa-star'); // 별 요소들
-
-	onload();
 	
 	//========================================================================
-	function paintStars(starPoint) {
+	function paintStars(starPoint) {	//별 색칠
 	    console.log("paintStars() , starPoint : " + starPoint);
-	    for (let j = 0; j < stars.length; j++) {
+	    for (let j = 0; j < stars.length; j++) {	//stars.length는   $('.fa-star') 배열의 길이
 	        if (j <= starPoint) {
-	            $(stars[j]).removeClass('fa-regular').addClass('fa-solid'); // 선택된 별
+	            $(stars[j]).removeClass('fa-regular').addClass('fa-solid'); // fa-regular ☆, fa-solid ★
 	        } else {
-	            $(stars[j]).removeClass('fa-solid').addClass('fa-regular'); // 선택되지 않은 별
+	            $(stars[j]).removeClass('fa-solid').addClass('fa-regular'); 
 	        }
 	    }
 	}
@@ -231,6 +230,11 @@ $(function() {
 
 	//========================================================================
 	function onload(){
+		var rDate = $("#r_date");
+		var mContent = $("#m_content");
+		var vContent = $("#v_content");
+		var sPoint = $("#s_point");
+		var answerSubmitBtn = $("#answerSubmit");
 		
 		$.ajax({
             url: '/ex/reviews/selectOne',
@@ -238,8 +242,10 @@ $(function() {
             data: { reservation_number: reservationNumber },
             success: function(response) {
             	console.log("response.dto : ", response.dto);
-            	if (response.dto == null) {
+            	if (response.dto == null) { //member가 작성한 후기가없음
             		console.log("null임");
+            		vContent.addClass("hidden");
+            		answerSubmitBtn.addClass("hidden");
             	}else{
             		console.log("null이 아님")
                 	console.log("response.dto.review_date : ", response.dto.review_date);
@@ -247,10 +253,7 @@ $(function() {
                 	console.log("response.dto.member_content : ", response.dto.member_content);
                 	console.log("response.dto.vendor_content : ", response.dto.vendor_content);
                 	
-            		var rDate = $("#r_date");
-            		var mContent = $("#m_content");
-            		var vContent = $("#v_content");
-            		var sPoint = $("#s_point");
+            		
             		rDate.html(response.dto.review_date);
             		sPoint.val(response.dto.star_point);
             		mContent.val(response.dto.member_content);
@@ -260,7 +263,7 @@ $(function() {
             	}
             },
             error: function(xhr, status, error) {
-                console.error('Failed to fetch data:', error);
+                console.error('error:', error);
             }
         });
 	}
@@ -292,7 +295,7 @@ $(function() {
                 onload();
             },
             error: function(xhr, status, error) {
-                console.error("Error updating review:", error);
+                console.error("error : ", error);
                 //alert("수정 실패: " + xhr.responseText);
                 onload();
             }
@@ -332,7 +335,7 @@ $(function() {
 	                window.location.href = "/ex/vendor/orderinfo?reservationNumber=" + reservationNumber;
 	            },
 	            error: function(xhr, status, error) {
-	                console.error('Failed to fetch data:', error);
+	                console.error('error : ', error);
 	            }
         	});
         }
