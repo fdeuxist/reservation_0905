@@ -250,10 +250,6 @@ $(function() {
 	var stars = $('.fa-star'); // 별 요소들
 	
 
-	//$("#valid_starpoint").html(`<div class="alert-sm alert-danger alert-dismissible p-1" style="font-size: 0.75rem;">`+
-	//		`올바른 형식의 이메일을 입력해주세요.`+
-	//		  `</div>`);
-	
 	//========================================================================
 	
 	for(let i=0; i<stars.length; i++){
