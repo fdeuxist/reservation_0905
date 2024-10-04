@@ -219,7 +219,7 @@ main {
             <input type="hidden" id="business_regi_num" value="${myOrder.business_regi_num}">
             <input type="hidden" id="vendor_email" value="${myOrder.vendor_email}">
         	<input type="hidden" id="status" value="${myOrder.status}">
-        <div class="card-footer"><%--id reviewable의 부모요소--%>
+        <div class="card-footer" id="card-footer"><%--id reviewable의 부모요소--%>
 	        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
 	        	<input type="button" class="btn btn-danger" id="tryCancel" value="취소요청하기">
 	        </c:if>

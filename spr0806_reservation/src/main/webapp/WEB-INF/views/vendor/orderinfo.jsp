@@ -182,7 +182,7 @@ body {
             <input type="hidden" id="reservationNumber" value="${myOrder.reservation_number}">
             <input type="hidden" id="status" value="${myOrder.status}">
         </div>
-        <div class="card-footer">
+        <div class="card-footer" id="card-footer">
             <c:if test="${myOrder.status == 4 || myOrder.status == 6}">
                 <button class="btn btn-success" id="confirmCancel">취소/환불 승인</button>
             </c:if>
