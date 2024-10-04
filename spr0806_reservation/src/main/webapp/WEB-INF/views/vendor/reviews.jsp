@@ -9,17 +9,24 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+</style>
 <div class="header-placeholder"></div>
 <main>
 
 <table class="table" style="width: 80%; margin: 0 auto;">
     <thead>
-        <tr>
-            <th>예약 번호</th>
+        <tr class="text-center">
+            <th>예약 주문 번호</th>
             <th>별점</th>
-            <th>회원 내용</th>
-            <th>리뷰 날짜</th>
+            <th>후기</th>
+            <th>작성일</th>
         </tr>
     </thead>
     <tbody id="reviewTableBody">
@@ -62,13 +69,13 @@ $(function() {
 	function updateReviewTable(dtos) {
 	    const tableBody = $('#reviewTableBody');
 	    tableBody.empty();
-
 	    for (let i = 0; i < dtos.length; i++) {
+			var review = dtos[i].member_content.substring(0, 10) + '...';
 	        let row = `
-	            <tr>
+	            <tr class="text-center">
 	                <td><a href="${pageContext.request.contextPath}/vendor/orderinfo?reservationNumber=` + dtos[i].reservation_number + `#card-footer">` + dtos[i].reservation_number + `</a></td>
 	                <td>` + dtos[i].star_point + `</td>
-	                <td>` + dtos[i].member_content + `</td>
+	                <td>` + review + `</td>
 	                <td>` + dtos[i].review_date + `</td>
 	            </tr>
 	        `;
