@@ -13,7 +13,12 @@
 .hidden {
     display: none;
 }
-
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 <%-- 
 /* 전체 페이지 스타일 */
 body {
@@ -214,7 +219,7 @@ main {
             <input type="hidden" id="business_regi_num" value="${myOrder.business_regi_num}">
             <input type="hidden" id="vendor_email" value="${myOrder.vendor_email}">
         	<input type="hidden" id="status" value="${myOrder.status}">
-        <div class="card-footer"><%--id reviewable의 부모요소--%>
+        <div class="card-footer" id="card-footer"><%--id reviewable의 부모요소--%>
 	        <c:if test="${myOrder.status == 1 || myOrder.status == 2}">
 	        	<input type="button" class="btn btn-danger" id="tryCancel" value="취소요청하기">
 	        </c:if>
@@ -245,10 +250,6 @@ $(function() {
 	var stars = $('.fa-star'); // 별 요소들
 	
 
-	//$("#valid_starpoint").html(`<div class="alert-sm alert-danger alert-dismissible p-1" style="font-size: 0.75rem;">`+
-	//		`올바른 형식의 이메일을 입력해주세요.`+
-	//		  `</div>`);
-	
 	//========================================================================
 	
 	for(let i=0; i<stars.length; i++){
