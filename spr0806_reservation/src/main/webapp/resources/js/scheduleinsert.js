@@ -57,8 +57,9 @@ $(function() {
                 },
                 success: function(response) {
                 	console.log(response)
-                    alert('등록완료');
-                    $('#submitBtn').prop('disabled', true);
+                    alert("등록완료. '월별 스케줄 조회'로 이동합니다.");
+                    //$('#submitBtn').prop('disabled', true);
+                    window.location.href = '/ex/vendor/monthlyschedule';
                 },
                 error: function(xhr, status, error) {
                     alert('데이터 전송에 실패했습니다: ' + error);
