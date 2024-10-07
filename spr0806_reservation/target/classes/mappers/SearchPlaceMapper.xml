@@ -16,36 +16,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		BUSINESS_TYPE VARCHAR2(255) PLACE_INFO VARCHAR2(4000) -->
 
 	<select id="selectOnePlace" resultType="SearchPlaceDto">
-		select * from search_place
+		select * from
+		search_place
 		where email = #{email}
-		and business_regi_num = #{business_regi_num}
+		and business_regi_num =
+		#{business_regi_num}
 	</select>
 
 	<!-- vendor에서 이사옴 -->
 	<select id="selectAllVendorByBusinessType"
 		resultType="SearchPlaceDto">
-		select * from search_place where business_type = #{business_type}
+		select * from search_place where business_type =
+		#{business_type}
 	</select>
 	<!-- vendor에서 이사옴 -->
 	<select id="selectAllVendorByBasicAddress"
 		resultType="SearchPlaceDto">
-		select * from search_place where basic_address like '%' || #{basic_address}
+		select * from search_place where basic_address like '%' ||
+		#{basic_address}
 		|| '%'
 	</select>
 
 
-	<select id="joinReviewsAndVendor" resultType="ResultReviewsJoinDto">
+	<select id="joinReviewsAndVendor"
+		resultType="ResultReviewsJoinDto">
 		SELECT
 		ur.reservation_number,
-		ur.user_id,
-		ur.reservation_date,
+		ur.business_regi_num,
+		ur.vendor_phone,
+		ur.business_name,
+		ur.basic_address,
+		ur.detail_address,
+		ur.vendor_email,
 		r.star_point
 		FROM
 		user_reservation ur
 		JOIN
 		reviews r
 		ON
-		ur.reservation_number = r.reservation_number;
+		ur.reservation_number = r.reservation_number
 	</select>
 
 </mapper>

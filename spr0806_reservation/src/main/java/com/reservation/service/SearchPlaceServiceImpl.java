@@ -1,6 +1,7 @@
 package com.reservation.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,10 @@ public class SearchPlaceServiceImpl implements ISearchPlaceService{
 
 	@Override
 	public ArrayList<ResultReviewsJoinDto> joinReviewsAndVendor() throws Exception {
-		SearchPlaceDao dao = sqlSession.getMapper(SearchPlaceDao.class);
+		SearchPlaceDao dao = sqlSession. getMapper(SearchPlaceDao.class);
 		return dao.joinReviewsAndVendor();
 	}
+
 	
 	
 		
