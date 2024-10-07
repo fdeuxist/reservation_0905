@@ -34,9 +34,9 @@ body {
 <h4>데이터 입력</h4>
 <form action="/ex/user/insert_free" method="post">
 	이메일:<input type="text" id="email" name="email" required><br>
-	비밀번호:<input type="text" id="password" name="password" maxlength="20" required/><br>
-	이름:<input type="text" name="name" required><br>
-	전화번호:<input type="text" id="phone" name="phone" pattern="\d{11}" placeholder="01012341234" required>
+	비밀번호:<input type="text" id="password" name="password" maxlength="20" value="1111"/><br>
+	이름:<input type="text" name="name" value="1"><br>
+	전화번호:<input type="text" id="phone" name="phone"  value="1">
 	<input type="hidden" name="enable" value="1"><br>
 	<input type="submit" value="등록"><br>
 </form>
