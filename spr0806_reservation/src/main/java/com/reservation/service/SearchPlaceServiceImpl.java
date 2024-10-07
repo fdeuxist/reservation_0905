@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reservation.dao.SearchPlaceDao;
+import com.reservation.dto.ResultReviewsJoinDto;
 import com.reservation.dto.SearchPlaceDto;
 
 @Service
@@ -32,6 +33,13 @@ public class SearchPlaceServiceImpl implements ISearchPlaceService{
 		SearchPlaceDao dao = sqlSession.getMapper(SearchPlaceDao.class);
 		return dao.selectAllVendorByBasicAddress(basic_address);
 	}
+
+	@Override
+	public ArrayList<ResultReviewsJoinDto> joinReviewsAndVendor() throws Exception {
+		SearchPlaceDao dao = sqlSession.getMapper(SearchPlaceDao.class);
+		return dao.joinReviewsAndVendor();
+	}
+	
 	
 		
 }
