@@ -26,13 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.reservation.dto.BusinessPlaceImagePathDto;
 import com.reservation.dto.MainDto;
+import com.reservation.dto.ResultReviewsJoinDto;
 import com.reservation.dto.ServiceItemsDto;
 import com.reservation.dto.VendorDto;
 import com.reservation.service.IBusinessPlaceImagePathService;
 import com.reservation.service.IMainService;
 import com.reservation.service.IMapService;
+import com.reservation.service.ISearchPlaceService;
 import com.reservation.service.IServiceItemsService;
 import com.reservation.service.IVendorService;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //created by 김하겸
 //해당 컨트롤러는 메인페이지 뷰에서 오는 요청을 처리
@@ -40,6 +44,7 @@ import com.reservation.service.IVendorService;
 @Controller
 public class MainController {
 
+	
 	@Inject
 	private IMainService userService;
 
@@ -53,6 +58,8 @@ public class MainController {
 
 	@Autowired
 	private IServiceItemsService itemService;
+	@Autowired
+	private ISearchPlaceService reviewService;
 
 	@Autowired
 	private IVendorService vendorService;
@@ -206,37 +213,78 @@ public class MainController {
 	// 검색폼 처리 관련 메서드
 	@RequestMapping(value = "/my/search", method = RequestMethod.GET)
 	public String search(@RequestParam("query") String query, Model model) throws Exception {
-		System.out.println("검색어는  " + query);
+	    System.out.println("검색어는  " + query);
+	    // 검색어에 해당하는 업체 목록을 가져옴
+	    ArrayList<VendorDto> results = mapService.selectPlace(query);
+	    ArrayList<String> encodedImages = new ArrayList<>(); // 인코딩된 이미지 리스트 초기화
+	    ArrayList<ResultReviewsJoinDto> starDto = reviewService.joinReviewsAndVendor();
+	    Map<String, List<ResultReviewsJoinDto>> groupedByBusiness = new HashMap<>();
+	    
+	    for (ResultReviewsJoinDto dto : starDto) {
+	        String businessRegiNum = dto.getBusiness_regi_num(); // business_regi_num 추출
 
-		// 검색어에 해당하는 업체 목록을 가져옴
-		ArrayList<VendorDto> results = mapService.selectPlace(query);
-		ArrayList<String> encodedImages = new ArrayList<>(); // 인코딩된 이미지 리스트 초기화
+	        // 그룹화된 Map에 business_regi_num이 없으면 새로운 리스트 추가
+	        groupedByBusiness.computeIfAbsent(businessRegiNum, k -> new ArrayList<>()).add(dto);
+	    }		
 
-		// 각 업체의 메인 이미지를 가져와서 인코딩
-		for (VendorDto dto : results) {
-			BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
-			if (img != null && img.getFile_data() != null) {
-				// 이진 데이터를 Base64로 인코딩
-				String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
-				System.out.println(encodedImage);
-				encodedImages.add(encodedImage);
-			} else {
-				// 기본 이미지나 에러 이미지 처리
-				encodedImages.add(null);
-			}
-		}
-		for (String dto : encodedImages) {
-			System.out.println(dto);
-		}
-		for (VendorDto dto : results) {
-			System.out.println(dto.getBusiness_name());
-		}
+	    List<ResultReviewsJoinDto> uniqueBusinessList = new ArrayList<>();
+	    for (Map.Entry<String, List<ResultReviewsJoinDto>> entry : groupedByBusiness.entrySet()) {
+	        String businessRegiNum = entry.getKey();
+	        List<ResultReviewsJoinDto> reviews = entry.getValue();
 
-		model.addAttribute("query", query);
-		model.addAttribute("results", results);
-		model.addAttribute("encodedImages", encodedImages); // 인코딩된 이미지 리스트 추가
+	        // star_point 값의 합계와 평균 계산
+	        double totalStarPoints = 0;
+	        for (ResultReviewsJoinDto review : reviews) {
+	            totalStarPoints += review.getStar_point(); // star_point 값 더하기
+	        }
 
-		return "/main/search";
+	        // 평균 계산
+	        double averageStarPoint = totalStarPoints / reviews.size();
+
+	        // 전화번호와 상세 주소 가져오기 (첫 번째 리뷰에서 가져옴)
+	        String vendorPhone = reviews.get(0).getVendor_phone();
+	        String detailAddress = reviews.get(0).getDetail_address();
+	        int reviewCount = reviews.size();
+
+	        // 새로운 Dto 생성 후 평균 별점, 전화번호, 상세 주소 설정
+	        ResultReviewsJoinDto averagedDto = new ResultReviewsJoinDto();
+	        averagedDto.setBusiness_regi_num(businessRegiNum);
+	        averagedDto.setAveragePoint(averageStarPoint);
+	        averagedDto.setVendor_phone(vendorPhone); // 전화번호 설정
+	        averagedDto.setDetail_address(detailAddress); // 상세 주소 설정
+	        averagedDto.setReviewCount(reviewCount);
+
+	        // 중복되지 않도록 uniqueBusinessList에 추가
+	        uniqueBusinessList.add(averagedDto);
+	    }
+
+	    // 결과 출력 (확인용)
+	    for (ResultReviewsJoinDto dto : uniqueBusinessList) {
+	        System.out.println("Business_regi_num: " + dto.getBusiness_regi_num() + ", 평균 별점: " + dto.getAveragePoint()
+	                + ", 전화번호: " + dto.getVendor_phone() + ", 상세 주소: " + dto.getDetail_address());
+	    }
+
+	    // 각 업체의 메인 이미지를 가져와서 인코딩
+	    for (VendorDto dto : results) {
+	        BusinessPlaceImagePathDto img = ibpService.selectMainImage(dto.getEmail(), dto.getBusiness_regi_num());
+	        if (img != null && img.getFile_data() != null) {
+	            // 이진 데이터를 Base64로 인코딩
+	            String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
+	            System.out.println(encodedImage);
+	            encodedImages.add(encodedImage);
+	        } else {
+	            // 기본 이미지나 에러 이미지 처리
+	            encodedImages.add(null);
+	        }
+	    }
+
+	    model.addAttribute("dtos", uniqueBusinessList);
+	    model.addAttribute("star", starDto);
+	    model.addAttribute("query", query);
+	    model.addAttribute("results", results);
+	    model.addAttribute("encodedImages", encodedImages); // 인코딩된 이미지 리스트 추가
+	    
+	    return "/main/search";
 	}
 
 	@GetMapping("/miniSearch")
@@ -250,23 +298,94 @@ public class MainController {
 		return dtos;
 	}
 
-	@GetMapping("/keyWord")
+	@GetMapping("/sort")
 	@ResponseBody
-	public ArrayList<VendorDto> resultKeword(@RequestParam("query") String query) throws Exception {
-		System.out.println("쿼리값 :" + query);
-		ArrayList<VendorDto> dtos = mapService.selectPlace(query);
-		for (VendorDto dto : dtos) {
-			System.out.println("키워드 검색 결과 리스트" + dto.getBusiness_name());
-		}
-		return dtos;
+	public List<ResultReviewsJoinDto> sortVendors(@RequestParam("sortOption") String sortOption) throws Exception {
+	    // 리뷰와 업체 정보를 가져옵니다.
+	    List<ResultReviewsJoinDto> starDto = reviewService.joinReviewsAndVendor();
+	    Map<String, List<ResultReviewsJoinDto>> groupedByBusiness = new HashMap<>();
+
+	    // business_regi_num으로 리뷰를 그룹화합니다.
+	    for (ResultReviewsJoinDto dto : starDto) {
+	        String businessRegiNum = dto.getBusiness_regi_num(); // business_regi_num 추출
+	        groupedByBusiness.computeIfAbsent(businessRegiNum, k -> new ArrayList<>()).add(dto);
+	    }
+
+	    List<ResultReviewsJoinDto> uniqueBusinessList = new ArrayList<>();
+	    for (Map.Entry<String, List<ResultReviewsJoinDto>> entry : groupedByBusiness.entrySet()) {
+	        String businessRegiNum = entry.getKey();
+	        List<ResultReviewsJoinDto> reviews = entry.getValue();
+
+	        // star_point 값의 합계와 평균 계산
+	        double totalStarPoints = reviews.stream().mapToDouble(ResultReviewsJoinDto::getStar_point).sum();
+	        double averageStarPoint = totalStarPoints / reviews.size();
+
+	        // 전화번호, 상세 주소 및 기타 정보 가져오기 (첫 번째 리뷰에서 가져옴)
+	        String vendorPhone = reviews.get(0).getVendor_phone();
+	        String detailAddress = reviews.get(0).getDetail_address();
+	        String vendorEmail = reviews.get(0).getVendor_email();
+	        String basic_address = reviews.get(0).getBasic_address();
+	        String business_name = reviews.get(0).getBusiness_name();
+	        int reviewCount = reviews.size();
+
+	        // 새로운 Dto 생성 후 평균 별점, 전화번호, 상세 주소 설정
+	        ResultReviewsJoinDto averagedDto = new ResultReviewsJoinDto();
+	        averagedDto.setBusiness_regi_num(businessRegiNum);
+	        averagedDto.setAveragePoint(averageStarPoint);
+	        averagedDto.setVendor_phone(vendorPhone); // 전화번호 설정
+	        averagedDto.setDetail_address(detailAddress); // 상세 주소 설정
+	        averagedDto.setReviewCount(reviewCount);
+	        averagedDto.setVendor_email(vendorEmail);
+	        averagedDto.setBasic_address(basic_address);
+	        averagedDto.setBusiness_name(business_name);
+
+	        // 업체의 메인 이미지를 가져와서 인코딩 후 averagedDto에 추가
+	        BusinessPlaceImagePathDto img = ibpService.selectMainImage(vendorEmail, businessRegiNum);
+	        if (img != null && img.getFile_data() != null) {
+	            // 이진 데이터를 Base64로 인코딩
+	            String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
+	            averagedDto.setEncodedImage(encodedImage); // 인코딩된 이미지를 averagedDto에 추가
+	        } else {
+	            // 기본 이미지나 에러 이미지 처리
+	            averagedDto.setEncodedImage(null);
+	        }
+
+	        // 중복되지 않도록 uniqueBusinessList에 추가
+	        uniqueBusinessList.add(averagedDto);
+	    }
+
+	    // 정렬 로직 처리
+	    switch (sortOption) {
+	        case "reviewCount":
+	            uniqueBusinessList.sort(Comparator.comparingInt(ResultReviewsJoinDto::getReviewCount).reversed());
+	            break;
+	        case "highRating":
+	            uniqueBusinessList.sort(Comparator.comparingDouble(ResultReviewsJoinDto::getAveragePoint).reversed());
+	            break;
+	        case "lowRating":
+	            uniqueBusinessList.sort(Comparator.comparingDouble(ResultReviewsJoinDto::getAveragePoint));
+	            break;
+	        case "lowPrice":
+	            // uniqueBusinessList.sort(Comparator.comparingDouble(ResultReviewsJoinDto::getLowestPrice)); // getLowestPrice 메서드가 필요함
+	            break;
+	        case "highPrice":
+	            // uniqueBusinessList.sort(Comparator.comparingDouble(ResultReviewsJoinDto::getLowestPrice).reversed()); // getLowestPrice 메서드가 필요함
+	            break;
+	        default:
+	            break; // 기본 처리
+	    }
+
+	    // 결과 출력 (확인용)
+	    for (ResultReviewsJoinDto dto : uniqueBusinessList) {
+	        System.out.println("Business_regi_num: " + dto.getBusiness_regi_num() + 
+	                           ", 평균 별점: " + dto.getAveragePoint() +
+	                           ", 전화번호: " + dto.getVendor_phone() + 
+	                           ", 상세 주소: " + dto.getDetail_address() +
+	                           ", 인코딩된 이미지: " + dto.getEncodedImage());
+	    }
+
+	    // 정렬된 리스트를 JSON 형태로 반환
+	    return uniqueBusinessList; 
 	}
 
-	@GetMapping("/searchSuggestions")
-	public ResponseEntity<List<String>> searchSuggestions(@RequestParam("query") String query) throws Exception {
-		List<VendorDto> vendorDtos = service.selectPlace(query);
-
-		List<String> businessNames = vendorDtos.stream().map(VendorDto::getBusiness_name).collect(Collectors.toList());
-
-		return ResponseEntity.ok(businessNames);
-	}
 }
