@@ -144,6 +144,8 @@ var result = '${msg}';
 console.log(result);
 if (result == 'success') {
 	alert("등록되었습니다.");
+    window.location.href = '/ex/vendor/serviceitemselectAll';
+	
 }
 </script>
 
