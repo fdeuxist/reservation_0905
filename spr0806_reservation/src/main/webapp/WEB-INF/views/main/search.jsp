@@ -342,7 +342,7 @@
 						            	$('.results').empty(); // 기존 결과 비우기
 						            	response.forEach(function(item) {
 						            	    $('.results').append(
-						            	        '<a href="/ex/member/businessplaceinfo?email=' + encodeURIComponent(item.email) + '&business_regi_num=' + encodeURIComponent(item.business_regi_num) + '" class="result-item">' +
+						            	        '<a href="/ex/member/businessplaceinfo?email=' + encodeURIComponent(item.vendor_email) + '&business_regi_num=' + encodeURIComponent(item.business_regi_num) + '" class="result-item">' +
 						            	            (item.encodedImage ? '<img class="result-image" src="data:image/jpeg;base64,' + item.encodedImage + '" alt="' + item.business_name + '">' : '<img class="result-image" src="../resources/imgs/noimage.jpg" alt="기본 이미지">') +
 						            	            '<div class="info">' +
 						            	                '<h4>' + item.business_name + '</h4>' +

@@ -336,6 +336,7 @@ public class MainController {
 	        averagedDto.setDetail_address(detailAddress); // 상세 주소 설정
 	        averagedDto.setReviewCount(reviewCount);
 	        averagedDto.setVendor_email(vendorEmail);
+	        System.out.println(vendorEmail);
 	        averagedDto.setBasic_address(basic_address);
 	        averagedDto.setBusiness_name(business_name);
 
