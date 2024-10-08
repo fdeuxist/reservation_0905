@@ -26,17 +26,17 @@
 	<div class="content">
 
 		<div class="filters">
-			<h3>필터 섹션</h3>
+			<h3>필터</h3>
 			<!-- 키워드 버튼들 -->
 			<div class="sort-filters">
-				<label for="sortOption">정렬:</label> <select id="sortOption">
+				<label for="sortOption"></label> <select id="sortOption">
 					<option value="reviewCount">리뷰 많은 순</option>
 					<option value="highRating">평점 높은 순</option>
 					<option value="lowRating">평점 낮은 순</option>
 					<option value="lowPrice">최저가 순</option>
 					<option value="highPrice">가격높은 순</option>
 				</select>
-				<button id="sortButton">정렬 적용</button>
+				<button id="sortButton">적용</button>
 				<!-- 정렬 적용 버튼 추가 -->
 			</div>
 			<div>
@@ -47,15 +47,7 @@
 				<input type="radio" name="radio-filter" id="radio2"> <label
 					for="radio2">1시간 메뉴</label>
 			</div>
-			<div class="keyword-buttons">
-				<button type="button" data-query="GS">#GS</button>
-				<button type="button" data-query="의원">#동내의원</button>
-				<button type="button" data-query="GS">#1+1</button>
-				<button type="button" data-query="CU">#see u 캠페인</button>
-				<button type="button" data-query="이마트">#장보기</button>
-				<button type="button" data-query="이마트">#ㅇㅇ</button>
-
-			</div>
+			
 			<div class="container">
 				<div class="slider-wrapper">
 					<div id="priceSlider"></div>
@@ -299,7 +291,7 @@
 																						+ '<p><i class="fas fa-map-marker-alt"></i> '
 																						+ item.basic_address
 																						+ '</p>'
-																						+ '<p><i class="fas fa-phone"></i> '
+																						+ '<p><i class="fas fa-envelope"></i> '
 																						+ item.email
 																						+ '</p>'
 																						+ '<p><i class="fas fa-money-bill-wave"></i> '
