@@ -6,38 +6,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.reservation.dao.SearchPlaceDao">
 
 	<!-- view -->
-	<!-- drop view search_place; create view search_place as select u.email, 
-		u.phone, v.business_regi_num, v.business_name, v.basic_address, v.detail_address, 
-		v.business_type, b.place_info from users u join vendor v on u.email = v.email 
-		join business_place_info b on v.email = b.email and v.business_regi_num = 
-		b.business_regi_num and u.enable <> 0; View SEARCH_PLACE이(가) 생성되었습니다. 이름 
-		널? 유형 EMAIL VARCHAR2(255) PHONE VARCHAR2(20) BUSINESS_REGI_NUM VARCHAR2(20) 
-		BUSINESS_NAME VARCHAR2(255) BASIC_ADDRESS VARCHAR2(255) DETAIL_ADDRESS VARCHAR2(255) 
-		BUSINESS_TYPE VARCHAR2(255) PLACE_INFO VARCHAR2(4000) -->
-
+	<!-- 
+	drop view search_place;
+	create view search_place as
+	select 
+	    u.email,
+	    u.phone,
+	    v.business_regi_num,
+	    v.business_name,
+	    v.basic_address,
+	    v.detail_address,
+	    v.business_type,
+	    b.place_info
+	from 
+	    users u
+	join 
+	    vendor v on u.email = v.email
+	join 
+	    business_place_info b on v.email = b.email 
+	        and v.business_regi_num = b.business_regi_num
+	        and u.enable <> 0;
+	
+	View SEARCH_PLACE이(가) 생성되었습니다.
+	
+	이름                널? 유형             
+	EMAIL                VARCHAR2(255)  
+	PHONE                VARCHAR2(20)   
+	BUSINESS_REGI_NUM    VARCHAR2(20)   
+	BUSINESS_NAME        VARCHAR2(255)  
+	BASIC_ADDRESS        VARCHAR2(255)  
+	DETAIL_ADDRESS       VARCHAR2(255)  
+	BUSINESS_TYPE        VARCHAR2(255)  
+	PLACE_INFO           VARCHAR2(4000) 
+	-->
+	
 	<select id="selectOnePlace" resultType="SearchPlaceDto">
-		select * from
-		search_place
-		where email = #{email}
-		and business_regi_num =
-		#{business_regi_num}
+	select * from search_place 
+	    where email = #{email} 
+	    and business_regi_num = #{business_regi_num}
 	</select>
-
+	
 	<!-- vendor에서 이사옴 -->
-	<select id="selectAllVendorByBusinessType"
-		resultType="SearchPlaceDto">
-		select * from search_place where business_type =
-		#{business_type}
+	<select id="selectAllVendorByBusinessType" resultType="SearchPlaceDto">
+	select * from search_place where business_type = #{business_type}
 	</select>
 	<!-- vendor에서 이사옴 -->
-	<select id="selectAllVendorByBasicAddress"
-		resultType="SearchPlaceDto">
-		select * from search_place where basic_address like '%' ||
-		#{basic_address}
-		|| '%'
+	<select  id="selectAllVendorByBasicAddress" resultType="SearchPlaceDto">
+	select * from search_place where basic_address like '%' || #{basic_address} || '%'
 	</select>
 
 
+	<!-- 10 07 김하겸 -->
 	<select id="joinReviewsAndVendor"
 		resultType="ResultReviewsJoinDto">
 		SELECT
