@@ -33,8 +33,7 @@
 					<option value="reviewCount">리뷰 많은 순</option>
 					<option value="highRating">평점 높은 순</option>
 					<option value="lowRating">평점 낮은 순</option>
-					<option value="lowPrice">최저가 순</option>
-					<option value="highPrice">가격높은 순</option>
+					
 				</select>
 				<button id="sortButton">적용</button>
 				<!-- 정렬 적용 버튼 추가 -->
@@ -340,19 +339,19 @@
 						            },
 						            success: function(response) {
 						                // 서버에서 반환된 데이터를 결과 컨테이너에 업데이트
-						                $('.results').empty(); // 기존 결과 비우기
-						                response.forEach(function(item) {
-						                    $('.results').append(
-						                        '<a href="/ex/member/businessplaceinfo?email=' + encodeURIComponent(item.email) + '&business_regi_num=' + encodeURIComponent(item.business_regi_num) + '" class="result-item">' +
-						                            '<div class="info">' +
-						                                '<h4>' + item.business_name + '</h4>' +
-						                                '<p><i class="fa fa-map-marker"></i> ' + item.basic_address + ' ' + item.detail_address + '</p>' +
-						                                '<p><i class="fa fa-star"></i> 평균 별점: ' + item.averagePoint + ' (' + item.reviewCount + ')</p>' +
-						                            '</div>' +
-						                            (item.encodedImage ? '<img src="data:image/jpeg;base64,' + item.encodedImage + '" alt="' + item.business_name + '">' : '<img src="../resources/imgs/noimage.jpg" alt="기본 이미지">') +
-						                        '</a>'
-						                    );
-						                });
+						            	$('.results').empty(); // 기존 결과 비우기
+						            	response.forEach(function(item) {
+						            	    $('.results').append(
+						            	        '<a href="/ex/member/businessplaceinfo?email=' + encodeURIComponent(item.email) + '&business_regi_num=' + encodeURIComponent(item.business_regi_num) + '" class="result-item">' +
+						            	            (item.encodedImage ? '<img class="result-image" src="data:image/jpeg;base64,' + item.encodedImage + '" alt="' + item.business_name + '">' : '<img class="result-image" src="../resources/imgs/noimage.jpg" alt="기본 이미지">') +
+						            	            '<div class="info">' +
+						            	                '<h4>' + item.business_name + '</h4>' +
+						            	                '<p><i class="fa fa-map-marker"></i> ' + item.basic_address + ' ' + item.detail_address + '</p>' +
+						            	                '<p><i class="fa fa-star"></i> 평균 별점: ' + item.averagePoint + ' (' + item.reviewCount + ')</p>' +
+						            	            '</div>' +
+						            	        '</a>'
+						            	    );
+						            	});
 						            },
 						            error: function(xhr, status, error) {
 						                console.error('AJAX 요청 실패:', error);

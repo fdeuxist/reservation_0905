@@ -182,8 +182,8 @@ button#setPriceButton:hover {
 
 /* 결과 섹션 스타일 */
 .result-item {
-    display: flex;
-    align-items: center;
+    display: flex; /* 수평 배치를 위해 flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
     padding: 15px;
     background: #fff;
     border-radius: 8px;
@@ -192,19 +192,21 @@ button#setPriceButton:hover {
     margin-bottom: 20px;
 }
 
+.result-item img {
+    width: 160px; /* 이미지의 너비 조정 */
+    height: 100px; /* 이미지의 높이 조정 */
+    object-fit: cover; /* 이미지 비율 유지 */
+    border-radius: 8px;
+    margin-right: 20px; /* 이미지와 텍스트 간의 간격 */
+}
+
 .result-item:hover {
     background-color: #f5f5f5;
     transform: scale(1.02);
 }
 
 /* 이미지 스타일 개선 */
-.result-item img {
-    width: 160px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 20px;
-}
+
 
 /* 텍스트 색상 및 정렬 */
 .result-item .info h4 {
