@@ -23,9 +23,13 @@ public class BusinessPlaceImagePathServiceImpl implements IBusinessPlaceImagePat
 		ArrayList<BusinessPlaceImagePathDto> list = null;
 		try {
 			list = dao.selectAllNotMainImage(email, business_regi_num);
-			System.out.println("service impl  selectAllMainAndNormalImage list : " + list);
-			list.add(0, dao.selectMainImage(email, business_regi_num));
-			System.out.println("service impl  selectAllMainAndNormalImage list added : " + list );
+			//System.out.println("service impl  selectAllMainAndNormalImage list : " + list);
+			BusinessPlaceImagePathDto mainImg = null;
+			mainImg = dao.selectMainImage(email, business_regi_num);
+			if(mainImg != null) {
+				list.add(0, mainImg);
+				//System.out.println("service impl  selectAllMainAndNormalImage list added : " + list );
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

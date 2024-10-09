@@ -1,5 +1,6 @@
 package com.reservation.ex;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
@@ -137,6 +138,22 @@ public class UserController {
 		return "redirect:/user/login?member";
 	}
 	
+	@RequestMapping(value = "/user/insert_init", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<String> insertInit() throws Exception{
+		System.out.println("UserController - /user/insert_init(GET)");
+		ResponseEntity<String> entity=null;
+		String encPw = passwordEncoder.encode("1111");
+		
+		String[] accounts = {"admin", "manager", "member1", "member2", "vendor1", "vendor2", "vendor3"};
+		
+		for(int i=0;i<accounts.length;i++) {
+			uService.insert(new UserDto(accounts[i], encPw, "1", "1", 1));
+		}
+		
+		entity = new ResponseEntity<String>("TEST account insert OK", HttpStatus.OK);
+		return entity;
+	}
 	
 /*
 	@RequestMapping(value = "/user/scheduleselect", method = RequestMethod.GET)

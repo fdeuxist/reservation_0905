@@ -156,7 +156,7 @@ body {
                     </tr>
                     <tr>
                         <th scope="row">예상 소요 시간</th>
-                        <td>${myOrder.total_required_time}</td>
+                        <td>${myOrder.total_required_time*0.5} 시간</td>
                     </tr>
                     <tr>
                         <th scope="row">주문자 메모</th>
