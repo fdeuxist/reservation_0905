@@ -78,7 +78,7 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 	<c:forEach items="${imageList}" var="image" varStatus="status">
 		    <div class="carousel-item">
 		      <%--<img src="data:image/jpeg;base64,${image.encodedImage}" alt="${placeInfo.business_name}_${status.index}" width="1100" height="500">--%>
-		      <img src="data:image/jpeg;base64,${image.encodedImage}" alt="${placeInfo.business_name}_${status.index}" class="d-block w-100" style="max-height: 500px; object-fit: cover;">
+		      <img src="data:image/jpeg;base64,${image.encodedImage}" alt="${placeInfo.business_name}_${status.index}" class="d-block w-100 h-100" style="max-height: 500px; object-fit: contain;">
 		    </div>
 	</c:forEach>
   </div>
@@ -94,6 +94,13 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 <c:if test="${empty imageList}">
 </c:if>
 
+
+
+<div class="form-group" style="width: 70%; margin: 0 auto;">
+    <div id="placeInfo" class="form-control-plaintext text-center mx-auto" style="white-space: pre-wrap; width: 100%;">
+        ${placeInfo.place_info}
+    </div>
+</div>
 
 
 

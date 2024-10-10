@@ -270,7 +270,7 @@ public class MainController {
 	        if (img != null && img.getFile_data() != null) {
 	            // 이진 데이터를 Base64로 인코딩
 	            String encodedImage = Base64.getEncoder().encodeToString(img.getFile_data());
-	            System.out.println(encodedImage);
+	            //System.out.println(encodedImage);
 	            encodedImages.add(encodedImage);
 	        } else {
 	            // 기본 이미지나 에러 이미지 처리

@@ -30,7 +30,7 @@ if (result == 'success') {
             <form:form action="${pageContext.request.contextPath}/vendor/serviceitemupdate" method="post" modelAttribute="serviceItems">
             
     <br><h3 class="text-center">서비스 항목 수정</h3><br>
-                    <form:input path="item_id" id="item_id" class="form-control" />
+                    <form:input path="item_id" id="item_id" class="form-control" type="hidden" />
                 <div class="form-group">
                     <label for="service_name">서비스 이름:</label>
                     <form:input path="service_name" id="service_name" class="form-control" required="true"/>

@@ -342,6 +342,7 @@ public class VendorController {
 		if(session.getAttribute("loginName")==null) {
 			session.setAttribute("loginName", uService.selectEmail(email).getName());
 			session.setAttribute("loginBusiness_regi_num", vService.selectEmail(email).getBusiness_regi_num());
+			session.setAttribute("loginPhone", uService.selectEmail(email).getPhone());
 		}
 		
 		return "/vendor/mypage";

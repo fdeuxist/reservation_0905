@@ -351,7 +351,7 @@ public class MemberController {
 		    }
 	        
 	        model.addAttribute("imageList", encodedImgList);
-	        System.out.println("model add imageList : " + encodedImgList);
+	        //System.out.println("model add imageList : " + encodedImgList);
 	        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
