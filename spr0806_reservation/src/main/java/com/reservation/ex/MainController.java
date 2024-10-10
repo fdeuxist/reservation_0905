@@ -388,5 +388,13 @@ public class MainController {
 	    // 정렬된 리스트를 JSON 형태로 반환
 	    return uniqueBusinessList; 
 	}
+	@GetMapping("/searchSuggestions")
+	public ResponseEntity<List<String>> searchSuggestions(@RequestParam("query") String query) throws Exception {
+		List<VendorDto> vendorDtos = service.selectPlace(query);
+
+		List<String> businessNames = vendorDtos.stream().map(VendorDto::getBusiness_name).collect(Collectors.toList());
+
+		return ResponseEntity.ok(businessNames);
+	}
 
 }
