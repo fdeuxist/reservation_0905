@@ -51,7 +51,22 @@ public class ReviewsController {
 		
 		return entity;
     }
-
+	
+	@RequestMapping(value = "/reviews/selectFiveLatestReviews", method = RequestMethod.GET)
+	@ResponseBody
+    public ResponseEntity<Map<String, Object>> selectFiveLatestReviews(
+			@RequestParam("vendor_email") String vendor_email, 
+			@RequestParam("business_regi_num") String business_regi_num) throws Exception{
+		
+		logger.info("ReviewsController - /reviews/selectFiveLatestReviews   vendor_email : {} , business_regi_num : {} " + vendor_email + business_regi_num);
+		Map<String, Object> response = new HashMap<>();
+		ArrayList<ReviewsDto> dto = null;
+		dto = iRServies.selectFiveLatestReviews(vendor_email, business_regi_num);
+		response.put("dto", dto);
+        logger.info("ReviewsController - /reviews/selectFiveLatestReviews    dto : {} " , dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
 	@RequestMapping(value = "/reviews/selectOne", method = RequestMethod.GET)
 	@ResponseBody
     public ResponseEntity<Map<String, Object>>  selectOne(@RequestParam String reservation_number) throws Exception {

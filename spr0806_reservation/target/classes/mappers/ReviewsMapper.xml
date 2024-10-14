@@ -9,6 +9,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 select * from reviews where reservation_number = #{reservation_number}
 </select>
 
+<!-- 해당업체 최신 리뷰 5개 조회 -->
+<select id="selectFiveLatestReviews" resultType="ReviewsDto">
+<![CDATA[
+select * from reviews 
+    where reservation_number in 
+        (select reservation_number 
+            from user_reservation 
+                where vendor_email=#{vendor_email} 
+                and business_regi_num=#{business_regi_num}
+                and status='3')
+    order by review_date, reservation_number desc
+    OFFSET (1 - 1) * 5 ROWS 
+        FETCH NEXT 5 ROWS ONLY
+        ]]>
+</select>
+
+
 <!-- 멤버가 후기 작성, 벤더가 후기 작성할 자리는 null로 insert -->
 <insert id="insert">
     insert into reviews (reservation_number, review_date, star_point, member_content, vendor_content)

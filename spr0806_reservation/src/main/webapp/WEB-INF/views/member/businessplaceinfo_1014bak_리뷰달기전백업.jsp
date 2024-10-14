@@ -12,17 +12,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<style>
-.hidden {
-    display: none;
-}
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-</style>
+
 <div class="header-placeholder"></div>
 
 <main> <%--name : ${vendorInfo.name } <br>
@@ -34,8 +24,46 @@ vendorInfo.basic_address : ${vendorInfo.basic_address } <br>
 vendorInfo.detail_address : ${vendorInfo.detail_address } <br>
 vendorInfo.business_type : ${vendorInfo.business_type } <br>
  --%>
-
-
+ <%-- --%>
+<%--
+장소 정보<br>
+<img src="${pageContext.request.contextPath}/${mainImg}" alt="메인 이미지"
+	style="max-width: 200px; max-height: 200px;" /> <c:if
+	test="${not empty placeInfo}">
+	<table border="1">
+		<tr>
+			<th>Email</th>
+			<td id="placeEmail">${placeInfo.email}</td>
+		</tr>
+		<tr>
+			<th>Business Registration Number</th>
+			<td id="placeRegiNum">${placeInfo.business_regi_num}</td>
+		</tr>
+		<tr>
+			<th>Place Info</th>
+			<td>${placeInfo.place_info}</td>
+		</tr>
+		<!-- 이미지 리스트가 비어있지 않은 경우 -->
+		<c:if test="${not empty placeImagePathDtos}">
+			<c:forEach var="dto" items="${placeImagePathDtos}" varStatus="status">
+				<tr>
+					<th>Image ${status.index + 1}</th>
+					<td><img
+						src="${pageContext.request.contextPath}/${dto.place_img_path}"
+						alt="Image ${status.index + 1}"
+						style="max-width: 200px; max-height: 200px;" /></td>
+				</tr>
+			</c:forEach>
+			<!-- 이미지 리스트가 비어있는 경우 -->
+		</c:if>
+		<c:if test="${empty placeImagePathDtos}">
+			<tr>
+				<td colspan="2">이미지가 없습니다</td>
+			</tr>
+		</c:if>
+	</table>
+</c:if>
+  --%>
 <input type="hidden" id="placeEmail" value="${placeInfo.email}">
 <input type="hidden" id="placeRegiNum" value="${placeInfo.business_regi_num}">
 
@@ -76,6 +104,11 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 
 
 
+<%--  안씀 
+        <a href="<c:url value='/member/scheduleselect?email=${placeInfo.email}&business_regi_num=${placeInfo.business_regi_num}'/>">예약하기</a>
+--%>
+
+
 
 
 <div class="container mt-4">
@@ -103,17 +136,86 @@ vendorInfo.business_type : ${vendorInfo.business_type } <br>
 </div>
 
 
+
+<%--
+<div class="container mt-4">
+    <div class="row">
+        <c:forEach var="serviceItem" items="${serviceItems}" varStatus="status">
+            <div class="col-md-4 mb-4">
+                <div class="card serviceItem-card" data-serviceItemId="${serviceItem.item_id }"
+                     data-serviceName="${serviceItem.service_name }"
+                     data-serviceDescription="${serviceItem.service_description }"
+                     data-requiredTime="${serviceItem.required_time }"
+                     data-servicePrice="${serviceItem.service_price }">
+                    <div class="card-header">${serviceItem.service_name}</div>
+                    <div class="card-body">
+                        ${serviceItem.service_description}<br>
+                        <div class="small text-right">소요 시간: 약 ${serviceItem.required_time * 30}분<br>
+                            <div style="font-size: 1rem;">가격: ${serviceItem.service_price}원</div>
+                        </div>
+                    </div> 
+                    <div class="card-footer">
+                        <input type="checkbox" class="item_idChkBox" id="item_idChkBox_${status.index}"
+                               name="item_idChkBox" value="${serviceItem.item_id}" style="display: none;" />
+                        <span class="btn btn-primary" onclick="document.getElementById('item_idChkBox_${status.index}').click();">선택하기</span>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+--%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%--
+<div class="serviceItem-container">
+	<c:forEach var="serviceItem" items="${serviceItems }"
+		varStatus="status">
+		<div class="serviceItem-card"
+			data-serviceItemId="${serviceItem.item_id }"
+			data-serviceName="${serviceItem.service_name }"
+			data-serviceDescription="${serviceItem.service_description }"
+			data-requiredTime="${serviceItem.required_time }"
+			data-servicePrice="${serviceItem.service_price }">
+			<p>이름 : ${serviceItem.service_name }</p>
+			<p>설명 : ${serviceItem.service_description }</p>
+			<p>시간 : 약 ${serviceItem.required_time * 30}분</p>
+			<p>가격 : ${serviceItem.service_price }원</p>
+			<input type="checkbox" class="item_idChkBox" id="item_idChkBox"
+				name="item_idChkBox" value="${serviceItem.item_id }" />
+			<!-- <a href="productDetail.pdt?pdt_no=${productDto.pdt_no}">상세 보기</a>  -->
+		</div>
+	</c:forEach>
+</div>
+--%>
 <input type="button" class="btn btn-primary d-block mx-auto" id="nextBtn" value="다음단계" /> <!-- 값 가져갈거 가격,시간,벤더이메일,사업자번호,선택된아이템id들 -->
 <br>
-
-<div id="reviews" style="width: 80%; margin: auto;"></div>
-
-
-
-
-
-
-
 <%--
 data = { //SelectedItemsDto 다음페이지로 넘어가면서 세션에 저장 <br>
 email: email, 벤더이메일 <br>
@@ -128,82 +230,6 @@ ${sessionScope.loginEmail}<br>
 ${sessionScope.loginAuthority}<br>
  --%>
 </main>
-
-<script>
-$(function() {
-	var placeEmail = $('#placeEmail').val();
-    var placeRegiNum = $('#placeRegiNum').val();
-    
-	//console.log(" vendor_email : ", placeEmail,	" business_regi_num: ", placeRegiNum);
-	//========================================================================
-	$.ajax({
-        url: "/ex/reviews/selectFiveLatestReviews",
-        method: "GET",
-        contentType: "application/json",
-        data: {
-        	vendor_email : placeEmail,
-        	business_regi_num: placeRegiNum
-        },
-        success: function(response) {
-            console.log(response);
-            drawReviews(response.dto);
-        },
-        error: function(xhr, status, error) {
-            console.error("Error :", error);
-            console.log(response);
-        }
-    });
-	
-	function drawReviews(dto){
-	    var reviewForm = $('#reviews');
-		console.log("length : " , dto.length);
-		
-		var starS = `<i class="fa-solid fa-star"></i>`;
-		var starR = `<i class="fa-regular fa-star"></i>`;
-		
-		var reviewDivStr = '<div>최근 리뷰</div>';
-		
-		for(let i=0;i<dto.length;i++){
-			reviewDivStr +=`
-		    	    <div class="row comment-form">
-		    	        <div class="col text-left">
-		    	            <div>별점 : <span id="star">`;
-		    	            
-		    	let starPoint = parseInt(dto[i].star_point)
-		    	for(let j=1;j<=5;j++){
-		    		if(j<=starPoint){
-		    			reviewDivStr += starS;
-		    		}else {
-		    			reviewDivStr += starR;
-		    		}
-		    	}
-		    
-		    	reviewDivStr +=`</span></div>
-		    	        </div>
-		    	        <div class="col text-left">
-		    	            <div>작성일 : <span id="r_date">`+ dto[i].review_date +`</span></div>
-		    	        </div>
-		    	    </div>
-		    	    <textarea id="m_content" class="form-control mt-2" rows="1" readonly>`+ 
-		    	    dto[i].member_content
-		    	    +`</textarea>
-		    	`;
-		}
-		reviewDivStr += `<br>`;
-		reviewForm.html(reviewDivStr);
-		
-		
-		
-		
-	}
-	
-	
-	
-
-});
-</script>
-
-
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c665e334713bdbedf11d514849fcb54b&libraries=services,clusterer,drawing"></script>
 <script>
