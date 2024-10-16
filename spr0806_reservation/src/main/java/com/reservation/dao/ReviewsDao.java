@@ -7,7 +7,12 @@ import org.apache.ibatis.annotations.Param;
 import com.reservation.dto.ReviewsDto;
 
 public interface ReviewsDao {
-		
+	
+	//해당업체 최신 리뷰 5개 조회
+	public ArrayList<ReviewsDto> selectFiveLatestReviews(
+			@Param("vendor_email") String vendor_email, 
+			@Param("business_regi_num") String business_regi_num) throws Exception;
+	
 	//멤버 리뷰작성
 	public void insert(
 					@Param("reservation_number")String reservation_number,

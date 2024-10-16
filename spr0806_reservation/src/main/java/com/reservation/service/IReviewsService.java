@@ -6,6 +6,9 @@ import com.reservation.dto.ReviewsDto;
 
 public interface IReviewsService {
 	
+	//해당업체 최신 리뷰 5개 조회
+	public ArrayList<ReviewsDto> selectFiveLatestReviews(String vendor_email, String business_regi_num) throws Exception;
+	
 	//멤버 리뷰작성
 	public void insert(String reservation_number,
 			Integer star_point,

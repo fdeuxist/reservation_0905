@@ -15,6 +15,11 @@ public class ReviewsServiceImpl implements IReviewsService {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@Override
+	public ArrayList<ReviewsDto> selectFiveLatestReviews(String vendor_email, String business_regi_num) throws Exception {
+		ReviewsDao dao = sqlSession.getMapper(ReviewsDao.class);
+		return dao.selectFiveLatestReviews(vendor_email, business_regi_num);
+	}
 
 	@Override
 	public void insert(String reservation_number, Integer star_point, String member_content) throws Exception {
@@ -66,7 +71,6 @@ public class ReviewsServiceImpl implements IReviewsService {
 		ReviewsDao dao = sqlSession.getMapper(ReviewsDao.class);
 		return dao.selectOne(reservation_number);
 	}
-
 
 
 }
