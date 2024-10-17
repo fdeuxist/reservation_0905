@@ -78,7 +78,13 @@ where email = #{email}
    and status_flag = '1'
 </update> 
 
-
+<!-- cancelOrRefund로 인한 vendor time update -->
+<update id="timeUpdateDueToCancelOrRefund">
+   update vendor_reservation set times=#{times} 
+   where email=#{email} 
+   and business_regi_num=#{business_regi_num} 
+   and open_date=#{open_date}
+</update> 
 
 
 

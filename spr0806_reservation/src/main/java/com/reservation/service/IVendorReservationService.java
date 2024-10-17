@@ -37,7 +37,9 @@ public interface IVendorReservationService {
    
 	//0903	newOrder로 인한 vendor time update
 	public void newOrderOpenDateTimesUpdate (String times, String email, String business_regi_num, String open_date) throws Exception;
-	   
+	//취소나 환불로 인한 vendor time update
+	public void timeUpdateDueToCancelOrRefund (String times, String email, String business_regi_num, String open_date) throws Exception;
+	 
 	//0904 overloading status 수정용
 	public void closeDay(VendorReservationDto dto) throws Exception;
 	public void openDay(VendorReservationDto dto) throws Exception;

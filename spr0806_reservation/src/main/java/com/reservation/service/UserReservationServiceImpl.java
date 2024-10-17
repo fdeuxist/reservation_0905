@@ -48,8 +48,37 @@ public class UserReservationServiceImpl implements IUserReservationService {
 	}
     
     
-    
-    
+
+	@Transactional(isolation=Isolation.SERIALIZABLE)
+	@Override
+	public void cancelOrRefund(String status, String reservation_number) throws Exception {
+		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
+		
+		//주문번호로 해당 주문건 찾기
+		UserReservationDto urDto = dao.selectOneMyOrder(reservation_number);
+		
+		//해당 주문건에서 벤더 정보 (벤더의 해당 예약일)찾기 
+		VendorReservationDto vrDto = new VendorReservationDto();	
+		vrDto.setEmail(urDto.getVendor_email());
+		vrDto.setBusiness_regi_num(urDto.getBusiness_regi_num());
+		vrDto.setOpen_date(urDto.getReservation_use_date());
+		
+		vrDto = vRService.selectOneOneVendorsMyOneDayReservation(vrDto);
+		System.out.println("cancelOrRefund vrDto : " + vrDto);
+		
+		String vendorTime = vrDto.getTimes();
+        int position = vendorTime.indexOf('2');	//'2'가 몇번째에 있는지
+		char[] timeChars = vendorTime.toCharArray(); 
+		//'000000000000000000001020001010101010101010000000' 를 char 배열로 전환
+        timeChars[position] = '0';	//'2'가 있는 위치를 '0'으로 변경
+        vendorTime = String.valueOf(timeChars);//char배열을 다시 string으로
+        vRService.timeUpdateDueToCancelOrRefund(vendorTime,vrDto.getEmail(),vrDto.getBusiness_regi_num(),vrDto.getOpen_date());
+        
+		dao.changeOrdersStatus(status, reservation_number);
+		//해당일시 주문2인거 0으로 변경해줘야함 - 완료
+		
+	}
+	
 	//0903 new
 	@Transactional(isolation=Isolation.SERIALIZABLE)
 	@Override
@@ -113,6 +142,7 @@ public class UserReservationServiceImpl implements IUserReservationService {
 		return dao.selectOneMyOrder(reservation_number);
 	}
 
+	
 	@Override
 	public void changeOrdersStatus(String status, String reservation_number) throws Exception {
 		UserReservationDao dao = sqlSession.getMapper(UserReservationDao.class);
@@ -179,4 +209,5 @@ public class UserReservationServiceImpl implements IUserReservationService {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
