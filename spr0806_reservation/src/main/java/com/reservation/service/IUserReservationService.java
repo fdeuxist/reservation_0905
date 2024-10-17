@@ -7,6 +7,8 @@ import java.util.Map;
 import com.reservation.dto.UserReservationDto;
 
 public interface IUserReservationService {
+
+	public void cancelOrRefund(String updateStatus, String reservationNumber) throws Exception;
 	
 	public void newOrder(UserReservationDto dto) throws Exception;
 	
@@ -48,4 +50,5 @@ public interface IUserReservationService {
 	public List<Map<String,Object>> countServiceName() throws Exception;
 	public List<Map<String,Object>> countTimeshhmm() throws Exception;
 	public List<Map<String,Object>> sumServicePrice() throws Exception;
+
 }

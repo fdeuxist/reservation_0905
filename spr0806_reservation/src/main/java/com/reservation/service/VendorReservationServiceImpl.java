@@ -89,7 +89,13 @@ public class VendorReservationServiceImpl implements IVendorReservationService{
         vDao.newOrderOpenDateTimesUpdate(times, email, business_regi_num, open_date);
     }
 	
-	
+	//취소나 환불로 인한 vendor time update
+	@Override
+    public void timeUpdateDueToCancelOrRefund(String times, String email, String business_regi_num, String open_date)
+           throws Exception {
+        VendorReservationDao vDao = sqlSession.getMapper(VendorReservationDao.class);
+        vDao.timeUpdateDueToCancelOrRefund(times, email, business_regi_num, open_date);
+    }
 	
 	
 	

@@ -95,7 +95,8 @@ public class VendorRestController {
         }else if(status.equals("6")) {    //6환불대기
             updateStatus="7";            //7환불완료
         }
-        uRService.changeOrdersStatus(updateStatus, reservationNumber);
+        //uRService.changeOrdersStatus(updateStatus, reservationNumber);	//status만 돌림. 미사용
+        uRService.cancelOrRefund(updateStatus, reservationNumber);
         UserReservationDto dto = uRService.selectOneMyOrder(reservationNumber);
         System.out.println(dto);
         Map<String, Object> response = new HashMap<>();

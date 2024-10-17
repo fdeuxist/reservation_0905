@@ -55,6 +55,14 @@ public interface VendorReservationDao {
 			@Param("open_date") String open_date)
 			throws Exception;
 	
+	//취소나 환불로 인한 vendor time update
+	public void timeUpdateDueToCancelOrRefund(
+			@Param("times") String times,
+			@Param("email") String email,
+			@Param("business_regi_num") String business_regi_num,
+			@Param("open_date") String open_date)
+			throws Exception;
+	
 	//0904 overloading status 수정용
 	public void closeDay(VendorReservationDto dto) throws Exception;
 	public void openDay(VendorReservationDto dto) throws Exception;
