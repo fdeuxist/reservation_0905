@@ -9,15 +9,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.executor.ReuseExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,12 +43,20 @@ import com.reservation.service.ISearchPlaceService;
 @RestController
 public class ReactController {
 
+	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping("/test")
 	public String Test() {
 		System.out.println("서버 접속 완료");
 		return "connected...";
 	}
-	
+	@CrossOrigin(origins = "http://localhost:3000")
+	@GetMapping("/api/getPort")
+	public int getServerPort(HttpServletRequest request) {
+		int serverPort = request.getServerPort();
+		System.out.println("서버단에서 포트번호는 "+ serverPort);
+		return serverPort;
+	}
+	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping("/clickSearch")
 	public String search(@RequestParam("query") String query,RedirectAttributes rttr) {
         // 검색 로직을 통해 검색 결과를 얻음

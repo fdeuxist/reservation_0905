@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -188,6 +189,8 @@ public class MemberController {
 	}
 
 //0902
+	//크로스 도메인 설정 
+	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/member/mypage", method = RequestMethod.GET)
 	public String myPage(UserReservationDto dto, HttpSession session, Model model) throws Exception {
 		System.out.println("MemberController - /member/mypage");
@@ -203,6 +206,7 @@ public class MemberController {
 	}
 	
 //0902    
+	@CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/member/myorders", method = RequestMethod.GET)
     public String myorders(HttpSession session, Model model) throws Exception {
         logger.info("MemberController - /member/myorders");
