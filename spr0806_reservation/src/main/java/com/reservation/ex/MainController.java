@@ -212,6 +212,7 @@ public class MainController {
 
 
 	// 검색폼 처리 관련 메서드
+	//@CrossOrigin(origins = "http://192.168.30.169:3000")
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/my/search", method = RequestMethod.GET)
 	public String search(@RequestParam("query") String query, Model model) throws Exception {

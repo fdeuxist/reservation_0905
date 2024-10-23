@@ -269,9 +269,9 @@ public class MessageController {
         logger.info("회원가입 phone 인증코드 : " + authCode); //test용
         
         //실제문자전송부
-        //SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-        //System.out.println(response);
-        SingleMessageSentResponse response = null;	//test용 null전송
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        System.out.println(response);
+        //SingleMessageSentResponse response = null;	//test용 null전송
         return response;
     }
     
@@ -309,9 +309,10 @@ public class MessageController {
 	        message.setTo(phone);
 	        message.setText(subject);
 	
-	        //SingleMessageSentResponse smsResponse = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-	        //response.put("message", smsResponse);
-	        response.put("message", subject);	//test용
+	        //실제문자전송부
+	        SingleMessageSentResponse smsResponse = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+	        response.put("message", smsResponse);
+	        //response.put("message", subject);	//test용
 			response.put("result","3");
 		}
         System.out.println(response);

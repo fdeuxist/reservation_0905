@@ -62,7 +62,7 @@ update user_reservation set status='4' where reservation_number=#{reservation_nu
 </update>
 
 <select id="selectAllMyOrders" resultType="UserReservationDto">
-select * from user_reservation where user_email=#{user_email}
+select * from user_reservation where user_email=#{user_email} order by reservation_number desc
 </select>
 
 <select id="selectOneMyOrder" resultType="UserReservationDto">

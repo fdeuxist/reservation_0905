@@ -113,11 +113,11 @@ public class ResultReviewsJoinDto {
 	}
 
 	public double getAveragePoint() {
-		return averagePoint;
+		return Math.round(averagePoint * 100.0) / 100.0;
 	}
 
 	public void setAveragePoint(double averagePoint) {
-		this.averagePoint = averagePoint;
+		this.averagePoint = Math.round(averagePoint * 100.0) / 100.0;
 	}
 
 	public int getReviewCount() {

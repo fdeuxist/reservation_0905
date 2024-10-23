@@ -38,6 +38,7 @@
 				<button id="sortButton">적용</button>
 				<!-- 정렬 적용 버튼 추가 -->
 			</div>
+			<%--
 			<div>
 				<input type="radio" name="radio-filter" id="radio1"> <label
 					for="radio1">30분 메뉴</label>
@@ -46,7 +47,7 @@
 				<input type="radio" name="radio-filter" id="radio2"> <label
 					for="radio2">1시간 메뉴</label>
 			</div>
-			
+			 --%>
 			<div class="container">
 				<div class="slider-wrapper">
 					<div id="priceSlider"></div>
